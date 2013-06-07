@@ -44,8 +44,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\CardButton.cs" />
+     <Compile Include="Assets\Scripts\Ability.cs" />
+     <Compile Include="Assets\Scripts\AbilityBar.cs" />
      <Compile Include="Assets\Scripts\CharacterStats.cs" />
+     <Compile Include="Assets\Scripts\CombatEntity.cs" />
      <Compile Include="Assets\Scripts\CommandCenter.cs" />
      <Compile Include="Assets\Scripts\IAbility.cs" />
   </ItemGroup>

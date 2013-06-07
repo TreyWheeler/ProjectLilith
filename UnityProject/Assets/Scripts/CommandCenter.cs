@@ -8,8 +8,8 @@ public class CommandCenter : MonoBehaviour
     public int buttonHeight = 64;
 
     public IAbility SelectedAbility;
-    public CardButton SelectedPlayer;
-    public CardButton SelectedEnemy;
+    public CombatEntity SelectedPlayer;
+    public CombatEntity SelectedEnemy;
 
     public int buttonPadding = 50;
 
@@ -24,6 +24,7 @@ public class CommandCenter : MonoBehaviour
         int screenCenterX = Screen.width / 2;
         int screenCenterY = Screen.height / 2;
 
+        GUI.Button(new Rect(screenCenterX, 0, 0, Screen.height), "A");
 
         if (SelectedPlayer != null)
         {

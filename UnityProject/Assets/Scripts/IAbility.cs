@@ -6,5 +6,5 @@ using System.Text;
 public interface IAbility
 {
     string DisplayName {get;}
-    void Do(CardButton actor, CardButton target);
+    void Do(CombatEntity actor, CombatEntity target);
 }
