@@ -169,8 +169,8 @@ pip-log.txt
 ## UNITY
 ################
 # Ignore The following directories / file extensions
-Temp/*
-Library/*
+UnityProject/Temp/*
+UnityProject/Library/*
 
 
 !Library/*.asset
