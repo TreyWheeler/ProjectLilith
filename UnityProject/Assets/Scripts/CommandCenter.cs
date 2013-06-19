@@ -28,7 +28,7 @@ public class CommandCenter : MonoBehaviour
 
         if (SelectedPlayer != null)
         {
-            if (GUI.Button(new Rect(screenCenterX - buttonWidth - buttonPadding / 2, screenCenterY - buttonHeight / 2, buttonWidth, buttonHeight), SelectedPlayer.buttonLabel))
+            if (GUI.Button(new Rect(screenCenterX - buttonWidth - buttonPadding / 2, screenCenterY - buttonHeight / 2, buttonWidth, buttonHeight), SelectedPlayer.Name))
             {
 
             }
@@ -36,7 +36,7 @@ public class CommandCenter : MonoBehaviour
 
         if (SelectedEnemy != null)
         {
-            if (GUI.Button(new Rect(screenCenterX + buttonPadding / 2, screenCenterY - buttonHeight / 2, buttonWidth, buttonHeight), SelectedEnemy.buttonLabel))
+            if (GUI.Button(new Rect(screenCenterX + buttonPadding / 2, screenCenterY - buttonHeight / 2, buttonWidth, buttonHeight), SelectedEnemy.Name))
             {
 
             }

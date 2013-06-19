@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\CharacterStats.cs" />
      <Compile Include="Assets\Scripts\CombatEntity.cs" />
      <Compile Include="Assets\Scripts\CommandCenter.cs" />
+     <Compile Include="Assets\Scripts\EntityBar.cs" />
      <Compile Include="Assets\Scripts\IAbility.cs" />
      <Compile Include="Assets\Scripts\Splash.cs" />
   </ItemGroup>
