@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Ability : IAbility
+public class Ability
 {
     private string _name;
     public string Name

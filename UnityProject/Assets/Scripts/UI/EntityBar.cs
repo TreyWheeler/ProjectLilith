@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class EntityBar : MonoBehaviour
 {
@@ -7,13 +8,34 @@ public class EntityBar : MonoBehaviour
     private int cardHeight = 64;
     private int cardWidth = 64;
     private CombatEntity[] CombatEntities;
-    private CommandCenter commandCenter;
     public bool HugRightWall;
+    
+    public event Action SelectedEntityChanged;
+    
+    public CombatEntity _selectedEntity;
+
+    public CombatEntity SelectedEntity
+    {
+        get
+        {
+            return _selectedEntity;
+        }
+        
+        set
+        {
+            if(_selectedEntity != value)
+            {
+                _selectedEntity = value;
+                if(SelectedEntityChanged != null)
+                    SelectedEntityChanged();
+            }
+        }
+    }
+    
     
     // Use this for initialization
     void Start()
     {
-        commandCenter = GameObject.FindGameObjectWithTag("CC").GetComponent<CommandCenter>();
         CombatEntities = new CombatEntity[]
         { 
             new CombatEntity() 
@@ -64,16 +86,18 @@ public class EntityBar : MonoBehaviour
  
     void OnGUI()
     {
-        int XCoordinate = HugRightWall ? Screen.width - margin - cardWidth : margin;
-        
-        for(int i = 0; i < CombatEntities.Length; i++)
+        if(CombatEntities != null)
         {
-            if(GUI.Button(new Rect(XCoordinate, Screen.height - ((cardHeight + margin) * (i + 1)), cardWidth, cardHeight), CombatEntities[i].Name))
+            int XCoordinate = HugRightWall ? Screen.width - margin - cardWidth : margin;
+        
+            for(int i = 0; i < CombatEntities.Length; i++)
             {
-                if(HugRightWall)                
-                    commandCenter.SelectedEnemy = CombatEntities[i];
-                else
-                    commandCenter.SelectedPlayer = CombatEntities[i];
+                //string healthAsPercent = 
+                
+                if(GUI.Button(new Rect(XCoordinate, Screen.height - ((cardHeight + margin) * (i + 1)), cardWidth, cardHeight), CombatEntities[i].Name))
+                {
+                    SelectedEntity = CombatEntities[i];
+                }
             }
         }
     }
