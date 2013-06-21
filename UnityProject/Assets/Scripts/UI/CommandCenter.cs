@@ -10,8 +10,9 @@ public class CommandCenter : MonoBehaviour
     public int buttonPadding = 50;
     private AbilityBar abilityBar;
     private EntityBar team1EntityBar;
-    private EntityBar team2EntityBar;    
-
+    private EntityBar team2EntityBar;
+    TimedTaskManager tasks;
+    
     // Use this for initialization
     void Start()
     {
@@ -19,7 +20,10 @@ public class CommandCenter : MonoBehaviour
         team1EntityBar = GetComponents<EntityBar>().First(bar => !bar.HugRightWall);
         team2EntityBar = GetComponents<EntityBar>().First(bar => bar.HugRightWall);
         
-        team1EntityBar.SelectedEntityChanged += () => { abilityBar.Abilities = team1EntityBar.SelectedEntity.abilities; };
+        team1EntityBar.SelectedEntityChanged += () => {
+            abilityBar.Abilities = team1EntityBar.SelectedEntity.abilities; };
+        
+        tasks = GameObject.FindGameObjectWithTag("Components").GetComponent<TimedTaskManager>();
     }
 
     void OnGUI()
@@ -58,6 +62,13 @@ public class CommandCenter : MonoBehaviour
             if(GUI.Button(new Rect(screenCenterX - buttonWidth / 2, screenCenterY + buttonHeight / 2 + buttonPadding / 2, buttonWidth, buttonHeight), "Go!"))
             {
                 abilityBar.SelectedAbility.Do(team1EntityBar.SelectedEntity, team2EntityBar.SelectedEntity);
+                
+                IntTween tween = new IntTween();
+                tween.From = buttonWidth * 3;
+                tween.To = buttonWidth;
+                tween.Duration = 1000;
+                tween.CurrentValueChanged += (e) => buttonWidth = e.NewValue;
+                tasks.Add(tween);
             }
         }
 

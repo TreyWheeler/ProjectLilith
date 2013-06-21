@@ -49,10 +49,15 @@
      <Compile Include="Assets\Scripts\Entities\CombatEntity.cs" />
      <Compile Include="Assets\Scripts\Entities\Stat.cs" />
      <Compile Include="Assets\Scripts\Entities\StatusEffect.cs" />
+     <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
      <Compile Include="Assets\Scripts\Splash.cs" />
      <Compile Include="Assets\Scripts\UI\AbilityBar.cs" />
      <Compile Include="Assets\Scripts\UI\CommandCenter.cs" />
      <Compile Include="Assets\Scripts\UI\EntityBar.cs" />
+     <Compile Include="Assets\Scripts\Utility\Extensions.cs" />
+     <Compile Include="Assets\Scripts\Utility\Helper.cs" />
+     <Compile Include="Assets\Scripts\Utility\TimedTaskManager.cs" />
+     <Compile Include="Assets\Scripts\Utility\Tween.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
