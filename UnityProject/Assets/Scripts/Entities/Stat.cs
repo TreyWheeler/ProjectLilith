@@ -56,8 +56,8 @@ public enum StatFlagType
 
 public class Stat
 {
-    public event EventHandler MinimumReached;
-    public event EventHandler<StatChangedArgs> Changed;
+    public event Action<Stat> MinimumReached;
+    public event Action<Stat, StatChangedArgs> Changed;
 
     private List<StatModifier> Modifiers = new List<StatModifier>();
     public List<StatFlagType> Flags = new List<StatFlagType>();
@@ -83,7 +83,7 @@ public class Stat
     {
         if(MinimumReached != null)
         {
-            MinimumReached(this, EventArgs.Empty);
+            MinimumReached(this);
         }
     }
 
@@ -208,5 +208,13 @@ public class Stat
         this.MinValue = MinValue;
         this.MaxValue = MaxValue;
         this.CurrentValue = CurrentValue;
+    }
+}
+
+public static class StatExtensions
+{
+    public static Stat GetHealth(this IDictionary<StatType, Stat> stats)
+    {
+        return stats[StatType.Health];
     }
 }

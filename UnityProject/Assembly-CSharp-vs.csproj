@@ -47,6 +47,7 @@
      <Compile Include="Assets\Scripts\CharacterStats.cs" />
      <Compile Include="Assets\Scripts\Entities\Ability.cs" />
      <Compile Include="Assets\Scripts\Entities\CombatEntity.cs" />
+     <Compile Include="Assets\Scripts\Entities\IHaveStats.cs" />
      <Compile Include="Assets\Scripts\Entities\Stat.cs" />
      <Compile Include="Assets\Scripts\Entities\StatusEffect.cs" />
      <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
@@ -54,6 +55,8 @@
      <Compile Include="Assets\Scripts\UI\AbilityBar.cs" />
      <Compile Include="Assets\Scripts\UI\CommandCenter.cs" />
      <Compile Include="Assets\Scripts\UI\EntityBar.cs" />
+     <Compile Include="Assets\Scripts\UI\StatusBar.cs" />
+     <Compile Include="Assets\Scripts\UI\StatusBarBase.cs" />
      <Compile Include="Assets\Scripts\Utility\Extensions.cs" />
      <Compile Include="Assets\Scripts\Utility\Helper.cs" />
      <Compile Include="Assets\Scripts\Utility\TimedTaskManager.cs" />

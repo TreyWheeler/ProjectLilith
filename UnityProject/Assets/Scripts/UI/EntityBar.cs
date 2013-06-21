@@ -1,14 +1,16 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class EntityBar : MonoBehaviour
 {
-    private int margin = 10;
+    private int margin = 50;
     private int cardHeight = 64;
     private int cardWidth = 64;
     private CombatEntity[] CombatEntities;
     public bool HugRightWall;
+    public Dictionary<CombatEntity, StatusBar> statusBars = new Dictionary<CombatEntity, StatusBar>();
     
     public event Action SelectedEntityChanged;
     
@@ -82,6 +84,14 @@ public class EntityBar : MonoBehaviour
                 }
             } 
         };
+        
+        foreach(CombatEntity entity in CombatEntities)
+        {
+            var statusBar = gameObject.AddComponent<StatusBar>();
+            statusBar.StatType = StatType.Health;
+            statusBar.TrackedObject = entity;
+            statusBars.Add(entity, statusBar);
+        }
     }
  
     void OnGUI()
@@ -92,11 +102,22 @@ public class EntityBar : MonoBehaviour
         
             for(int i = 0; i < CombatEntities.Length; i++)
             {
-                //string healthAsPercent = 
+                var entity = CombatEntities[i];
                 
-                if(GUI.Button(new Rect(XCoordinate, Screen.height - ((cardHeight + margin) * (i + 1)), cardWidth, cardHeight), CombatEntities[i].Name))
+                var buttonDimensions = new Rect(XCoordinate, Screen.height - ((cardHeight + margin) * (i + 1)), cardWidth, cardHeight);
+                
+                if(HugRightWall)
                 {
-                    SelectedEntity = CombatEntities[i];
+                    statusBars[entity].Dimensions = new Rect(buttonDimensions.x - StatusBar.Width, buttonDimensions.y, StatusBar.Width, buttonDimensions.height);
+                }
+                else
+                {
+                    statusBars[entity].Dimensions = new Rect(buttonDimensions.x + buttonDimensions.width, buttonDimensions.y, StatusBar.Width, buttonDimensions.height);   
+                }
+                
+                if(GUI.Button(buttonDimensions, entity.Name))
+                {
+                    SelectedEntity = entity;
                 }
             }
         }

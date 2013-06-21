@@ -31,8 +31,6 @@ public class CommandCenter : MonoBehaviour
         int screenCenterX = Screen.width / 2;
         int screenCenterY = Screen.height / 2;
 
-        GUI.Button(new Rect(screenCenterX, 0, 0, Screen.height), "A");
-
         if(team1EntityBar.SelectedEntity != null)
         {
             if(GUI.Button(new Rect(screenCenterX - buttonWidth - buttonPadding / 2, screenCenterY - buttonHeight / 2, buttonWidth, buttonHeight), team1EntityBar.SelectedEntity.Name))
@@ -62,13 +60,6 @@ public class CommandCenter : MonoBehaviour
             if(GUI.Button(new Rect(screenCenterX - buttonWidth / 2, screenCenterY + buttonHeight / 2 + buttonPadding / 2, buttonWidth, buttonHeight), "Go!"))
             {
                 abilityBar.SelectedAbility.Do(team1EntityBar.SelectedEntity, team2EntityBar.SelectedEntity);
-                
-                IntTween tween = new IntTween();
-                tween.From = buttonWidth * 3;
-                tween.To = buttonWidth;
-                tween.Duration = 1000;
-                tween.CurrentValueChanged += (e) => buttonWidth = e.NewValue;
-                tasks.Add(tween);
             }
         }
 

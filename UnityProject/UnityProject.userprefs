@@ -1,16 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Utility\TimedTaskManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UI\StatusBar.cs">
     <Files>
-      <File FileName="Assets\Scripts\UI\CommandCenter.cs" Line="69" Column="25" />
-      <File FileName="Assets\Scripts\Utility\Tween.cs" Line="149" Column="30" />
-      <File FileName="Assets\Scripts\Utility\TimedTaskManager.cs" Line="33" Column="6" />
+      <File FileName="Assets\Scripts\Entities\CombatEntity.cs" Line="26" Column="1" />
+      <File FileName="Assets\Scripts\UI\StatusBar.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="E:\Github\ProjectLilith\UnityProject\Assets\Scripts\Utility\TimedTaskManager.cs" line="41" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
