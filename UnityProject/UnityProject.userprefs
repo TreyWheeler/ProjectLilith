@@ -1,10 +1,36 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UI\EntityBar.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Data\SQLRepository.cs">
     <Files>
-      <File FileName="Assets\Scripts\UI\EntityBar.cs" Line="106" Column="17" />
-      <File FileName="Assets\Scripts\Entities\CombatEntity.cs" Line="26" Column="10" />
+      <File FileName="Assets\Scripts\Core\Ability.cs" Line="24" Column="40" />
+      <File FileName="Assets\Scripts\Repositories\SQLPlayerRepository.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Data\SQLRepository.cs" Line="37" Column="6" />
+      <File FileName="Assets\Scripts\Models\Player.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Repositories\IPlayerRepository.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Data\LocalDatabaseVersionManager.cs" Line="76" Column="1" />
+      <File FileName="Assets\Scripts\Core\Stat.cs" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Assembly-CSharp" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="Data" expanded="True">
+                  <Node name="SQLRepository.cs" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

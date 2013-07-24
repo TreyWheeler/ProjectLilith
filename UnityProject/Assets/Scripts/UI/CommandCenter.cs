@@ -15,7 +15,7 @@ public class CommandCenter : MonoBehaviour
     TimedEvent test;
     // Use this for initialization
     void Start()
-    {
+    {        
         abilityBar = GetComponent<AbilityBar>();
         team1EntityBar = GetComponents<EntityBar>().First(bar => !bar.HugRightWall);
         team2EntityBar = GetComponents<EntityBar>().First(bar => bar.HugRightWall);

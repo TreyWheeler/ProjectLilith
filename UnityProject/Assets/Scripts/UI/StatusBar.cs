@@ -16,7 +16,7 @@ public class StatusBar : StatusBarBase
  
     void OnGUI()
     {
-        if(TrackedObject == null || Dimensions == null)
+        if(TrackedObject == null)
             return;
         
         GUI.skin.label.normal.background = texture;        
