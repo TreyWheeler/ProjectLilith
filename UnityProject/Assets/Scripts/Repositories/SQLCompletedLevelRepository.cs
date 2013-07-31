@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-public class SQLPlayerRepository : SQLRepository<Player>, IPlayerRepository
+public class SQLCompletedLevelRepository : SQLRepository<CompletedLevel>, ICompletedLevelRepository
 {
     protected override List<Column> LoadColumns()
     {
@@ -15,14 +15,14 @@ public class SQLPlayerRepository : SQLRepository<Player>, IPlayerRepository
         });
         
         columns.Add(new Column() {
-            Name = "Name",
-            Property = "Name",
-            Type = DataType.String
+            Name = "Player_ID",
+            Property = "PlayerID",
+            Type = DataType.Int
         });
         
         columns.Add(new Column() {
-            Name = "Gold",
-            Property = "Gold",
+            Name = "Level_ID",
+            Property = "LevelID",
             Type = DataType.Int
         });
         
@@ -33,7 +33,7 @@ public class SQLPlayerRepository : SQLRepository<Player>, IPlayerRepository
     {
         get
         {
-            return "Players";
+            return "CompletedLevels";
         }
     }
 }

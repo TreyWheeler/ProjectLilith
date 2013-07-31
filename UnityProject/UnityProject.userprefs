@@ -1,14 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Data\SQLRepository.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Repositories\SQLCharacterSkillRepository.cs">
     <Files>
-      <File FileName="Assets\Scripts\Core\Ability.cs" Line="24" Column="40" />
-      <File FileName="Assets\Scripts\Repositories\SQLPlayerRepository.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Data\SQLRepository.cs" Line="37" Column="6" />
-      <File FileName="Assets\Scripts\Models\Player.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Repositories\IPlayerRepository.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Data\LocalDatabaseVersionManager.cs" Line="76" Column="1" />
-      <File FileName="Assets\Scripts\Core\Stat.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Repositories\ICharacterSkillRepository.cs" Line="9" Column="1" />
+      <File FileName="Assets\Scripts\Repositories\SQLCharacterSkillRepository.cs" Line="40" Column="12" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,8 +11,10 @@
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="Data" expanded="True">
-                  <Node name="SQLRepository.cs" selected="True" />
+                <Node name="Data" expanded="True" />
+                <Node name="Models" expanded="True" />
+                <Node name="Repositories" expanded="True">
+                  <Node name="SQLCharacterSkillRepository.cs" selected="True" />
                 </Node>
               </Node>
             </Node>
@@ -28,12 +25,21 @@
         <State expanded="True" selected="True" />
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
+        <State>
+          <Value>column.Name</Value>
+          <Value>dbcmd.CommandText</Value>
+          <Value>test.GetALL()</Value>
+          <Value>test.GetALL().FirstOrDefault()</Value>
+          <Value>player</Value>
+        </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="E:\Github\ProjectLilith\UnityProject\Assets\Scripts\Data\SQLRepository.cs" line="155" />
+      <Breakpoint file="E:\Github\ProjectLilith\UnityProject\Assets\Scripts\Core\Ability.cs" line="31" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

@@ -1,10 +1,12 @@
 using System;
 
-public class Player
+public class Player : IRepositoryEntry
 {       
-    public uint AutoNumber;
-    public String Name;
-    public uint Gold;
+    public int ID { get; set; }
+
+    public String Name { get; set; }
+
+    public int Gold { get; set; }
 }
 
 

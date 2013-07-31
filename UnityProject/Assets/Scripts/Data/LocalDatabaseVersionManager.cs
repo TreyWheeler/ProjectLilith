@@ -11,7 +11,6 @@ public class LocalDatabaseVersionManager
     public void EnsureUpToDate()
     {
         int targetVersion = GetTargetVersion();
-                
         for(int dbVersion = GetDBVersion(); dbVersion < targetVersion; dbVersion++)
         {
             UpgradeDB(dbVersion);            
@@ -49,15 +48,15 @@ public class LocalDatabaseVersionManager
                     dbcmd.CommandText = @"
                 CREATE TABLE Players 
                 (
-                    ID int NOT NULL,
-                    Name varchar(32),
+                    ID INTEGER NOT NULL,
+                    Name varchar(32) NOT NULL,
                     Gold int NOT NULL,
                     PRIMARY KEY (ID)
                 );
 
                 CREATE TABLE PlayerCharacters 
                 (
-                    ID int NOT NULL,
+                    ID INTEGER NOT NULL,
                     Character_ID int NOT NULL,
                     Player_ID int NOT NULL,
                     PRIMARY KEY (ID),
@@ -66,7 +65,7 @@ public class LocalDatabaseVersionManager
 
                 CREATE TABLE PlayerCharacterEXP 
                 (
-                    ID int NOT NULL,
+                    ID INTEGER NOT NULL,
                     PlayerCharacter_ID int NOT NULL,
                     EXPType_ID int NOT NULL,
                     Amount int NOT NULL,
@@ -76,7 +75,7 @@ public class LocalDatabaseVersionManager
 
                 CREATE TABLE CompletedLevels 
                 (
-                    ID int NOT NULL,
+                    ID INTEGER NOT NULL,
                     Player_ID int NOT NULL,
                     Level_ID int NOT NULL,
                     PRIMARY KEY (ID), 
@@ -85,7 +84,7 @@ public class LocalDatabaseVersionManager
 
                 CREATE TABLE PlayerItems 
                 (
-                    ID int NOT NULL,
+                    ID INTEGER NOT NULL,
                     Player_ID int NOT NULL,
                     Item_ID int NOT NULL,
                     Character_ID int,
@@ -95,7 +94,7 @@ public class LocalDatabaseVersionManager
 
                 CREATE TABLE CharacterSkills 
                 (
-                    ID int NOT NULL,
+                    ID INTEGER NOT NULL,
                     Character_ID int NOT NULL,
                     Skill_ID int NOT NULL,
                     IsUnlocked boolean NOT NULL,
