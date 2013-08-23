@@ -1,21 +1,36 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Repositories\SQLCharacterSkillRepository.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Utility\Helper.cs">
     <Files>
-      <File FileName="Assets\Scripts\Repositories\ICharacterSkillRepository.cs" Line="9" Column="1" />
-      <File FileName="Assets\Scripts\Repositories\SQLCharacterSkillRepository.cs" Line="40" Column="12" />
+      <File FileName="Assets\Scenes\PlayerSelection\PlayerSelectionGUI.cs" Line="34" Column="13" />
+      <File FileName="Assets\Scripts\Utility\Helper.cs" Line="18" Column="28" />
+      <File FileName="Assets\Scenes\PlayerSelection\GameContext.cs" Line="23" Column="46" />
+      <File FileName="Assets\Scripts\Framework\IoC\UnityContext.cs" Line="13" Column="32" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Assets" expanded="True">
+              <Node name="Scenes" expanded="True">
+                <Node name="PlayerSelection" expanded="True" />
+              </Node>
               <Node name="Scripts" expanded="True">
-                <Node name="Data" expanded="True" />
-                <Node name="Models" expanded="True" />
-                <Node name="Repositories" expanded="True">
-                  <Node name="SQLCharacterSkillRepository.cs" selected="True" />
+                <Node name="Framework" expanded="True">
+                  <Node name="Data" expanded="True" />
+                  <Node name="IoC" expanded="True" />
                 </Node>
+                <Node name="UI" expanded="True" />
+                <Node name="Utility" expanded="True">
+                  <Node name="Helper.cs" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Assembly-UnityScript" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Blade_Warrior" expanded="True">
+                <Node name="scripts" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -24,22 +39,10 @@
       <Pad Id="ClassPad">
         <State expanded="True" selected="True" />
       </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State>
-          <Value>column.Name</Value>
-          <Value>dbcmd.CommandText</Value>
-          <Value>test.GetALL()</Value>
-          <Value>test.GetALL().FirstOrDefault()</Value>
-          <Value>player</Value>
-        </State>
-      </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="E:\Github\ProjectLilith\UnityProject\Assets\Scripts\Data\SQLRepository.cs" line="155" />
-      <Breakpoint file="E:\Github\ProjectLilith\UnityProject\Assets\Scripts\Core\Ability.cs" line="31" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

@@ -27,7 +27,9 @@ public class Ability
         player.ID = 0;
         SQLPlayerRepository test = new SQLPlayerRepository();
         test.Insert(player);
-        player = test.GetALL().FirstOrDefault();       
+        player = test.GetAll().FirstOrDefault();
+        
+        Application.LoadLevel("Scene2");
     }
 }
 

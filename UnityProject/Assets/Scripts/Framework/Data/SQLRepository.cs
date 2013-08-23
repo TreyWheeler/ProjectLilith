@@ -147,6 +147,24 @@ public abstract class SQLRepository<T> : IRepository<T>
         }
     }
     
+    public void DeleteAll()
+    {
+        IDbConnection dbcon = (IDbConnection)new SqliteConnection(ConnectionString);        
+        dbcon.Open();      
+        try
+        {
+            using(IDbCommand dbcmd = dbcon.CreateCommand())
+            {     
+                dbcmd.CommandText = string.Format("DELETE FROM {0}", TableName);
+                dbcmd.ExecuteNonQuery();
+            }
+        }
+        finally
+        {
+            dbcon.Close();
+        }  
+    }
+    
     public List<T> GetBySQL(string SQL)
     {
         List<T> ts = new List<T>();
@@ -208,7 +226,7 @@ public abstract class SQLRepository<T> : IRepository<T>
         return ts;
     }
     
-    public List<T> GetALL()
+    public List<T> GetAll()
     {
         return GetBySQL("");
     }

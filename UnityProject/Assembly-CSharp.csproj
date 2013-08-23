@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Blade_Warrior\scripts\characterButten.cs" />
+     <Compile Include="Assets\Scenes\PlayerSelection\GameContext.cs" />
+     <Compile Include="Assets\Scenes\PlayerSelection\PlayerSelectionGUI.cs" />
      <Compile Include="Assets\Scripts\CharacterStats.cs" />
      <Compile Include="Assets\Scripts\Core\Ability.cs" />
      <Compile Include="Assets\Scripts\Core\CombatEntity.cs" />
@@ -53,11 +55,24 @@
      <Compile Include="Assets\Scripts\Core\Stat.cs" />
      <Compile Include="Assets\Scripts\Core\StatList.cs" />
      <Compile Include="Assets\Scripts\Core\StatusEffect.cs" />
-     <Compile Include="Assets\Scripts\Data\Column.cs" />
-     <Compile Include="Assets\Scripts\Data\IRepository.cs" />
-     <Compile Include="Assets\Scripts\Data\IRepositoryEntry.cs" />
-     <Compile Include="Assets\Scripts\Data\LocalDatabaseVersionManager.cs" />
-     <Compile Include="Assets\Scripts\Data\SQLRepository.cs" />
+     <Compile Include="Assets\Scripts\Framework\Data\Column.cs" />
+     <Compile Include="Assets\Scripts\Framework\Data\IRepository.cs" />
+     <Compile Include="Assets\Scripts\Framework\Data\IRepositoryEntry.cs" />
+     <Compile Include="Assets\Scripts\Framework\Data\LocalDatabaseVersionManager.cs" />
+     <Compile Include="Assets\Scripts\Framework\Data\SQLRepository.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\Binder.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\Container.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\GameObjectFactory.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\IBinder.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\IContainer.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\IContextRoot.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\IInitialize.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\InjectAttribute.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\MonoBehaviourFactory.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\MonoInjection.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\Provider.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\UnityContainer.cs" />
+     <Compile Include="Assets\Scripts\Framework\IoC\UnityContext.cs" />
      <Compile Include="Assets\Scripts\Models\CharacterSkill.cs" />
      <Compile Include="Assets\Scripts\Models\CompletedLevel.cs" />
      <Compile Include="Assets\Scripts\Models\Player.cs" />
@@ -86,6 +101,7 @@
      <Compile Include="Assets\Scripts\Utility\Extensions.cs" />
      <Compile Include="Assets\Scripts\Utility\Helper.cs" />
      <Compile Include="Assets\Scripts\Utility\PlayerPrefManager.cs" />
+     <Compile Include="Assets\Scripts\Utility\SceneParameters.cs" />
      <Compile Include="Assets\Scripts\Utility\TimedTaskManager.cs" />
      <Compile Include="Assets\Scripts\Utility\Tween.cs" />
      <None Include="Assets\Blade_Warrior\ReadMe.txt" />
