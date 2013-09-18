@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameContext: UnityContext<ContainerContext>
 {
@@ -21,7 +22,8 @@ public class ContainerContext : IContextRoot
     void SetupContainer()
     {
         container = new IoC.UnityContainer();
-        
+		
+		// ICharacterSkillRepository = SQLCharacterSkillRepository
         container.Bind<ICharacterSkillRepository>().AsSingle<SQLCharacterSkillRepository>();
         container.Bind<ICompletedLevelRepository>().AsSingle<SQLCompletedLevelRepository>();
         container.Bind<IPlayerCharacterEXPRepository>().AsSingle<SQLPlayerCharacterEXPRepository>();
@@ -32,13 +34,8 @@ public class ContainerContext : IContextRoot
  
     void StartGame()
     {
-//        MonsterSpawner spawner = container.Build<MonsterSpawner>();
-     
-        //tickEngine could be added in the container as well
-        //if needed to other classes!
-//        TickEngine tickEngine = new TickEngine(); 
-//     
-//        tickEngine.Add(spawner);
+
+		
     }
 }
 

@@ -16,11 +16,6 @@ public class PlayerSelectionGUI : MonoBehaviour
         _players = PlayerRepository.GetAll();
     }
  
-    void Update()
-    {
- 
-    }
-    
     void OnGUI()
     {
         
