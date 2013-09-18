@@ -97,6 +97,7 @@
      <Compile Include="Assets\Scripts\UI\EntityBar.cs" />
      <Compile Include="Assets\Scripts\UI\StatusBar.cs" />
      <Compile Include="Assets\Scripts\UI\StatusBarBase.cs" />
+     <Compile Include="Assets\Scripts\Utility\ClickTracker.cs" />
      <Compile Include="Assets\Scripts\Utility\Extensions.cs" />
      <Compile Include="Assets\Scripts\Utility\Helper.cs" />
      <Compile Include="Assets\Scripts\Utility\PlayerPrefManager.cs" />

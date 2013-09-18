@@ -13,23 +13,23 @@ public static class Helper
     }
     
     public static void LoadScene<T>(string sceneName, T parameters) where T : class
-    {        
-        GameObject paramObj = GameObject.Find("SceneParameters");
-        if(paramObj == null)
-        {
-            paramObj = new GameObject("SceneParameters");
-        }
-  
-        SceneParameters sceneParameters = paramObj.GetComponent<SceneParameters>();
-            
-        if(sceneParameters == null)        
-            sceneParameters = paramObj.AddComponent<SceneParameters>();                
+    {
+        SceneParameters sceneParameters = Helper.EnsureGameObject("SceneParameters").EnsureComponent<SceneParameters>();    
         
         sceneParameters.Parameters = parameters;
         
         Application.LoadLevel(sceneName);
     }
-    
+
+    public static GameObject EnsureGameObject(string name)
+    {
+        GameObject paramObj = GameObject.Find(name);
+        if (paramObj == null)
+            paramObj = new GameObject(name);
+
+        return paramObj;
+    }
+
     public static T ReadSceneParameters<T>() where T : class
     {
         GameObject paramObj = GameObject.Find("SceneParameters");
