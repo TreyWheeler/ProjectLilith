@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public static class Extensions
 {
-    public static T EnsureComponent<T>(this GameObject gameObj) where T : MonoBehaviour
+    public static T EnsureComponent<T>(this GameObject gameObj) where T : Component
     {
         T component = gameObj.GetComponent<T>();
 

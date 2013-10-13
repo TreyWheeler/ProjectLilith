@@ -209,6 +209,15 @@ public class Stat
         this.MaxValue = MaxValue;
         this.CurrentValue = CurrentValue;
     }
+
+    public Stat(float MinValue, float MaxValue) : this( MinValue, MaxValue, MaxValue)
+    {
+    }
+
+    public Stat(float MaxValue)
+        : this(0, MaxValue, MaxValue)
+    {
+    }
 }
 
 public static class StatExtensions
