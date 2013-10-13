@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TouchGameObject : MonoBehaviour
 {
-    int radius = 3;
+    int radius = 2;
 
     void Start()
     {
@@ -12,27 +12,36 @@ public class TouchGameObject : MonoBehaviour
             Debug.Log(gameObject.name);
             var characterCollider = this.gameObject.GetComponent<CapsuleCollider>();
             var characterBounds = characterCollider.bounds;
+
+            //Camera.current.transform.rotation;
+
+            GameObject radialMenu = new GameObject();
+            radialMenu.name = "RadialMenu";
+
+            float radialCenterX = characterBounds.center.x;
+            float radialCenterY = characterBounds.center.y;// + 1;
+            float radialCenterZ = characterBounds.center.z;
+
+            radialMenu.transform.position = new Vector3(radialCenterX, radialCenterY, radialCenterZ);
+
+            radialMenu.transform.LookAt(transform.position + Camera.main.transform.rotation * Vector3.back, Camera.main.transform.rotation * Vector3.up);
+
+
             for (float i = 0; i < 6; i++)
             {
-
                 GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 
-                sphere.name = "hi";
-                //sphere.transform.position = new Vector3(bleh.center.x, bleh.max.y, bleh.center.z);
-                //sphere.transform.RotateAround(sphere.transform.position + new Vector3(0,5,0), 360 / i);// = new Vector3(bleh.center.x, bleh.max.y, bleh.center.z);
+                sphere.transform.parent = radialMenu.transform;
 
-                float radialCenterX = characterBounds.center.x;
-                float radialCenterY = characterBounds.center.y + 1;
-                float radialCenterZ = characterBounds.center.z;
+
 
                 float angle = 360 * (i / 6f) * Mathf.Deg2Rad;
 
-                float sphereX = radialCenterX + radius * Mathf.Cos(angle);
-                float sphereZ = radialCenterZ + radius * Mathf.Sin(angle);
+                float sphereX = radius * Mathf.Cos(angle);//radialCenterX + radius * Mathf.Cos(angle);
+                float sphereZ = radius * Mathf.Sin(angle);//radialCenterZ + radius * Mathf.Sin(angle);
 
-                sphere.transform.position = new Vector3(sphereX, radialCenterY, sphereZ);
+                sphere.transform.localPosition = new Vector3(sphereX, 0, sphereZ);
 
-                //Camera.current.transform.rotation;
 
 
             }
