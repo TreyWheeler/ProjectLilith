@@ -50,7 +50,6 @@ public class ClickTracker : MonoBehaviour
         }
         else if (_hashCodeOfObjectBeingClicked != null && Input.GetMouseButtonUp(0))
         {
-            _hashCodeOfObjectBeingClicked = null;
 
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -58,14 +57,18 @@ public class ClickTracker : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 GameObject hitObject = hit.transform.gameObject;
-
-                int hashCode = hitObject.GetHashCode();
-
-                if (_clickHandlers.ContainsKey(hashCode))
+                if (hitObject.GetHashCode() == _hashCodeOfObjectBeingClicked)
                 {
-                    _clickHandlers[hashCode].Execute();
+
+                    int hashCode = hitObject.GetHashCode();
+
+                    if (_clickHandlers.ContainsKey(hashCode))
+                    {
+                        _clickHandlers[hashCode].Execute();
+                    }
                 }
             }
+            _hashCodeOfObjectBeingClicked = null;
         }
     }
 
