@@ -1,6 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Character\AbilitySphere.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Framework\Utility\Extensions.cs" Line="34" Column="26" />
+      <File FileName="Assets\Scripts\Character\AbilitySphere.cs" Line="10" Column="5" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
@@ -10,11 +14,11 @@
                 <Node name="PlayerSelection" expanded="True" />
               </Node>
               <Node name="Scripts" expanded="True">
-                <Node name="Character" expanded="True" />
+                <Node name="Character" expanded="True">
+                  <Node name="AbilitySphere.cs" selected="True" />
+                </Node>
                 <Node name="Framework" expanded="True">
-                  <Node name="Utility" expanded="True">
-                    <Node name="ClickTracker.cs" selected="True" />
-                  </Node>
+                  <Node name="Utility" expanded="True" />
                 </Node>
               </Node>
             </Node>

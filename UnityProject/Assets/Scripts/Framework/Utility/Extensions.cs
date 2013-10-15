@@ -32,5 +32,11 @@ public static class Extensions
         ClickTracker clickTracker = Helper.EnsureGameObject("ClickTracker").EnsureComponent<ClickTracker>();
 
         clickTracker.AddOnOutsideClickHandler(gameObject, onClick);
-    }    
+    }
+
+
+    public static bool MouseOnMe(this GameObject go)
+    {
+        return Helper.GetGameOjectMouseIsOver() == go;
+    }
 }

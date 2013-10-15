@@ -53,17 +53,17 @@ public static class Helper
             Component.Destroy(component);
     }
 
-    public static bool MouseOnMe(this GameObject go)
+   
+
+    public static GameObject GetGameOjectMouseIsOver()
     {
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
-        {
-            if (hit.transform.gameObject == go)
-                return true;
-        }
-        return false;
+            return hit.transform.gameObject;
+
+        return null;
     }
 }
 

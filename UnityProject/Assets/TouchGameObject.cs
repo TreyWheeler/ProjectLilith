@@ -42,7 +42,7 @@ public class TouchGameObject : MonoBehaviour
                 float sphereZ = radius * Mathf.Sin(angle);//radialCenterZ + radius * Mathf.Sin(angle);
 
                 sphere.transform.localPosition = new Vector3(sphereX, 0, sphereZ);
-                sphere.AddComponent("AbilitySphere");
+                sphere.AddComponent<AbilitySphere>();
             }
         });
     }
