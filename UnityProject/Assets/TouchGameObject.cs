@@ -25,13 +25,20 @@ public class TouchGameObject : MonoBehaviour
             radialMenu.transform.position = new Vector3(radialCenterX, radialCenterY, radialCenterZ);
 
             radialMenu.transform.LookAt(transform.position + Camera.main.transform.rotation * Vector3.back, Camera.main.transform.rotation * Vector3.up);
+            
+            radialMenu.AddOnOutsideClick(() =>
+            {
+                foreach (GameObject child in radialMenu.GetChildren())
+                {
+                    child.EnsureComponent<Rigidbody>();
+                }
 
-            radialMenu.AddOnOutsideClick(() => { Destroy(radialMenu); });
+                Destroy(radialMenu, 3);
+            });
 
             for (float i = 0; i < 6; i++)
             {
                 GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-
                 sphere.transform.parent = radialMenu.transform;
 
 

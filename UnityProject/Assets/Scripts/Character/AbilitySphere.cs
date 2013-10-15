@@ -8,7 +8,7 @@ public class AbilitySphere : MonoBehaviour
     Vector3 originalPosition;
     Vector3 dropLocation;
     float _t;
-    float durationOfReturning = .4f;
+    float durationOfReturning = .3f;
     bool returning = false;
 
     // Update is called once per frame
@@ -20,6 +20,8 @@ public class AbilitySphere : MonoBehaviour
             Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 7);
             this.gameObject.transform.position = Camera.main.ScreenToWorldPoint(mousePos);
 
+            if (this.gameObject.transform.position.y < 0)
+                this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, 0, this.gameObject.transform.position.z);
             //this.gameObject.SetActive(false);
 
             //GameObject go = Helper.GetGameOjectMouseIsOver();

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public static class Extensions
 {
@@ -38,5 +39,13 @@ public static class Extensions
     public static bool MouseOnMe(this GameObject go)
     {
         return Helper.GetGameOjectMouseIsOver() == go;
+    }
+
+    public static IEnumerable<GameObject> GetChildren(this GameObject gameObject)
+    {
+        foreach (Transform transform in gameObject.transform)
+        {
+            yield return transform.gameObject;
+        }
     }
 }
