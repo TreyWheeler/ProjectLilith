@@ -8,20 +8,21 @@ public class ClickTracker : MonoBehaviour
 {
     private const float EVALUATEFREQUENCY = 5;
 
-    Dictionary<int, ActionTracker> _clickHandlers = new Dictionary<int, ActionTracker>();
+    Dictionary<int, ActionTracker> _onClickHandlers = new Dictionary<int, ActionTracker>();
+    Dictionary<int, ActionTracker> _onOutsideClickHandlers = new Dictionary<int, ActionTracker>();
     int? _hashCodeOfObjectBeingClicked;
     private float _timeSinceLastEvaluate;
 
-    public void AddHandler(GameObject gameObject, Action action)
+    public void AddOnClickHandler(GameObject gameObject, Action action)
     {
         int hashCode = gameObject.GetHashCode();
 
-        if (!_clickHandlers.ContainsKey(hashCode))
+        if (!_onClickHandlers.ContainsKey(hashCode))
         {
-            _clickHandlers.Add(hashCode, new ActionTracker(gameObject));
+            _onClickHandlers.Add(hashCode, new ActionTracker(gameObject));
         }
 
-        _clickHandlers[hashCode].Add(action);
+        _onClickHandlers[hashCode].Add(action);
     }
 
     void Update()
@@ -33,7 +34,7 @@ public class ClickTracker : MonoBehaviour
 
     private void CheckForClick()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (_hashCodeOfObjectBeingClicked == null && Input.GetMouseButtonDown(0))
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -44,7 +45,10 @@ public class ClickTracker : MonoBehaviour
                 _hashCodeOfObjectBeingClicked = hitObject.GetHashCode();
             }
             else
-            {
+            {               
+                // If nothing at all was clicked (Skybox), then go ahead and raise all outside clicks
+                FireAllOutsideClickHandlers();
+
                 _hashCodeOfObjectBeingClicked = null;
             }
         }
@@ -57,19 +61,53 @@ public class ClickTracker : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 GameObject hitObject = hit.transform.gameObject;
+
+
                 if (hitObject.GetHashCode() == _hashCodeOfObjectBeingClicked)
                 {
+                    EvalutateOnOutsideClick(hitObject);
 
                     int hashCode = hitObject.GetHashCode();
 
-                    if (_clickHandlers.ContainsKey(hashCode))
+                    if (_onClickHandlers.ContainsKey(hashCode))
                     {
-                        _clickHandlers[hashCode].Execute();
+                        _onClickHandlers[hashCode].Execute();
                     }
                 }
             }
+
             _hashCodeOfObjectBeingClicked = null;
         }
+    }
+
+    private void EvalutateOnOutsideClick(GameObject gameObjectBeingClicked)
+    {
+        int hashOfClickedItem = gameObjectBeingClicked.GetHashCode();
+
+        foreach (var kvp in _onOutsideClickHandlers)
+        {
+            // Create a strong reference to this variable so that it can't be collected after "HasExpired" evalutes
+            var gameObject = kvp.Value.GameObject;
+
+            if (!kvp.Value.HasExpired && !HasGameObjectInHeirarchy(gameObject, hashOfClickedItem))
+            {
+                kvp.Value.Execute();
+            }
+        }
+    }
+
+    private bool HasGameObjectInHeirarchy(GameObject gameObject, int hashCodeToSearchFor)
+    {
+        if (gameObject.GetHashCode() == hashCodeToSearchFor)
+            return true;
+
+        foreach (Transform child in gameObject.transform)
+        {
+            if (HasGameObjectInHeirarchy(child.gameObject, hashCodeToSearchFor))
+                return true;
+        }
+
+        return false;
     }
 
     private void EvaluateGameObjectExspiration()
@@ -80,11 +118,19 @@ public class ClickTracker : MonoBehaviour
         {
             _timeSinceLastEvaluate = 0;
 
-            foreach (var kvp in _clickHandlers.ToArray())
+            foreach (var kvp in _onClickHandlers.ToArray())
             {
                 if (kvp.Value.HasExpired)
                 {
-                    _clickHandlers.Remove(kvp.Key);
+                    _onClickHandlers.Remove(kvp.Key);
+                }
+            }
+
+            foreach (var kvp in _onOutsideClickHandlers.ToArray())
+            {
+                if (kvp.Value.HasExpired)
+                {
+                    _onOutsideClickHandlers.Remove(kvp.Key);
                 }
             }
         }
@@ -105,7 +151,16 @@ public class ClickTracker : MonoBehaviour
         {
             get
             {
-                return _gameObjReference.Target == null;
+				GameObject typedTarget = _gameObjReference.Target as GameObject;
+                return typedTarget == null;
+            }
+        }
+
+        public GameObject GameObject
+        {
+            get
+            {
+                return _gameObjReference.Target as GameObject;
             }
         }
 
@@ -120,6 +175,26 @@ public class ClickTracker : MonoBehaviour
         public void Add(Action action)
         {
             _actions.Add(action);
+        }
+    }
+
+    internal void AddOnOutsideClickHandler(GameObject gameObject, Action action)
+    {
+        int hashCode = gameObject.GetHashCode();
+
+        if (!_onOutsideClickHandlers.ContainsKey(hashCode))
+        {
+            _onOutsideClickHandlers.Add(hashCode, new ActionTracker(gameObject));
+        }
+
+        _onOutsideClickHandlers[hashCode].Add(action);
+    }
+
+    private void FireAllOutsideClickHandlers()
+    {
+        foreach (var kvp in _onOutsideClickHandlers)
+        {
+            kvp.Value.Execute();
         }
     }
 }

@@ -26,6 +26,7 @@ public class TouchGameObject : MonoBehaviour
 
             radialMenu.transform.LookAt(transform.position + Camera.main.transform.rotation * Vector3.back, Camera.main.transform.rotation * Vector3.up);
 
+            radialMenu.AddOnOutsideClick(() => { Destroy(radialMenu); });
 
             for (float i = 0; i < 6; i++)
             {

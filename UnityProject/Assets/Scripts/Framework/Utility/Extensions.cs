@@ -24,8 +24,13 @@ public static class Extensions
     {
         ClickTracker clickTracker = Helper.EnsureGameObject("ClickTracker").EnsureComponent<ClickTracker>();
 
-        clickTracker.AddHandler(gameObject, onClick);
+        clickTracker.AddOnClickHandler(gameObject, onClick);
     }
-    
-    
+
+    public static void AddOnOutsideClick(this GameObject gameObject, Action onClick)
+    {
+        ClickTracker clickTracker = Helper.EnsureGameObject("ClickTracker").EnsureComponent<ClickTracker>();
+
+        clickTracker.AddOnOutsideClickHandler(gameObject, onClick);
+    }    
 }
