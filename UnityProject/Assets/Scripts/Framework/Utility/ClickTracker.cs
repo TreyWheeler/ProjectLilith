@@ -166,6 +166,11 @@ public class ClickTracker : MonoBehaviour
 
         public void Execute()
         {
+            var explicityReference = _gameObjReference.Target; // Keep this in memory for at least this method
+
+            if (HasExpired)
+                return;
+
             foreach (Action action in _actions)
             {
                 action();

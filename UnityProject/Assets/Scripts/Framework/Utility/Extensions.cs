@@ -48,4 +48,16 @@ public static class Extensions
             yield return transform.gameObject;
         }
     }
+
+    public static T GetFirstComponentThatImplements<T>(this GameObject gameObject) where T : class
+    {
+        Component[] components = gameObject.GetComponents<Component>();
+        for (int i = 0; i < components.Length; i++)
+        {
+            T implementation = components[i] as T;
+            if (implementation != null)
+                return implementation;        
+        }
+        return null;
+    }
 }

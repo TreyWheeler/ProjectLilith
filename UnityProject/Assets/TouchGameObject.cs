@@ -41,16 +41,16 @@ public class TouchGameObject : MonoBehaviour
                 GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 sphere.transform.parent = radialMenu.transform;
 
-
-
                 float angle = 360 * (i / 6f) * Mathf.Deg2Rad;
 
                 float sphereX = radius * Mathf.Cos(angle);//radialCenterX + radius * Mathf.Cos(angle);
                 float sphereZ = radius * Mathf.Sin(angle);//radialCenterZ + radius * Mathf.Sin(angle);
 
                 sphere.transform.localPosition = new Vector3(sphereX, 0, sphereZ);
-                sphere.AddComponent<AbilitySphere>();
+                AbilitySphere abilitySphere = sphere.AddComponent<AbilitySphere>();
+                abilitySphere.OriginatingGameObject = this.gameObject;
             }
         });
     }
+
 }
