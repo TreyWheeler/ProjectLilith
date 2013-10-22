@@ -49,10 +49,11 @@
      <Compile Include="Assets\Scenes\PlayerSelection\PlayerSelectionGUI.cs" />
      <Compile Include="Assets\Scripts\Character\AbilitySphere.cs" />
      <Compile Include="Assets\Scripts\Character\Character.cs" />
+     <Compile Include="Assets\Scripts\Character\IntendedAction.cs" />
      <Compile Include="Assets\Scripts\CharacterStats.cs" />
      <Compile Include="Assets\Scripts\Framework\Core\Ability.cs" />
      <Compile Include="Assets\Scripts\Framework\Core\CombatEntity.cs" />
-     <Compile Include="Assets\Scripts\Framework\Core\IAmTargetable.cs" />
+     <Compile Include="Assets\Scripts\Framework\Core\IHaveAbilities.cs" />
      <Compile Include="Assets\Scripts\Framework\Core\IHaveStats.cs" />
      <Compile Include="Assets\Scripts\Framework\Core\MasterAbilityList.cs" />
      <Compile Include="Assets\Scripts\Framework\Core\Stat.cs" />

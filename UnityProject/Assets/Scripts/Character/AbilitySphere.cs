@@ -11,18 +11,10 @@ public class AbilitySphere : MonoBehaviour
     float _t;
     float _durationOfReturning = 2f;
     bool _returning = false;
-
-    private float _range = 1;
-    public float Range
-    {
-        get { return _range; }
-        set { _range = value; }
-    }
+    int abilityNumber;
 
     public GameObject OriginatingGameObject { get; set; }
 
-    bool waitingForMoveToFinish;
-    Action actionToRunWhenDoneMoving;
     // Update is called once per frame
     void Update()
     {
@@ -57,31 +49,13 @@ public class AbilitySphere : MonoBehaviour
             GameObject go = Helper.GetGameOjectMouseIsOver();
             if (go != null)
             {
-                Debug.Log("OnObject");
                 Character characterDroppedOn = go.GetComponent<Character>();
                 if (characterDroppedOn != null)
                 {
                     Character thisCharacter = this.OriginatingGameObject.GetComponent<Character>();
                     if (thisCharacter != null)
                     {
-                        IHaveAbilities ability = thisCharacter as IHaveAbilities;
-                        if (ability != null)
-                        {
-                            if (thisCharacter.Moving)
-                            {
-                                Debug.Log("Character moving");
-                                waitingForMoveToFinish = true;
-                                actionToRunWhenDoneMoving = () =>
-                                {
-                                    ability.UseAbility(this, go);
-                                };
-                            }
-                            else
-                            {
-                                ability.UseAbility(this, go);
-                                //Destroy(this.transform.parent.gameObject);
-                            }
-                        }
+                        thisCharacter.AbilityQue.Enqueue(new IntendedAction(new Ability(), go));
                     }
                 }
             }
@@ -101,20 +75,6 @@ public class AbilitySphere : MonoBehaviour
 
             if (_t > 1f)
                 _returning = false;
-        }
-        if (waitingForMoveToFinish)
-        {
-            Character thisCharacter = this.OriginatingGameObject.GetComponent<Character>();
-            if (thisCharacter != null)
-            {
-                Debug.Log("moving");
-                if (!thisCharacter.Moving)
-                {
-                    Debug.Log("doneMoving");
-                    waitingForMoveToFinish = false;
-                    actionToRunWhenDoneMoving();
-                }
-            }
         }
     }
 

@@ -12,9 +12,16 @@ public class Ability
         get { return _displayName; }
         set { _displayName = value; }
     }
-    
-    
-    
+    public float minDistance = 1;
+    public float maxDistance = 1;
+    public float BetweenDistance
+    {
+        get
+        {
+            return maxDistance - minDistance;
+        }
+    }
+    public string animationName = "Attack";
     
     
     public void Do(CombatEntity actor, CombatEntity target)
