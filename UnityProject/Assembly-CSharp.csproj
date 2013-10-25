@@ -77,6 +77,11 @@
      <Compile Include="Assets\Scripts\Framework\IoC\Provider.cs" />
      <Compile Include="Assets\Scripts\Framework\IoC\UnityContainer.cs" />
      <Compile Include="Assets\Scripts\Framework\IoC\UnityContext.cs" />
+     <Compile Include="Assets\Scripts\Framework\StabScene\MoveToStoryPart.cs" />
+     <Compile Include="Assets\Scripts\Framework\StabScene\RunAnimationStoryPart.cs" />
+     <Compile Include="Assets\Scripts\Framework\StabScene\StoryBoard.cs" />
+     <Compile Include="Assets\Scripts\Framework\StabScene\StoryBoardTesting.cs" />
+     <Compile Include="Assets\Scripts\Framework\StabScene\StoryPart.cs" />
      <Compile Include="Assets\Scripts\Framework\Utility\ClickTracker.cs" />
      <Compile Include="Assets\Scripts\Framework\Utility\Extensions.cs" />
      <Compile Include="Assets\Scripts\Framework\Utility\Helper.cs" />
