@@ -17,9 +17,13 @@ public class MoveToLocationStoryPart : StoryPart
         WhoToMove.transform.LookAt(Location);
         var potentialLocation = WhoToMove.transform.position + direction * Speed * Time.deltaTime;
 
-        // If distance to destination is shorter than a step
-        if (Vector3.Distance(ourPosition, Location) < Vector3.Distance(ourPosition, potentialLocation))
+        var distanceToLocation = Vector3.Distance(ourPosition, Location);
+        if (distanceToLocation == 0)
         {
+            RaiseComplete();
+        }       
+        else if (distanceToLocation < Vector3.Distance(ourPosition, potentialLocation))
+        { // If distance to destination is shorter than a step
             WhoToMove.transform.position = Location;
 
             RaiseComplete();
