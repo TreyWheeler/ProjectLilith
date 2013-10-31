@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RunAnimationStoryPart : StoryPart
+public class RunAnimationScenePerformanceAction : ScenePerformanceAction
 {
     public GameObject Actor;
     public string Animation;
@@ -17,7 +17,7 @@ public class RunAnimationStoryPart : StoryPart
 }
 
 
-public class RunAnimationOnceStoryPart : StoryPart
+public class RunAnimationOnceScenePerformanceAction : ScenePerformanceAction
 {
     public GameObject Actor;
     public string Animation;

@@ -15,6 +15,8 @@ public class AbilitySphere : MonoBehaviour
 
     public GameObject OriginatingGameObject { get; set; }
 
+    public Ability Ability;
+
     // Update is called once per frame
     void Update()
     {
@@ -26,9 +28,6 @@ public class AbilitySphere : MonoBehaviour
 
             if (this.gameObject.transform.position.y < 0)
                 this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, 0, this.gameObject.transform.position.z);
-
-
-
         }
 
         if (!_mouseWasDown && mouseDown)
@@ -38,7 +37,7 @@ public class AbilitySphere : MonoBehaviour
                 _returning = false;
                 _isBeingDrugged = true;
                 if (_originalPosition == Vector3.zero)
-                    _originalPosition = this.gameObject.transform.position;
+                    _originalPosition = this.gameObject.transform.localPosition;
             }
         }
         else if (_mouseWasDown && !mouseDown && _isBeingDrugged)
@@ -55,14 +54,14 @@ public class AbilitySphere : MonoBehaviour
                     Character thisCharacter = this.OriginatingGameObject.GetComponent<Character>();
                     if (thisCharacter != null)
                     {
-                        thisCharacter.AbilityQue.Enqueue(new IntendedAction(new Ability(), go));
+                        thisCharacter.AbilityQue.Enqueue(new IntendedAction(Ability, go));
                     }
                 }
             }
 
             this.gameObject.SetActive(true);
             _returning = true;
-            _dropLocation = gameObject.transform.position;
+            _dropLocation = gameObject.transform.localPosition;
             _t = 0;
         }
 
@@ -71,7 +70,7 @@ public class AbilitySphere : MonoBehaviour
         if (_returning)
         {
             _t += Time.deltaTime / _durationOfReturning;
-            this.gameObject.transform.position = Vector3.Lerp(_dropLocation, _originalPosition, _t);
+            this.gameObject.transform.localPosition = Vector3.Lerp(_dropLocation, _originalPosition, _t);
 
             if (_t > 1f)
                 _returning = false;

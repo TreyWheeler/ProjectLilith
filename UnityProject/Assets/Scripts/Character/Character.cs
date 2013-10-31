@@ -5,7 +5,7 @@ using System;
 
 public class Character : MonoBehaviour
 {
-    public Ability[] MyAbilities = new Ability[] { };
+    public Ability[] MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack), new Ability(LilithAbilities.Victory) };
     public LilithStatList Stats = new LilithStatList();
     public float MoveSpeed = 3.3f;
     public Queue<IntendedAction> AbilityQue = new Queue<IntendedAction>();
@@ -17,6 +17,7 @@ public class Character : MonoBehaviour
         AbilityRadial radial = this.gameObject.EnsureComponent<AbilityRadial>();
 
         radial.Abilities = MyAbilities;
+        
 
         Stats.Add(LilithStats.Health, new Stat<LilithStats>(1000));
     }

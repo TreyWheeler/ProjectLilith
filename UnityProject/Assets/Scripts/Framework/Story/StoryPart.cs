@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class StoryPart
+public abstract class ScenePerformanceAction
 {
-    private StoryBoard _board;
+    private ScenePerformance _board;
 
-    internal void LinkStoryBoard(StoryBoard board)
+    internal void Link(ScenePerformance board)
     {
         _board = board;
     }

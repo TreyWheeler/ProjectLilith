@@ -6,6 +6,8 @@ using System.Linq;
 
 public class Ability
 {
+    LilithAbilities ID = LilithAbilities.Attack;
+
     public string DisplayName;
     public float minDistance = 1;
     public float maxDistance = 1;
@@ -14,7 +16,14 @@ public class Ability
 
     public event AbilityCompletedHandler AbilityCompleted;
 
-    public StoryBoard board;
+    public ScenePerformance performance;
+
+    private SceneScript _abilitySceneScript;
+
+    public Ability(LilithAbilities id)
+    {
+        _abilitySceneScript = AbilitySceneProvider.GetBy(id);
+    }
 
     public float BetweenDistance
     {
@@ -26,49 +35,47 @@ public class Ability
 
     public void UseAbility(GameObject actor, GameObject target)
     {
-        board = new StoryBoard();
+        performance = SceneDirector.CreatePerformaneScript(_abilitySceneScript, new AbilitySceenTranslator(actor, target));
 
-        RunAnimationOnceStoryPart drawSwordAnim = new RunAnimationOnceStoryPart();
-        drawSwordAnim.Actor = actor;
-        drawSwordAnim.Animation = "DrawBlade";
-        board.Que(drawSwordAnim);
-
-        RunAnimationStoryPart anim = new RunAnimationStoryPart();
-        anim.Actor = actor;
-        anim.Animation = "Run";
-        board.Que(anim);
-
-        MoveToGameObjectStoryPart movePart = new MoveToGameObjectStoryPart();
-        movePart.Target = target;
-        movePart.Speed = target.GetComponent<Character>().MoveSpeed;
-        movePart.HowClose = 1f;
-        movePart.WhoToMove = actor;
-        board.Que(movePart);
-
-        RunAnimationOnceStoryPart attackAnim = new RunAnimationOnceStoryPart();
-        attackAnim.Actor = actor;
-        attackAnim.Animation = "Attack";
-        board.Que(attackAnim);
-
-        RunAnimationStoryPart idleAnim = new RunAnimationStoryPart();
-        idleAnim.Actor = actor;
-        idleAnim.Animation = "Idle";
-        board.Que(idleAnim);
-
-        board.Completed += (storyboard) =>
+        performance.Completed += (storyboard) =>
         {
             if (AbilityCompleted != null)
                 AbilityCompleted(this);
 
-            board = null;
+            performance = null;
         };
 
-        board.Update();
+        performance.Perform();
     }
 
     internal void Update()
     {
-        if (board != null)
-            board.Update();
+        if (performance != null)
+            performance.Perform();
+    }
+
+    public class AbilitySceenTranslator : ISceneTranslator
+    {
+        GameObject _actor; 
+        GameObject _target;
+
+        public AbilitySceenTranslator(GameObject actor, GameObject target)
+        {
+            _actor = actor;
+            _target = target;
+        }
+
+        public GameObject GetActor(string actor)
+        {
+            switch(actor.ToLower())
+            {
+                case "caster":
+                    return _actor;
+                case "target":
+                    return _target;
+                default:
+                    throw new NotSupportedException("Unknown Actor: " + actor);
+            }
+        }
     }
 }

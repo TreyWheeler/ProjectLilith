@@ -2,17 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class StoryBoard
+public class ScenePerformance
 {
-    public delegate void StoryBoardCompletedHandler(StoryBoard board);
+    public delegate void StoryBoardCompletedHandler(ScenePerformance board);
 
-    private Queue<StoryPart> _que = new Queue<StoryPart>();
+    private Queue<ScenePerformanceAction> _que = new Queue<ScenePerformanceAction>();
 
     public event StoryBoardCompletedHandler Completed;
 
     bool wasCompleted = false;
 
-    public void Update()
+    public void Perform()
     {
         if(wasCompleted)
             return;
@@ -31,10 +31,10 @@ public class StoryBoard
 
     }
 
-    public void Que(StoryPart part)
+    public void Que(ScenePerformanceAction part)
     {
         _que.Enqueue(part);
-        part.LinkStoryBoard(this);
+        part.Link(this);
     }
 
 

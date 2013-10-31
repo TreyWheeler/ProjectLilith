@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class MoveToLocationStoryPart : StoryPart
+public class MoveToLocationScenePerformanceAction : ScenePerformanceAction
 {
 
     public GameObject WhoToMove;
@@ -36,7 +36,7 @@ public class MoveToLocationStoryPart : StoryPart
 }
 
 
-public class MoveToGameObjectStoryPart : MoveToLocationStoryPart
+public class MoveToGameObjectScenePerformanceAction : MoveToLocationScenePerformanceAction
 {
     public float HowClose;
     public GameObject Target;
@@ -54,7 +54,7 @@ public class MoveToGameObjectStoryPart : MoveToLocationStoryPart
 }
 
 
-public class MoveInRangeOfGameObjectStoryPart : MoveToGameObjectStoryPart
+public class MoveInRangeOfGameObjectScenePerformanceAction : MoveToGameObjectScenePerformanceAction
 {
     public float MinRange;
     public float MaxRange;
