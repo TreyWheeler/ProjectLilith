@@ -28,7 +28,6 @@ public class ScenePerformance
         }
 
         _que.Peek().Update();
-
     }
 
     public void Que(ScenePerformanceAction part)
@@ -41,5 +40,6 @@ public class ScenePerformance
     public void PartCompleted()
     {
         _que.Dequeue();
+        Perform();// This prevents single frame story parts
     }
 }

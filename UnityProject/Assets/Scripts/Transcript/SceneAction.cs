@@ -14,6 +14,17 @@ public class RunAnimationSceneAction : SceneAction
   
 }
 
+public class AdjustStatSceneAction : SceneAction
+{
+
+    public string Adjustment;
+}
+
+public class PlaySoundSceneAction : SceneAction
+{
+    public string Sound;
+}
+
 public class MoveSceneAction : SceneAction
 {
 

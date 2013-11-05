@@ -9,7 +9,7 @@ public class AbilitySphere : MonoBehaviour
     Vector3 _originalPosition;
     Vector3 _dropLocation;
     float _t;
-    float _durationOfReturning = 2f;
+    float _durationOfReturning = .3f;
     bool _returning = false;
     int abilityNumber;
 

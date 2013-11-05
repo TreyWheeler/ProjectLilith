@@ -3,6 +3,8 @@ using System.Collections;
 using System.Reflection;
 using System;
 using System.Linq;
+using NCalc;
+using System.Collections.Generic;
 
 public static class SceneDirector
 {
@@ -34,6 +36,14 @@ public static class SceneDirector
                     perfAction.Animation = ReadExpression<string>(anim.Animation, sceneTranslator);
                     performance.Que(perfAction);
                 }
+            }
+            else if (action is PlaySoundSceneAction)
+            {
+                var sound = (PlaySoundSceneAction)action;
+                SoundEffectScenePerformanceAction soundPerf = new SoundEffectScenePerformanceAction();
+                soundPerf.AudioFile = ReadExpression<AudioClip>(sound.Sound, sceneTranslator);
+                soundPerf.AudioSourceActor = ReadExpression<GameObject>(sound.Actor, sceneTranslator);
+                performance.Que(soundPerf);
             }
             else if (action is MoveSceneAction)
             {
@@ -82,68 +92,255 @@ public static class SceneDirector
     private static T ReadExpression<T>(string expression, ISceneTranslator sceneTranslator)
     {
         // 5                                    Value
-        // Caster                               Actor
+        // {Caster}                               Actor
         // Caster[Character].MoveSpeed          Actor[Component].Property
 
-        if (expression.StartsWith("{"))
-        {// expression
-            expression = expression.Substring(1, expression.Length - 2);
+        if (expression.Contains('{'))
+        {// Is an expression
 
-            int indexOfComponent = expression.IndexOf("[");
+            if (expression.EndsWith("}"))
+            {
+                string memberExpression = GetPropertyExpression(expression, 0);
 
-            if (indexOfComponent != -1)
-            {// Has Component
-                int indexofEndOfComponent = expression.IndexOf("]");
-
-                string actor = expression.Substring(0, indexOfComponent);
-                string component = expression.Substring(indexOfComponent + 1, indexofEndOfComponent - indexOfComponent - 1);
-                string member = expression.Substring(indexofEndOfComponent + 2);
-
-                GameObject actorGO = sceneTranslator.GetActor(actor);
-                object componentObj = actorGO.GetComponent(component);
-
-                Type type = componentObj.GetType();
-                FieldInfo field = type.GetField(member);
-                if (field == null)
-                {
-               
-                    return (T)type.GetProperty(member).GetValue(componentObj, null);
-                }
-                else
-                {//Is it a property?
-                    return (T)field.GetValue(componentObj);
-                }
+                return GetActor(memberExpression, sceneTranslator).JustCastItDammit<T>();
             }
 
-            // Assumed actor since no component
-            return sceneTranslator.GetActor(expression).JustCastItDammit<T>();
+            expression = Evaluate(expression, sceneTranslator);
+        }
+
+        Type typeOfT = typeof(T);
+
+        if (typeOfT == typeof(float))
+        {
+            return float.Parse(expression).JustCastItDammit<T>();
+        }
+        else if (typeOfT == typeof(string))
+        {
+            return expression.JustCastItDammit<T>();
+        }
+        else if (typeOfT == typeof(bool))
+        {
+            return bool.Parse(expression).JustCastItDammit<T>();
+        }
+        else if (typeOfT == typeof(Vector3))
+        {
+            float[] coordinates = expression.Replace(" ", "").Split(',').Select(el => float.Parse(el)).ToArray();
+            return new Vector3(coordinates[0], coordinates[1], coordinates[2]).JustCastItDammit<T>();
+        }
+        else if (typeOfT == typeof(AudioClip))
+        {
+            return Resources.Load(expression).JustCastItDammit<T>();
         }
         else
-        {// value
-            Type typeOfT = typeof(T);
+        {
+            throw new NotSupportedException();
+        }
+    }
 
-            if (typeOfT == typeof(float))
+    private static string Evaluate(string expression, ISceneTranslator sceneTranslator)
+    {
+        // 60 + ({Caster}<Character>.Stats[(23 + 3)].CurrentValue * 5)
+
+        // Evaluate Parens First
+        for (int i = 0; i < expression.Length; i++)
+        {
+            var character = expression[i];
+
+            if (character == '(')
             {
-                return float.Parse(expression).JustCastItDammit<T>();
-            }
-            else if (typeOfT == typeof(string))
-            {
-                return expression.JustCastItDammit<T>();
-            }
-            else if (typeOfT == typeof(bool))
-            {
-                return bool.Parse(expression).JustCastItDammit<T>();
-            }
-            else if (typeOfT == typeof(Vector3))
-            {
-                float[] coordinates = expression.Replace(" ", "").Split(',').Select(el => float.Parse(el)).ToArray();
-                return new Vector3(coordinates[0], coordinates[1], coordinates[2]).JustCastItDammit<T>();
-            }
-            else
-            {
-                throw new NotSupportedException();
+                string parenExpression = GetParenBody(expression, i);
+                string parenValue = Evaluate(parenExpression, sceneTranslator);
+                expression = expression.Replace(parenExpression, parenValue);
             }
         }
+
+        // Translate Member Values
+        for (int i = 0; i < expression.Length; i++)
+        {
+            var character = expression[i];
+            if (character == '{')
+            {
+                string memberExpression = GetPropertyExpression(expression, i);
+
+                GameObject gameObject = GetActor(memberExpression, sceneTranslator);
+
+                object componentObj = GetComponent(memberExpression, gameObject);
+
+                int beginOfPropertyChain = memberExpression.IndexOf('>') + 2;
+
+                string propertyChainExpression = memberExpression.Substring(beginOfPropertyChain);
+
+                object value = GetValueFromPropertyChain(propertyChainExpression, componentObj);
+
+                expression = expression.Replace(memberExpression, value.ToString());
+            }
+        }
+
+        // Evaluate Expression
+        return new Expression(expression).Evaluate().ToString();
+    }
+
+    private static object GetValueFromPropertyChain(string expression, object parentObject)
+    {
+        expression = ReplaceEnumsWithInts(expression);
+
+        var properties = expression.Split('.');
+
+        object value = parentObject;
+
+        for (int i = 0; i < properties.Length; i++)
+        {
+            value = GetValueFor(properties[i], value);
+        }
+
+        return value;
+    }
+
+    private static string ReplaceEnumsWithInts(string expression)
+    {
+        for (int i = 0; i < expression.Length; i++)
+        {
+            var character = expression[i];
+            if (character == '[')
+            {
+                int beginIndexExpression = i;
+                int endIndexExpression = expression.Substring(beginIndexExpression).IndexOf(']') + beginIndexExpression;
+
+                string indexExpression = expression.Substring(beginIndexExpression + 1, endIndexExpression - beginIndexExpression - 1);
+
+                if (indexExpression.Contains('.'))
+                {
+                    var enumparts = indexExpression.Split('.');
+                    string enumType = enumparts[0];
+                    string enumValue = enumparts[1];
+
+                    Type enumTypeAsType = Assembly.GetExecutingAssembly().GetType(enumType);
+
+                    int enumIndex = (int)Enum.Parse(enumTypeAsType, enumValue, true);
+
+                    expression = expression.Replace(indexExpression, enumIndex.ToString());
+                }
+            }
+        }
+
+        return expression;
+    }
+
+    private static object GetValueFor(string propertyExpression, object obj)
+    {
+        int memberCloseIndex = findEndOfMember(propertyExpression, 0);
+
+        string member = propertyExpression.Substring(0, memberCloseIndex + 1);
+
+        Type type = obj.GetType();
+        FieldInfo field = type.GetField(member);
+
+        object value;
+        if (field == null)
+        {
+            value = type.GetProperty(member).GetValue(obj, null);
+        }
+        else
+        {//Is it a property?
+            value = field.GetValue(obj);
+        }
+
+        if (propertyExpression.Length > memberCloseIndex + 1 && propertyExpression[memberCloseIndex + 1] == '[')
+        {// We are dealing with an array
+            int arrayBeginIndex = memberCloseIndex + 1;
+            int arrayEndIndex = propertyExpression.IndexOf(']');
+
+            int indexToUseForValue = int.Parse(propertyExpression.Substring(arrayBeginIndex + 1, arrayEndIndex - arrayBeginIndex - 1));
+
+            return value.GetType().GetProperty("Item").GetValue(value, new object[] { indexToUseForValue });
+        }
+        else
+        {
+            return value;
+        }
+    }
+
+    private static GameObject GetActor(string expression, ISceneTranslator sceneTranslator)
+    {
+        int actorOpenIndex = expression.IndexOf('{');
+        int actorCloseIndex = expression.IndexOf('}');
+
+        string actor = expression.Substring(actorOpenIndex + 1, actorCloseIndex - actorOpenIndex - 1);
+
+        return sceneTranslator.GetActor(actor);
+    }
+
+    private static Component GetComponent(string expression, GameObject actorGO)
+    {
+        int componentOpenIndex = expression.IndexOf('<');
+        int componentCloseIndex = expression.IndexOf('>');
+
+        string component = expression.Substring(componentOpenIndex + 1, componentCloseIndex - componentOpenIndex - 1);
+
+        return actorGO.GetComponent(component);
+    }
+
+    private static int findEndOfMember(string expression, int indexToStartAt)
+    {
+        // Space doesn't count because we trimmed all spaces out already
+
+        for (int i = indexToStartAt; i < expression.Length; i++)
+        {
+            if (expression[i] == '[')
+            {
+                return i - 1;
+            }
+        }
+
+        return expression.Length - 1;
+    }
+
+    private static string GetPropertyExpression(string expression, int indexToStartAt)
+    {
+        int indexToEndAt = 0;
+
+        for (int i = indexToStartAt; i < expression.Length; i++)
+        {
+            if (expression[i] == ' ')
+            {
+                indexToEndAt = i - 1;
+                break;
+            }
+
+            indexToEndAt = i;
+        }
+
+        return expression.Substring(indexToStartAt, indexToEndAt - indexToStartAt + 1);
+    }
+
+    private static string GetParenBody(string expression, int openParenIndex)
+    {
+        int parenCount = 1;
+        for (int i = openParenIndex + 1; i < expression.Length; i++)
+        {
+            var charecter = expression[i];
+            if (charecter == '(')
+            {
+                parenCount++;
+            }
+            else if (charecter == ')')
+            {
+                parenCount--;
+
+                if (parenCount == 0)
+                {
+                    return expression.Substring(openParenIndex + 1, i - 1 - openParenIndex);
+                }
+            }
+        }
+
+        throw new IndexOutOfRangeException("Paren Mismatch");
+    }
+
+    private static string TranslatePropertyExpression(string propertyExpression)
+    {
+        //{Caster}<Character>.Stats[LilithStats.Intelligence]
+        return null;
     }
 }
 

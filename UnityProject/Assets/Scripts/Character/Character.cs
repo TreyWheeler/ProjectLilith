@@ -6,20 +6,22 @@ using System;
 public class Character : MonoBehaviour
 {
     public Ability[] MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack), new Ability(LilithAbilities.Victory) };
-    public LilithStatList Stats = new LilithStatList();
-    public float MoveSpeed = 3.3f;
+    public LilithStatList Stats = new LilithStatList();    
     public Queue<IntendedAction> AbilityQue = new Queue<IntendedAction>();
     private IntendedAction _currentAction;
     private bool _isExecutingAction;
+    private AbilityRadial _radial;
+    
 
     void Start()
     {
-        AbilityRadial radial = this.gameObject.EnsureComponent<AbilityRadial>();
+        _radial = this.gameObject.EnsureComponent<AbilityRadial>();
 
-        radial.Abilities = MyAbilities;
+        _radial.Abilities = MyAbilities;
         
 
         Stats.Add(LilithStats.Health, new Stat<LilithStats>(1000));
+        Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
     }
 
     void Update()
@@ -30,8 +32,9 @@ public class Character : MonoBehaviour
             _currentAction.Ability.UseAbility(this.gameObject, _currentAction.DestinationGameObject);
             _currentAction.Ability.AbilityCompleted += (ability) =>
             {
-                _currentAction = null;
+                _currentAction = null;            
             };
+            _radial.Close();
         }
         if (_currentAction != null)
         {

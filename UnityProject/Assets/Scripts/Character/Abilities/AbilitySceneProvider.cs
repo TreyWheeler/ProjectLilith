@@ -31,10 +31,15 @@ public static class AbilitySceneProvider
 
                     MoveToEntitySceneAction movePart = new MoveToEntitySceneAction();
                     movePart.Actor = "{Caster}";
-                    movePart.Speed = "{Caster[Character].MoveSpeed}";
+                    movePart.Speed = "{Caster}<Character>.Stats[LilithStats.MoveSpeed].CurrentValue";
                     movePart.HowClose = "1";
                     movePart.Entity = "{Target}";
                     attackScene.Add(movePart);
+
+                    PlaySoundSceneAction swordHitSound = new PlaySoundSceneAction();
+                    swordHitSound.Sound = "Sounds/hvyswrd4";
+                    swordHitSound.Actor = "{Caster}";
+                    attackScene.Add(swordHitSound);
 
                     RunAnimationSceneAction attackAnim = new RunAnimationSceneAction();
                     attackAnim.RunOnce = "True";

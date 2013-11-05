@@ -84,4 +84,9 @@ public class AbilityRadial : MonoBehaviour
 
 
 
+
+    internal void Close()
+    {
+        Destroy(radialMenu);
+    }
 }

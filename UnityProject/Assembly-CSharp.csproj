@@ -80,6 +80,7 @@
      <Compile Include="Assets\Scripts\Framework\Stats\StatusEffect.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\MoveToStoryPart.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\RunAnimationScenePerformance.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\SoundEffectScenePerformanceAction.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\StoryBoard.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\StoryPart.cs" />
      <Compile Include="Assets\Scripts\Framework\Utility\ClickTracker.cs" />
@@ -115,6 +116,9 @@
  </Reference>
  <Reference Include="System.Data">
  <HintPath>Assets\Plugins\System.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="NCalc">
+ <HintPath>Assets\Plugins\NCalc.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
