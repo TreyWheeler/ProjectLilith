@@ -18,7 +18,7 @@ public class Ability
 
     public ScenePerformance performance;
 
-    private SceneScript _abilitySceneScript;
+    private SceneActionList _abilitySceneScript;
 
     public Ability(LilithAbilities id)
     {

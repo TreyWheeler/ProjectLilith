@@ -10,7 +10,7 @@ public static class SceneDirector
 {
     // Single Responsibility: Turns a Script into a Performance
 
-    public static ScenePerformance CreatePerformaneScript(SceneScript scene, ISceneTranslator sceneTranslator)
+    public static ScenePerformance CreatePerformaneScript(SceneActionList scene, ISceneTranslator sceneTranslator)
     {
         ScenePerformance performance = new ScenePerformance();
 
@@ -84,6 +84,14 @@ public static class SceneDirector
                     throw new NotImplementedException();
                 }
             }
+            else if (action is AdjustStatSceneAction)
+            {
+                var dmg = (AdjustStatSceneAction)action;
+                AdjustStatScenePerformanceAction dmgPerformance = new AdjustStatScenePerformanceAction();
+                dmgPerformance.Stat = ReadExpression<Stat<LilithStats>>(dmg.StatToAdjust, sceneTranslator);
+                dmgPerformance.Adjustment = ReadExpression<float>(dmg.Adjustment, sceneTranslator);
+                performance.Que(dmgPerformance);
+            }
         }
 
         return performance;
@@ -95,6 +103,7 @@ public static class SceneDirector
         // {Caster}                               Actor
         // Caster[Character].MoveSpeed          Actor[Component].Property
 
+        Type typeOfT = typeof(T);
         if (expression.Contains('{'))
         {// Is an expression
 
@@ -105,10 +114,12 @@ public static class SceneDirector
                 return GetActor(memberExpression, sceneTranslator).JustCastItDammit<T>();
             }
 
-            expression = Evaluate(expression, sceneTranslator);
+            if (typeOfT == typeof(System.Single))
+                expression = EvaluatePrimitive(expression, sceneTranslator);
+            else
+                return (T)EvaluateObject(expression, sceneTranslator);
         }
 
-        Type typeOfT = typeof(T);
 
         if (typeOfT == typeof(float))
         {
@@ -137,22 +148,11 @@ public static class SceneDirector
         }
     }
 
-    private static string Evaluate(string expression, ISceneTranslator sceneTranslator)
+    private static string EvaluatePrimitive(string expression, ISceneTranslator sceneTranslator)
     {
         // 60 + ({Caster}<Character>.Stats[(23 + 3)].CurrentValue * 5)
 
-        // Evaluate Parens First
-        for (int i = 0; i < expression.Length; i++)
-        {
-            var character = expression[i];
-
-            if (character == '(')
-            {
-                string parenExpression = GetParenBody(expression, i);
-                string parenValue = Evaluate(parenExpression, sceneTranslator);
-                expression = expression.Replace(parenExpression, parenValue);
-            }
-        }
+        expression = EvaluateExpressionsParens(expression, sceneTranslator);
 
         // Translate Member Values
         for (int i = 0; i < expression.Length; i++)
@@ -161,23 +161,62 @@ public static class SceneDirector
             if (character == '{')
             {
                 string memberExpression = GetPropertyExpression(expression, i);
-
-                GameObject gameObject = GetActor(memberExpression, sceneTranslator);
-
-                object componentObj = GetComponent(memberExpression, gameObject);
-
-                int beginOfPropertyChain = memberExpression.IndexOf('>') + 2;
-
-                string propertyChainExpression = memberExpression.Substring(beginOfPropertyChain);
-
-                object value = GetValueFromPropertyChain(propertyChainExpression, componentObj);
-
+                object value = GetExpressionValue(expression, sceneTranslator, memberExpression);
                 expression = expression.Replace(memberExpression, value.ToString());
             }
         }
 
         // Evaluate Expression
         return new Expression(expression).Evaluate().ToString();
+    }
+
+    private static string EvaluateExpressionsParens(string expression, ISceneTranslator sceneTranslator)
+    {
+        // Evaluate Parens First
+        for (int i = 0; i < expression.Length; i++)
+        {
+            var character = expression[i];
+
+            if (character == '(')
+            {
+                string parenExpression = GetParenBody(expression, i);
+                string parenValue = EvaluatePrimitive(parenExpression, sceneTranslator);
+                expression = expression.Replace(parenExpression, parenValue);
+            }
+        }
+        return expression;
+    }
+
+    private static object GetExpressionValue(string expression, ISceneTranslator sceneTranslator, string memberExpression)
+    {
+        GameObject gameObject = GetActor(memberExpression, sceneTranslator);
+
+        object componentObj = GetComponent(memberExpression, gameObject);
+
+        int beginOfPropertyChain = memberExpression.IndexOf('>') + 2;
+
+        string propertyChainExpression = memberExpression.Substring(beginOfPropertyChain);
+
+        return GetValueFromPropertyChain(propertyChainExpression, componentObj);
+    }
+
+    private static object EvaluateObject(string expression, ISceneTranslator sceneTranslator)
+    {
+        // {Caster}<Character>.Stats[(23 + 3)]
+
+        expression = EvaluateExpressionsParens(expression, sceneTranslator);
+
+        // Translate Member Values
+        for (int i = 0; i < expression.Length; i++)
+        {
+            var character = expression[i];
+            if (character == '{')
+            {
+                string memberExpression = GetPropertyExpression(expression, i);
+                return GetExpressionValue(expression, sceneTranslator, memberExpression);
+            }
+        }
+        return null;
     }
 
     private static object GetValueFromPropertyChain(string expression, object parentObject)

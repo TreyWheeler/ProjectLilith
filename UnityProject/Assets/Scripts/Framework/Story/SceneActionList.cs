@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SceneScript : List<SceneAction>
+public class SceneActionList : List<SceneActionBase>
 {
 
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SoundEffectScenePerformanceAction : ScenePerformanceAction
+public class SoundEffectScenePerformanceAction : ScenePerformanceActionBase
 {
     public GameObject AudioSourceActor;
     public AudioClip AudioFile;

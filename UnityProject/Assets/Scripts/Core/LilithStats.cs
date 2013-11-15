@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public enum LilithStats
 {
     Health = 1,
-    MoveSpeed = 2
+    MoveSpeed = 2,
+    Strength = 3
 }
 
 public static class LilithStatExtensions

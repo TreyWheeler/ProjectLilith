@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class MoveToLocationScenePerformanceAction : ScenePerformanceAction
+public class MoveToLocationScenePerformanceAction : ScenePerformanceActionBase
 {
 
     public GameObject WhoToMove;

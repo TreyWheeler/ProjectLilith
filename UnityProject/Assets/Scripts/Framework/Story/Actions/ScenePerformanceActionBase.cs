@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class ScenePerformanceAction
+public abstract class ScenePerformanceActionBase
 {
     private ScenePerformance _board;
 

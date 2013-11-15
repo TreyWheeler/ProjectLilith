@@ -6,7 +6,7 @@ public class ScenePerformance
 {
     public delegate void StoryBoardCompletedHandler(ScenePerformance board);
 
-    private Queue<ScenePerformanceAction> _que = new Queue<ScenePerformanceAction>();
+    private Queue<ScenePerformanceActionBase> _que = new Queue<ScenePerformanceActionBase>();
 
     public event StoryBoardCompletedHandler Completed;
 
@@ -30,7 +30,7 @@ public class ScenePerformance
         _que.Peek().Update();
     }
 
-    public void Que(ScenePerformanceAction part)
+    public void Que(ScenePerformanceActionBase part)
     {
         _que.Enqueue(part);
         part.Link(this);

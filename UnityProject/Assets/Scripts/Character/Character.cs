@@ -22,6 +22,7 @@ public class Character : MonoBehaviour
 
         Stats.Add(LilithStats.Health, new Stat<LilithStats>(1000));
         Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
+        Stats.Add(LilithStats.Strength, new Stat<LilithStats>(50));
     }
 
     void Update()

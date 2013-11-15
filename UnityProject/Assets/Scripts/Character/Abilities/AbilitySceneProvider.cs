@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 public static class AbilitySceneProvider
 {
-    private static Dictionary<LilithAbilities, SceneScript> loadedScenes = new Dictionary<LilithAbilities, SceneScript>();
+    private static Dictionary<LilithAbilities, SceneActionList> loadedScenes = new Dictionary<LilithAbilities, SceneActionList>();
 
-    public static SceneScript GetBy(LilithAbilities ability)
+    public static SceneActionList GetBy(LilithAbilities ability)
     {
         if (!loadedScenes.ContainsKey(ability))
         {
@@ -16,8 +16,8 @@ public static class AbilitySceneProvider
             {
                 case LilithAbilities.Attack:
 
-                    SceneScript attackScene = new SceneScript();
-                    
+                    SceneActionList attackScene = new SceneActionList();
+
                     RunAnimationSceneAction drawSwordAnim = new RunAnimationSceneAction();
                     drawSwordAnim.RunOnce = "True";
                     drawSwordAnim.Actor = "{Caster}";
@@ -41,6 +41,11 @@ public static class AbilitySceneProvider
                     swordHitSound.Actor = "{Caster}";
                     attackScene.Add(swordHitSound);
 
+                    AdjustStatSceneAction dmg = new AdjustStatSceneAction();
+                    dmg.Adjustment = "{Caster}<Character>.Stats[LilithStats.Strength].CurrentValue * -10";
+                    dmg.StatToAdjust = "{Target}<Character>.Stats[LilithStats.Health]";
+                    attackScene.Add(dmg);                    
+
                     RunAnimationSceneAction attackAnim = new RunAnimationSceneAction();
                     attackAnim.RunOnce = "True";
                     attackAnim.Actor = "{Caster}";
@@ -57,13 +62,20 @@ public static class AbilitySceneProvider
                     break;
                 case LilithAbilities.Victory:
 
-                    attackScene = new SceneScript();
+                    attackScene = new SceneActionList();
 
                     drawSwordAnim = new RunAnimationSceneAction();
+                    drawSwordAnim.RunOnce = "true";
                     drawSwordAnim.Actor = "{Caster}";
                     drawSwordAnim.Animation = "Gentleman";
                     attackScene.Add(drawSwordAnim);
-                    
+
+                    idleAnim = new RunAnimationSceneAction();
+                    idleAnim.Actor = "{Caster}";
+                    idleAnim.Animation = "Idle";
+                    attackScene.Add(idleAnim);
+
+
                     loadedScenes.Add(ability, attackScene);
 
                     break;

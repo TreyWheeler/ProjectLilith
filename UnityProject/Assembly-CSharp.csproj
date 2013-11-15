@@ -78,11 +78,18 @@
      <Compile Include="Assets\Scripts\Framework\Stats\Stat.cs" />
      <Compile Include="Assets\Scripts\Framework\Stats\StatList.cs" />
      <Compile Include="Assets\Scripts\Framework\Stats\StatusEffect.cs" />
-     <Compile Include="Assets\Scripts\Framework\Story\MoveToStoryPart.cs" />
-     <Compile Include="Assets\Scripts\Framework\Story\RunAnimationScenePerformance.cs" />
-     <Compile Include="Assets\Scripts\Framework\Story\SoundEffectScenePerformanceAction.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\Actions\AdjustStatScenePerformanceAction.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\Actions\MoveToScenePerformanceAction.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\Actions\RunAnimationScenePerformanceAction.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\Actions\SoundEffectScenePerformanceAction.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\Actions\StoryPart.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\SceneActionList.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\Scripts\AdjustStatSceneAction.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\Scripts\MoveSceneAction.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\Scripts\NewMonoBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\Scripts\PlaySoundSceneAction.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\Scripts\SceneAction.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\StoryBoard.cs" />
-     <Compile Include="Assets\Scripts\Framework\Story\StoryPart.cs" />
      <Compile Include="Assets\Scripts\Framework\Utility\ClickTracker.cs" />
      <Compile Include="Assets\Scripts\Framework\Utility\Extensions.cs" />
      <Compile Include="Assets\Scripts\Framework\Utility\Helper.cs" />
@@ -108,17 +115,15 @@
      <Compile Include="Assets\Scripts\Repositories\SQLPlayerCharacterRepository.cs" />
      <Compile Include="Assets\Scripts\Repositories\SQLPlayerItemRepository.cs" />
      <Compile Include="Assets\Scripts\Repositories\SQLPlayerRepository.cs" />
-     <Compile Include="Assets\Scripts\Transcript\Scene.cs" />
-     <Compile Include="Assets\Scripts\Transcript\SceneAction.cs" />
      <None Include="Assets\Media\Characters\Blade_Warrior\ReadMe.txt" />
  <Reference Include="Mono.Data.Sqlite">
  <HintPath>Assets\Plugins\Mono.Data.Sqlite.dll</HintPath>
  </Reference>
- <Reference Include="System.Data">
- <HintPath>Assets\Plugins\System.Data.dll</HintPath>
- </Reference>
  <Reference Include="NCalc">
  <HintPath>Assets\Plugins\NCalc.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Data">
+ <HintPath>Assets\Plugins\System.Data.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
