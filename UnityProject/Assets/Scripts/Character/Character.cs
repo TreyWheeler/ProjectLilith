@@ -64,8 +64,7 @@ public class Character : MonoBehaviour
                 Destroy(childElement);
             }
         }
-
-
+        
         this.gameObject.GetComponentInChildren<HealthArch>().Stat = Stats.GetHealth();
     }
 

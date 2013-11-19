@@ -14,43 +14,46 @@ public class AbilityRadial : MonoBehaviour
 
     void Start()
     {
-        this.gameObject.AddOnClick(() =>
+        if (!this.gameObject.GetComponent<Character>().Team2)
         {
-            if (!gameObject.GetComponent<Character>().IsAlive)
-                return;
-
-            radialMenu = new GameObject();
-            radialMenu.name = "Radial Menu";
-
-            radialMenu.AddOnOutsideClick(() =>
+            this.gameObject.AddOnClick(() =>
             {
-                foreach (GameObject child in radialMenu.GetChildren())
+                if (!gameObject.GetComponent<Character>().IsAlive)
+                    return;
+
+                radialMenu = new GameObject();
+                radialMenu.name = "Radial Menu";
+
+                radialMenu.AddOnOutsideClick(() =>
                 {
-                    child.EnsureComponent<Rigidbody>();
-                    radialOptions.Remove(child);
+                    foreach (GameObject child in radialMenu.GetChildren())
+                    {
+                        child.EnsureComponent<Rigidbody>();
+                        radialOptions.Remove(child);
+                    }
+
+                    Destroy(radialMenu, 3);
+                });
+
+                for (float i = 0; i < Abilities.Length; i++)
+                {
+                    GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    sphere.transform.parent = radialMenu.transform;
+
+                    radialOptions.Add(sphere);
+
+                    float angle = 360 * (i / (float)Abilities.Length) * Mathf.Deg2Rad;
+
+                    float sphereX = radius * Mathf.Cos(angle);
+                    float sphereZ = radius * Mathf.Sin(angle);
+
+                    sphere.transform.localPosition = new Vector3(sphereX, 0, sphereZ);
+                    AbilitySphere abilitySphere = sphere.AddComponent<AbilitySphere>();
+                    abilitySphere.Ability = Abilities[(int)i];
+                    abilitySphere.OriginatingGameObject = this.gameObject;
                 }
-
-                Destroy(radialMenu, 3);
             });
-
-            for (float i = 0; i < Abilities.Length; i++)
-            {
-                GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                sphere.transform.parent = radialMenu.transform;
-
-                radialOptions.Add(sphere);
-
-                float angle = 360 * (i / (float)Abilities.Length) * Mathf.Deg2Rad;
-
-                float sphereX = radius * Mathf.Cos(angle);
-                float sphereZ = radius * Mathf.Sin(angle);
-
-                sphere.transform.localPosition = new Vector3(sphereX, 0, sphereZ);
-                AbilitySphere abilitySphere = sphere.AddComponent<AbilitySphere>();
-                abilitySphere.Ability = Abilities[(int)i];
-                abilitySphere.OriginatingGameObject = this.gameObject;
-            }
-        });
+        }
     }
 
     void Update()
