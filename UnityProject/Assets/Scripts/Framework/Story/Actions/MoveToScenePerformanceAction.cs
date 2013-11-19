@@ -51,6 +51,12 @@ public class MoveToGameObjectScenePerformanceAction : MoveToLocationScenePerform
 
         base.TellStory();
     }
+
+    public override void RaiseComplete()
+    {
+        WhoToMove.transform.LookAt(Target.transform.position);
+        base.RaiseComplete();
+    }
 }
 
 

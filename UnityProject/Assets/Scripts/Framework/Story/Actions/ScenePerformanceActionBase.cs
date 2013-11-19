@@ -17,7 +17,7 @@ public abstract class ScenePerformanceActionBase
 
     protected abstract void TellStory();
 
-    public void RaiseComplete()
+    public virtual void RaiseComplete()
     {
         _board.PartCompleted();
     }
