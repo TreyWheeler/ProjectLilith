@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public class Character : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class Character : MonoBehaviour
     private bool _isExecutingAction;
     private AbilityRadial _radial;
     private Texture Arch;
+    public Material Team2Mat;
+    public CombatClass Class;
+    public bool Team2;
+
 
     public bool IsAlive
     {
@@ -36,6 +41,30 @@ public class Character : MonoBehaviour
         Stats.Add(LilithStats.Strength, new Stat<LilithStats>(50));
 
         Stats.GetHealth().Changed += HealthChanged;
+
+
+        foreach (var childElement in this.gameObject.GetChildren())
+        {
+            if (Team2)
+            {
+                if (childElement.name == "uper_cloth" || childElement.name == "body_band")
+                {
+                    var render = childElement.GetComponent<SkinnedMeshRenderer>();
+                    render.material = Team2Mat;
+                    continue;
+                }
+            }
+
+            if (childElement.name == "firehead" && Class != CombatClass.Wizard)
+            {
+                Destroy(childElement);
+            }
+            else if (childElement.name == "headusOBJexport009" && Class != CombatClass.Melee)
+            {
+                Destroy(childElement);
+            }
+        }
+
 
         this.gameObject.GetComponentInChildren<HealthArch>().Stat = Stats.GetHealth();
     }
@@ -86,4 +115,9 @@ public enum TargetType
     EnemySingle,
     EnemyAll,
     All
+}
+
+public enum CombatClass
+{
+    Wizard, Melee, Support
 }

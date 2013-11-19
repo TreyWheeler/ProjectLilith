@@ -118,6 +118,7 @@
      <Compile Include="Assets\Scripts\Repositories\SQLPlayerItemRepository.cs" />
      <Compile Include="Assets\Scripts\Repositories\SQLPlayerRepository.cs" />
      <None Include="Assets\Media\Characters\Blade_Warrior\ReadMe.txt" />
+     <None Include="Assets\ColorReplace.shader" />
  <Reference Include="Mono.Data.Sqlite">
  <HintPath>Assets\Plugins\Mono.Data.Sqlite.dll</HintPath>
  </Reference>
