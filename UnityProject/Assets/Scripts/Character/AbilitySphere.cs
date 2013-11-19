@@ -49,7 +49,7 @@ public class AbilitySphere : MonoBehaviour
             if (go != null)
             {
                 Character characterDroppedOn = go.GetComponent<Character>();
-                if (characterDroppedOn != null)
+                if (characterDroppedOn != null && characterDroppedOn.IsAlive)
                 {
                     Character thisCharacter = this.OriginatingGameObject.GetComponent<Character>();
                     if (thisCharacter != null)

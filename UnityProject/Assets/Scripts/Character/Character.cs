@@ -6,34 +6,61 @@ using System;
 public class Character : MonoBehaviour
 {
     public Ability[] MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack), new Ability(LilithAbilities.Victory) };
-    public LilithStatList Stats = new LilithStatList();    
+    public LilithStatList Stats = new LilithStatList();
     public Queue<IntendedAction> AbilityQue = new Queue<IntendedAction>();
     private IntendedAction _currentAction;
     private bool _isExecutingAction;
     private AbilityRadial _radial;
-    
+    private Texture Arch;
+
+    public bool IsAlive
+    {
+        get
+        {
+            return Stats.GetHealth().CurrentValue > 0;
+        }
+    }
+
+
 
     void Start()
     {
         _radial = this.gameObject.EnsureComponent<AbilityRadial>();
 
         _radial.Abilities = MyAbilities;
-        
+
+        Arch = Resources.Load("Images/CrescentArch") as Texture;
 
         Stats.Add(LilithStats.Health, new Stat<LilithStats>(1000));
         Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
         Stats.Add(LilithStats.Strength, new Stat<LilithStats>(50));
+
+        Stats.GetHealth().Changed += Character_Changed;
+
+        this.gameObject.GetComponentInChildren<HealthArch>().Stat = Stats.GetHealth();
+    }
+
+    void Character_Changed(Stat<LilithStats> healthStat, StatChangedArgs changedArgs)
+    {
+        // TODO: Floating Combat Text
+        // TODO: DIE
+                
+        if (!IsAlive)
+            this.gameObject.animation.CrossFade("Death");
     }
 
     void Update()
     {
+        if (!IsAlive)
+            return;
+
         if (AbilityQue.Count > 0 && _currentAction == null)
         {
             _currentAction = AbilityQue.Dequeue();
             _currentAction.Ability.UseAbility(this.gameObject, _currentAction.DestinationGameObject);
             _currentAction.Ability.AbilityCompleted += (ability) =>
             {
-                _currentAction = null;            
+                _currentAction = null;
             };
             _radial.Close();
         }
@@ -42,6 +69,8 @@ public class Character : MonoBehaviour
             _currentAction.Ability.Update();
         }
     }
+
+
 }
 
 

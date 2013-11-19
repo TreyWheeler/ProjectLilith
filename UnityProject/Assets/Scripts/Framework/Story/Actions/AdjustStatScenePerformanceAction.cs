@@ -9,7 +9,6 @@ public class AdjustStatScenePerformanceAction : ScenePerformanceActionBase
     protected override void TellStory()
     {
         Stat.CurrentValue += Adjustment;
-        Debug.Log(Stat);
         RaiseComplete();
     }
 }

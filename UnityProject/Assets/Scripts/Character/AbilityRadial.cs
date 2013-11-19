@@ -16,12 +16,11 @@ public class AbilityRadial : MonoBehaviour
     {
         this.gameObject.AddOnClick(() =>
         {
-
+            if (!gameObject.GetComponent<Character>().IsAlive)
+                return;
 
             radialMenu = new GameObject();
             radialMenu.name = "Radial Menu";
-
-     
 
             radialMenu.AddOnOutsideClick(() =>
             {
