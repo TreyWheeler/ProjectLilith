@@ -43,23 +43,15 @@ public class AbilitySphere : MonoBehaviour
         else if (_mouseWasDown && !mouseDown && _isBeingDrugged)
         {// End Drag
             _isBeingDrugged = false;
-
-            this.gameObject.SetActive(false);
-            GameObject go = Helper.GetGameOjectMouseIsOver();
-            if (go != null)
+            Character characterDroppedOn = Helper.GetFirstInstanceOfComponentMouseIsOver<Character>(_ => _.IsAlive);
+            if (characterDroppedOn != null)
             {
-                Character characterDroppedOn = go.GetComponent<Character>();
-                if (characterDroppedOn != null && characterDroppedOn.IsAlive)
+                Character thisCharacter = this.OriginatingGameObject.GetComponent<Character>();
+                if (thisCharacter != null)
                 {
-                    Character thisCharacter = this.OriginatingGameObject.GetComponent<Character>();
-                    if (thisCharacter != null)
-                    {
-                        thisCharacter.AbilityQue.Enqueue(new IntendedAction(Ability, go));
-                    }
+                    thisCharacter.AbilityQue.Enqueue(new IntendedAction(Ability, characterDroppedOn.gameObject));
                 }
             }
-
-            this.gameObject.SetActive(true);
             _returning = true;
             _dropLocation = gameObject.transform.localPosition;
             _t = 0;

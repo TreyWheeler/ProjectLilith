@@ -53,7 +53,7 @@ public static class Helper
             Component.Destroy(component);
     }
 
-   
+
 
     public static GameObject GetGameOjectMouseIsOver()
     {
@@ -64,6 +64,35 @@ public static class Helper
             return hit.transform.gameObject;
 
         return null;
+    }
+
+    public static T GetFirstInstanceOfComponentMouseIsOver<T>(Predicate<T> conditionForsuccess = null) where T : Component
+    {
+        GameObject objectMouseIsOver = GetGameOjectMouseIsOver();
+        if (objectMouseIsOver != null)
+            return LoopOverGameObjectsBehindMouse<T>(GetGameOjectMouseIsOver(), conditionForsuccess);
+        return null;
+    }
+
+    private static T LoopOverGameObjectsBehindMouse<T>(GameObject go, Predicate<T> conditionForsuccess) where T : Component
+    {
+        T possibleResult = go.GetComponent<T>();
+        
+        if (possibleResult != null)
+        {
+            if(conditionForsuccess == null || conditionForsuccess(possibleResult))
+                return possibleResult;
+        }
+        LayerMask currentLayer = go.layer;
+        go.layer = LayerMask.NameToLayer("Ignore Raycast");
+        GameObject nextgo = Helper.GetGameOjectMouseIsOver();
+        T result = null;
+        if (nextgo != null)
+        {
+            result = LoopOverGameObjectsBehindMouse<T>(nextgo, conditionForsuccess);
+        }
+        go.layer = currentLayer;
+        return result;
     }
 }
 
