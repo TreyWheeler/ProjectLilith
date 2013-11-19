@@ -13,6 +13,7 @@ public class HealthArch : MonoBehaviour
         cube.transform.parent = this.gameObject.transform;
         cube.transform.localPosition = new Vector3(0, 3f, 0);
         cube.transform.localScale = new Vector3(1, .25f, 1);
+        cube.RemoveComponent<BoxCollider>();
         cube.GetComponent<MeshRenderer>().material.color = Color.red;// new Color(255, 0, 0);
         cube.transform.localRotation = new Quaternion();
         cube.EnsureComponent<LookAtCamera>();

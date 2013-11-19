@@ -35,18 +35,21 @@ public class Character : MonoBehaviour
         Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
         Stats.Add(LilithStats.Strength, new Stat<LilithStats>(50));
 
-        Stats.GetHealth().Changed += Character_Changed;
+        Stats.GetHealth().Changed += HealthChanged;
 
         this.gameObject.GetComponentInChildren<HealthArch>().Stat = Stats.GetHealth();
     }
 
-    void Character_Changed(Stat<LilithStats> healthStat, StatChangedArgs changedArgs)
+    void HealthChanged(Stat<LilithStats> healthStat, StatChangedArgs changedArgs)
     {
         // TODO: Floating Combat Text
         // TODO: DIE
-                
+
         if (!IsAlive)
+        {
             this.gameObject.animation.CrossFade("Death");
+            this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+        }
     }
 
     void Update()
