@@ -13,15 +13,16 @@ public class MoveToLocationScenePerformanceAction : ScenePerformanceActionBase
     {
         Vector3 ourPosition = WhoToMove.transform.position;
         Vector3 direction = Vector3.Normalize(Location - ourPosition);
+        if (direction == Vector3.zero)
+            RaiseComplete();
 
         WhoToMove.transform.LookAt(Location);
         var potentialLocation = WhoToMove.transform.position + direction * Speed * Time.deltaTime;
 
         var distanceToLocation = Vector3.Distance(ourPosition, Location);
         if (distanceToLocation == 0)
-        {
             RaiseComplete();
-        }       
+     
         else if (distanceToLocation < Vector3.Distance(ourPosition, potentialLocation))
         { // If distance to destination is shorter than a step
             WhoToMove.transform.position = Location;

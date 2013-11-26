@@ -13,6 +13,13 @@ public class Conditional
 
 public class TimedTaskManager : MonoBehaviour
 {
+    public static TimedTaskManager Instance
+    {
+        get
+        {
+            return Helper.EnsureGameObject("TimeManager").EnsureComponent<TimedTaskManager>();
+        }
+    }
     private List<ITimedTask> Tasks = new List<ITimedTask>();
     private List<Conditional> _conditionals;
 

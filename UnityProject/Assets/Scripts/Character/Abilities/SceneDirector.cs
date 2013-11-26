@@ -90,7 +90,27 @@ public static class SceneDirector
                 AdjustStatScenePerformanceAction dmgPerformance = new AdjustStatScenePerformanceAction();
                 dmgPerformance.Stat = ReadExpression<Stat<LilithStats>>(dmg.StatToAdjust, sceneTranslator);
                 dmgPerformance.Adjustment = ReadExpression<float>(dmg.Adjustment, sceneTranslator);
+                dmgPerformance.Seconds = ReadExpression<float>(dmg.OverSeconds, sceneTranslator);
                 performance.Que(dmgPerformance);
+            }
+            else if (action is SpawnParticleEffectSceneAction)
+            {
+                var spawn = (SpawnParticleEffectSceneAction)action;
+                SpawnParticleEffectScenePerformanceAction spawnPerformance = new SpawnParticleEffectScenePerformanceAction();
+                spawnPerformance.Actor = ReadExpression<GameObject>(spawn.Actor, sceneTranslator);
+                spawnPerformance.Target = ReadExpression<GameObject>(spawn.Target, sceneTranslator);
+                performance.Que(spawnPerformance);
+            }
+            else if (action is WaitSceneAction)
+            {
+                var wait = (WaitSceneAction)action;
+                WaitScenePerformanceAction waitPerformance = new WaitScenePerformanceAction();
+                waitPerformance.Seconds = ReadExpression<float>(wait.Seconds, sceneTranslator);
+                performance.Que(waitPerformance);
+            }
+            else
+            {
+                throw new NotImplementedException();
             }
         }
 

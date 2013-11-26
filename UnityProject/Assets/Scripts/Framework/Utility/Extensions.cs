@@ -60,4 +60,9 @@ public static class Extensions
         }
         return null;
     }
+
+    public static void LookAt(this GameObject actor, GameObject target)
+    {
+        actor.transform.LookAt(target.transform);
+    }
 }

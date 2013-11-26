@@ -6,7 +6,7 @@ using System.Linq;
 
 public class Character : MonoBehaviour
 {
-    public Ability[] MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack), new Ability(LilithAbilities.Victory) };
+    public Ability[] MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack), new Ability(LilithAbilities.TurtleBoom) };
     public LilithStatList Stats = new LilithStatList();
     public Queue<IntendedAction> AbilityQue = new Queue<IntendedAction>();
     private IntendedAction _currentAction;
@@ -43,6 +43,13 @@ public class Character : MonoBehaviour
         Stats.GetHealth().Changed += HealthChanged;
 
 
+        if (Class == CombatClass.Melee)
+        {
+            this.gameObject.animation.CrossFade("DrawBlade");
+            var state = this.gameObject.animation.PlayQueued("Attack_standy", QueueMode.CompleteOthers);
+            state.wrapMode = WrapMode.Loop;
+        }
+
         foreach (var childElement in this.gameObject.GetChildren())
         {
             if (Team2)
@@ -77,6 +84,13 @@ public class Character : MonoBehaviour
         {
             this.gameObject.animation.CrossFade("Death");
             this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+            var clip = Resources.Load("Sounds/m die 03") as AudioClip;
+            audio.PlayOneShot(clip);
+        }
+        else
+        {
+            var clip = Resources.Load("sounds/moomph04") as AudioClip;
+            audio.PlayOneShot(clip);
         }
     }
 
@@ -88,12 +102,11 @@ public class Character : MonoBehaviour
         if (AbilityQue.Count > 0 && _currentAction == null)
         {
             _currentAction = AbilityQue.Dequeue();
-            _currentAction.Ability.UseAbility(this.gameObject, _currentAction.DestinationGameObject);
             _currentAction.Ability.AbilityCompleted += (ability) =>
             {
                 _currentAction = null;
             };
-            _radial.Close();
+            _currentAction.Ability.UseAbility(this.gameObject, _currentAction.DestinationGameObject);
         }
         if (_currentAction != null)
         {
@@ -102,6 +115,12 @@ public class Character : MonoBehaviour
     }
 
 
+
+    internal void QueueAbility(IntendedAction intendedAction)
+    {
+        this.AbilityQue.Enqueue(intendedAction); 
+        _radial.Close();
+    }
 }
 
 

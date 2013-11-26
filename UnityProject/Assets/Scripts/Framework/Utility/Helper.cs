@@ -53,7 +53,10 @@ public static class Helper
             Component.Destroy(component);
     }
 
-
+    public static float GetAngleInDegreesFrom(GameObject go, GameObject target)
+    {
+        return Vector3.Angle(go.transform.position - target.transform.position, go.transform.forward);
+    }
 
     public static GameObject GetGameOjectMouseIsOver()
     {

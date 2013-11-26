@@ -11,7 +11,6 @@ public class AbilitySphere : MonoBehaviour
     float _t;
     float _durationOfReturning = .3f;
     bool _returning = false;
-    int abilityNumber;
 
     public GameObject OriginatingGameObject { get; set; }
 
@@ -49,7 +48,7 @@ public class AbilitySphere : MonoBehaviour
                 Character thisCharacter = this.OriginatingGameObject.GetComponent<Character>();
                 if (thisCharacter != null)
                 {
-                    thisCharacter.AbilityQue.Enqueue(new IntendedAction(Ability, characterDroppedOn.gameObject));
+                    thisCharacter.QueueAbility(new IntendedAction(Ability, characterDroppedOn.gameObject));
                 }
             }
             _returning = true;

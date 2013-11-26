@@ -17,12 +17,17 @@ public static class AbilitySceneProvider
                 case LilithAbilities.Attack:
 
                     SceneActionList attackScene = new SceneActionList();
+                    
+                    PlaySoundSceneAction swordHitSound = new PlaySoundSceneAction();
+                    swordHitSound.Sound = "Sounds/unsheth1";
+                    swordHitSound.Actor = "{Caster}";
+                    attackScene.Add(swordHitSound);
 
                     RunAnimationSceneAction drawSwordAnim = new RunAnimationSceneAction();
                     drawSwordAnim.RunOnce = "True";
                     drawSwordAnim.Actor = "{Caster}";
                     drawSwordAnim.Animation = "DrawBlade";
-                    attackScene.Add(drawSwordAnim);
+                    attackScene.Add(drawSwordAnim);                    
 
                     RunAnimationSceneAction anim = new RunAnimationSceneAction();
                     anim.Actor = "{Caster}";
@@ -36,7 +41,7 @@ public static class AbilitySceneProvider
                     movePart.Entity = "{Target}";
                     attackScene.Add(movePart);
 
-                    PlaySoundSceneAction swordHitSound = new PlaySoundSceneAction();
+                    swordHitSound = new PlaySoundSceneAction();
                     swordHitSound.Sound = "Sounds/hvyswrd4";
                     swordHitSound.Actor = "{Caster}";
                     attackScene.Add(swordHitSound);
@@ -54,29 +59,54 @@ public static class AbilitySceneProvider
 
                     RunAnimationSceneAction idleAnim = new RunAnimationSceneAction();
                     idleAnim.Actor = "{Caster}";
-                    idleAnim.Animation = "Idle";
+                    idleAnim.Animation = "Attack_standy";
                     attackScene.Add(idleAnim);
 
                     loadedScenes.Add(ability, attackScene);
 
                     break;
-                case LilithAbilities.Victory:
+                case LilithAbilities.TurtleBoom:
 
-                    attackScene = new SceneActionList();
+                    SceneActionList blizzard = new SceneActionList();
 
-                    drawSwordAnim = new RunAnimationSceneAction();
-                    drawSwordAnim.RunOnce = "true";
-                    drawSwordAnim.Actor = "{Caster}";
-                    drawSwordAnim.Animation = "Gentleman";
-                    attackScene.Add(drawSwordAnim);
+                    var castingAnim = new RunAnimationSceneAction();
+                    castingAnim.Actor = "{Caster}";
+                    castingAnim.Animation = "Gentleman";
+                    blizzard.Add(castingAnim);
+                    
+                    var emitter = new SpawnParticleEffectSceneAction();
+                    emitter.Actor = "{Caster}";
+                    emitter.Target = "{Target}";
+                    blizzard.Add(emitter);
+                    
+                    var blizzardSound = new PlaySoundSceneAction();
+                    blizzardSound.Sound = "Sounds/wind01 l";
+                    blizzardSound.Actor = "{Caster}";
+                    blizzard.Add(blizzardSound);
 
+                    blizzardSound = new PlaySoundSceneAction();
+                    blizzardSound.Sound = "Sounds/wind02 l";
+                    blizzardSound.Actor = "{Caster}";
+                    blizzard.Add(blizzardSound);
+
+                    blizzardSound = new PlaySoundSceneAction();
+                    blizzardSound.Sound = "Sounds/wind03 l";
+                    blizzardSound.Actor = "{Caster}";
+                    blizzard.Add(blizzardSound);
+
+                    dmg = new AdjustStatSceneAction();
+                    dmg.Adjustment = "{Caster}<Character>.Stats[LilithStats.Strength].CurrentValue * -10";
+                    dmg.StatToAdjust = "{Target}<Character>.Stats[LilithStats.Health]";
+                    dmg.OverSeconds = "6.241";
+                    blizzard.Add(dmg);                    
+                    
                     idleAnim = new RunAnimationSceneAction();
                     idleAnim.Actor = "{Caster}";
                     idleAnim.Animation = "Idle";
-                    attackScene.Add(idleAnim);
+                    blizzard.Add(idleAnim);
+                    
 
-
-                    loadedScenes.Add(ability, attackScene);
+                    loadedScenes.Add(ability, blizzard);
 
                     break;
                 default:
@@ -92,5 +122,5 @@ public static class AbilitySceneProvider
 
 public enum LilithAbilities
 {
-    Attack, Victory
+    Attack, TurtleBoom
 }
