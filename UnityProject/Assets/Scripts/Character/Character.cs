@@ -16,7 +16,7 @@ public class Character : MonoBehaviour
     public Material Team2Mat;
     public CombatClass Class;
     public bool Team2;
-
+    public float timeSinceLastHit;
 
     public bool IsAlive
     {
@@ -71,15 +71,12 @@ public class Character : MonoBehaviour
                 Destroy(childElement);
             }
         }
-        
+
         this.gameObject.GetComponentInChildren<HealthArch>().Stat = Stats.GetHealth();
     }
 
     void HealthChanged(Stat<LilithStats> healthStat, StatChangedArgs changedArgs)
     {
-        // TODO: Floating Combat Text
-        // TODO: DIE
-
         if (!IsAlive)
         {
             this.gameObject.animation.CrossFade("Death");
@@ -89,13 +86,20 @@ public class Character : MonoBehaviour
         }
         else
         {
-            var clip = Resources.Load("sounds/moomph04") as AudioClip;
-            audio.PlayOneShot(clip);
+            if (timeSinceLastHit > 2f)
+            {
+                var clip = Resources.Load("sounds/moomph04") as AudioClip;
+                audio.PlayOneShot(clip);
+            }
         }
+
+        timeSinceLastHit = 0f;
     }
 
     void Update()
     {
+        timeSinceLastHit += Time.deltaTime;
+
         if (!IsAlive)
             return;
 
@@ -118,7 +122,7 @@ public class Character : MonoBehaviour
 
     internal void QueueAbility(IntendedAction intendedAction)
     {
-        this.AbilityQue.Enqueue(intendedAction); 
+        this.AbilityQue.Enqueue(intendedAction);
         _radial.Close();
     }
 }
