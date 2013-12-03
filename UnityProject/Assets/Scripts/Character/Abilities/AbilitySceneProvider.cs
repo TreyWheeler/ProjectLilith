@@ -24,6 +24,7 @@ public static class AbilitySceneProvider
                     attackScene.Add(swordHitSound);
 
                     RunAnimationSceneAction drawSwordAnim = new RunAnimationSceneAction();
+                    drawSwordAnim.BlocksStory = "True";
                     drawSwordAnim.RunOnce = "True";
                     drawSwordAnim.Actor = "{Caster}";
                     drawSwordAnim.Animation = "DrawBlade";
@@ -35,6 +36,7 @@ public static class AbilitySceneProvider
                     attackScene.Add(anim);
 
                     MoveToEntitySceneAction movePart = new MoveToEntitySceneAction();
+                    movePart.BlocksStory = "True";
                     movePart.Actor = "{Caster}";
                     movePart.Speed = "{Caster}<Character>.Stats[LilithStats.MoveSpeed].CurrentValue";
                     movePart.HowClose = "1";
@@ -52,6 +54,7 @@ public static class AbilitySceneProvider
                     attackScene.Add(dmg);                    
 
                     RunAnimationSceneAction attackAnim = new RunAnimationSceneAction();
+                    attackAnim.BlocksStory = "True";
                     attackAnim.RunOnce = "True";
                     attackAnim.Actor = "{Caster}";
                     attackAnim.Animation = "Attack";
@@ -77,15 +80,11 @@ public static class AbilitySceneProvider
                     var emitter = new SpawnParticleEffectSceneAction();
                     emitter.Actor = "{Caster}";
                     emitter.Target = "{Target}";
+                    emitter.Duration = "5";
                     blizzard.Add(emitter);
                     
                     var blizzardSound = new PlaySoundSceneAction();
                     blizzardSound.Sound = "Sounds/wind01 l";
-                    blizzardSound.Actor = "{Caster}";
-                    blizzard.Add(blizzardSound);
-
-                    blizzardSound = new PlaySoundSceneAction();
-                    blizzardSound.Sound = "Sounds/wind02 l";
                     blizzardSound.Actor = "{Caster}";
                     blizzard.Add(blizzardSound);
 
@@ -95,9 +94,10 @@ public static class AbilitySceneProvider
                     blizzard.Add(blizzardSound);
 
                     dmg = new AdjustStatSceneAction();
+                    dmg.BlocksStory = "True";
                     dmg.Adjustment = "{Caster}<Character>.Stats[LilithStats.Strength].CurrentValue * -10";
                     dmg.StatToAdjust = "{Target}<Character>.Stats[LilithStats.Health]";
-                    dmg.OverSeconds = "6.241";
+                    dmg.OverSeconds = "4.5";
                     blizzard.Add(dmg);                    
                     
                     idleAnim = new RunAnimationSceneAction();

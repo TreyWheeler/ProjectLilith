@@ -6,7 +6,7 @@ public class ScenePerformance
 {
     public delegate void StoryBoardCompletedHandler(ScenePerformance board);
 
-    private Queue<ScenePerformanceActionBase> _que = new Queue<ScenePerformanceActionBase>();
+    private List<ScenePerformanceActionBase> _que = new List<ScenePerformanceActionBase>();
 
     public event StoryBoardCompletedHandler Completed;
 
@@ -14,32 +14,80 @@ public class ScenePerformance
 
     public void Perform()
     {
-        if(wasCompleted)
+        if (wasCompleted)
             return;
 
-        if (_que.Count == 0)
+        if (IsComplete)
         {
-            if (Completed != null)
-                Completed(this);
-
-            wasCompleted = true;
+            RaiseCompleted();
 
             return;
         }
 
-        _que.Peek().Update();
+        for (int i = 0; i < _que.Count; i++)
+        {
+            var item = _que[i];
+
+            if (!item.Started)
+                item.Start();
+
+            if (item.Finished)
+                continue;
+            else
+                item.Update();
+
+            if (item.BlocksStory)
+                break;
+        }
+    }
+
+    private void RaiseCompleted()
+    {
+        if (Completed != null)
+            Completed(this);
+
+        wasCompleted = true;
+    }
+
+    public bool IsComplete
+    {
+        get
+        {
+            for (int i = 0; i < _que.Count; i++)
+            {
+                var item = _que[i];
+                
+                if (item.Started && !item.BlocksStory)
+                    continue;
+
+                if (!item.Finished)
+                    return false;
+            }
+
+            return true;
+        }
+    }
+
+    public void Interupt()
+    {
+        if (wasCompleted)
+            return;
+
+        for (int i = 0; i < _que.Count; i++)
+        {
+            var item = _que[i];
+
+            if (item.Started && !item.Finished)
+            {
+                item.Finish();
+            }
+        }
+
+        RaiseCompleted();
     }
 
     public void Que(ScenePerformanceActionBase part)
     {
-        _que.Enqueue(part);
-        part.Link(this);
-    }
-
-
-    public void PartCompleted()
-    {
-        _que.Dequeue();
-        Perform();// This prevents single frame story parts
+        _que.Add(part);
     }
 }

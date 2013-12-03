@@ -5,15 +5,22 @@ public class SpawnParticleEffectScenePerformanceAction : ScenePerformanceActionB
 {
     public GameObject Actor;
     public GameObject Target;
+    public float Duration;
 
-    protected override void TellStory()
+
+    GameObject particleObj;
+
+    public override void Start()
     {
-        var particles = Actor.AddComponent<ParticleSystem>();
-        Actor.LookAt(Target);
-        //particles.constantForce.torque += new Vector3(25f, 0f, 0f);
-        //particles.gravityModifier = 50f;
-        //particles.
-        particles.loop = false;
+        base.Start();
+
+        particleObj = new GameObject();
+        particleObj.transform.parent = Actor.transform;
+        particleObj.transform.localPosition = Vector3.zero;
+        particleObj.transform.localRotation = Quaternion.identity;
+        var particles = particleObj.AddComponent<ParticleSystem>();
+    
+        particles.loop = true;
         particles.enableEmission = true;
         particles.emissionRate = 1000f;
         particles.startColor = Color.white;
@@ -22,13 +29,27 @@ public class SpawnParticleEffectScenePerformanceAction : ScenePerformanceActionB
         particles.startSpeed = 20f;
         particles.Play();
 
-        TimedTaskManager.Instance.Add(6241, () => 
-        { 
-            Component.DestroyImmediate(particles);
+        TimedTaskManager.Instance.Add(Duration * 1000, () =>
+        {
+            Finish();
         });
-        //particles.
-        //particles.particleEmitter.angularVelocity = 90;
+    }
 
-        RaiseComplete();
+    public override void Update()
+    {
+        particleObj.LookAt(Target);
+    }
+
+    public override void Finish()
+    {
+        if (Finished)
+            return;
+
+        var system = particleObj.GetComponent<ParticleSystem>();
+        system.Stop();
+
+        GameObject.Destroy(particleObj, system.startLifetime);
+
+        base.Finish();
     }
 }

@@ -9,12 +9,12 @@ public class AdjustStatScenePerformanceAction : ScenePerformanceActionBase
 
     private float adjustmentApplied = 0f;
 
-    protected override void TellStory()
+    public override void Update()
     {
         if (Seconds == 0)
         {
             Stat.CurrentValue += Adjustment;
-            RaiseComplete();
+            Finish();
         }
         else
         {
@@ -25,12 +25,12 @@ public class AdjustStatScenePerformanceAction : ScenePerformanceActionBase
             if (Adjustment < 0)
             {
                 if (adjustmentApplied <= Adjustment)
-                    RaiseComplete();
+                    Finish();
             }
             else
             {
                 if (adjustmentApplied >= Adjustment)
-                    RaiseComplete();
+                    Finish();
             }
             
         }

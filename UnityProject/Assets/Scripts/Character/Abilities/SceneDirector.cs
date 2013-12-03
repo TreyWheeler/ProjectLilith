@@ -18,64 +18,70 @@ public static class SceneDirector
         {
             if (action is RunAnimationSceneAction)
             {
-                var anim = (RunAnimationSceneAction)action;
+                var actionScript = (RunAnimationSceneAction)action;
 
-                bool runOnce = ReadExpression<bool>(anim.RunOnce, sceneTranslator);
+                bool runOnce = ReadExpression<bool>(actionScript.RunOnce, sceneTranslator);
 
                 if (runOnce)
                 {
                     RunAnimationOnceScenePerformanceAction perfAction = new RunAnimationOnceScenePerformanceAction();
-                    perfAction.Actor = ReadExpression<GameObject>(anim.Actor, sceneTranslator);
-                    perfAction.Animation = ReadExpression<string>(anim.Animation, sceneTranslator);
+                    perfAction.BlocksStory = ReadExpression<bool>(actionScript.BlocksStory, sceneTranslator);
+                    perfAction.Actor = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
+                    perfAction.Animation = ReadExpression<string>(actionScript.Animation, sceneTranslator);
                     performance.Que(perfAction);
                 }
                 else
                 {
                     RunAnimationScenePerformanceAction perfAction = new RunAnimationScenePerformanceAction();
-                    perfAction.Actor = ReadExpression<GameObject>(anim.Actor, sceneTranslator);
-                    perfAction.Animation = ReadExpression<string>(anim.Animation, sceneTranslator);
+                    perfAction.BlocksStory = ReadExpression<bool>(actionScript.BlocksStory, sceneTranslator);
+                    perfAction.Actor = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
+                    perfAction.Animation = ReadExpression<string>(actionScript.Animation, sceneTranslator);
                     performance.Que(perfAction);
                 }
             }
             else if (action is PlaySoundSceneAction)
             {
-                var sound = (PlaySoundSceneAction)action;
-                SoundEffectScenePerformanceAction soundPerf = new SoundEffectScenePerformanceAction();
-                soundPerf.AudioFile = ReadExpression<AudioClip>(sound.Sound, sceneTranslator);
-                soundPerf.AudioSourceActor = ReadExpression<GameObject>(sound.Actor, sceneTranslator);
-                performance.Que(soundPerf);
+                var actionScript = (PlaySoundSceneAction)action;
+                SoundEffectScenePerformanceAction perfAction = new SoundEffectScenePerformanceAction();
+                perfAction.BlocksStory = ReadExpression<bool>(actionScript.BlocksStory, sceneTranslator);
+                perfAction.AudioFile = ReadExpression<AudioClip>(actionScript.Sound, sceneTranslator);
+                perfAction.AudioSourceActor = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
+                performance.Que(perfAction);
             }
             else if (action is MoveSceneAction)
             {
                 if (action is MoveToLocationSceneAction)
                 {
-                    var anim = (MoveToLocationSceneAction)action;
+                    var actionScript = (MoveToLocationSceneAction)action;
                     MoveToLocationScenePerformanceAction perfAction = new MoveToLocationScenePerformanceAction();
-                    perfAction.WhoToMove = ReadExpression<GameObject>(anim.Actor, sceneTranslator);
-                    perfAction.Location = ReadExpression<Vector3>(anim.Location, sceneTranslator);
-                    perfAction.Speed = ReadExpression<float>(anim.Speed, sceneTranslator);
+                    perfAction.BlocksStory = ReadExpression<bool>(actionScript.BlocksStory, sceneTranslator);
+                    perfAction.WhoToMove = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
+                    perfAction.Location = ReadExpression<Vector3>(actionScript.Location, sceneTranslator);
+                    perfAction.Speed = ReadExpression<float>(actionScript.Speed, sceneTranslator);
                     performance.Que(perfAction);
                 }
                 else if (action is MoveToEntitySceneAction)
                 {
-                    var anim = (MoveToEntitySceneAction)action;
+                    var actionScript = (MoveToEntitySceneAction)action;
                     MoveToGameObjectScenePerformanceAction perfAction = new MoveToGameObjectScenePerformanceAction();
-                    perfAction.WhoToMove = ReadExpression<GameObject>(anim.Actor, sceneTranslator);
-                    perfAction.Target = ReadExpression<GameObject>(anim.Entity, sceneTranslator);
-                    perfAction.Speed = ReadExpression<float>(anim.Speed, sceneTranslator);
-                    perfAction.HowClose = ReadExpression<float>(anim.HowClose, sceneTranslator);
+                    perfAction.BlocksStory = ReadExpression<bool>(actionScript.BlocksStory, sceneTranslator);
+                    perfAction.WhoToMove = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
+                    perfAction.Target = ReadExpression<GameObject>(actionScript.Entity, sceneTranslator);
+                    perfAction.Speed = ReadExpression<float>(actionScript.Speed, sceneTranslator);
+                    perfAction.HowClose = ReadExpression<float>(actionScript.HowClose, sceneTranslator);
                     performance.Que(perfAction);
 
                 }
                 else if (action is MoveInRangeOfEntitySceneAction)
                 {
-                    var anim = (MoveInRangeOfEntitySceneAction)action;
+                    var actionScript = (MoveInRangeOfEntitySceneAction)action;
                     MoveInRangeOfGameObjectScenePerformanceAction perfAction = new MoveInRangeOfGameObjectScenePerformanceAction();
-                    perfAction.WhoToMove = ReadExpression<GameObject>(anim.Actor, sceneTranslator);
-                    perfAction.Target = ReadExpression<GameObject>(anim.Entity, sceneTranslator);
-                    perfAction.Speed = ReadExpression<float>(anim.Speed, sceneTranslator);
-                    perfAction.MinRange = ReadExpression<float>(anim.MinDistance, sceneTranslator);
-                    perfAction.MaxRange = ReadExpression<float>(anim.MaxDistance, sceneTranslator);
+                    perfAction.BlocksStory = ReadExpression<bool>(actionScript.BlocksStory, sceneTranslator);
+                    perfAction.WhoToMove = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
+                    perfAction.Target = ReadExpression<GameObject>(actionScript.Entity, sceneTranslator);
+                    perfAction.Speed = ReadExpression<float>(actionScript.Speed, sceneTranslator);
+                    perfAction.MinRange = ReadExpression<float>(actionScript.MinDistance, sceneTranslator);
+                    perfAction.MaxRange = ReadExpression<float>(actionScript.MaxDistance, sceneTranslator);
                     performance.Que(perfAction);
 
                 }
@@ -86,27 +92,31 @@ public static class SceneDirector
             }
             else if (action is AdjustStatSceneAction)
             {
-                var dmg = (AdjustStatSceneAction)action;
-                AdjustStatScenePerformanceAction dmgPerformance = new AdjustStatScenePerformanceAction();
-                dmgPerformance.Stat = ReadExpression<Stat<LilithStats>>(dmg.StatToAdjust, sceneTranslator);
-                dmgPerformance.Adjustment = ReadExpression<float>(dmg.Adjustment, sceneTranslator);
-                dmgPerformance.Seconds = ReadExpression<float>(dmg.OverSeconds, sceneTranslator);
-                performance.Que(dmgPerformance);
+                var actionScript = (AdjustStatSceneAction)action;
+                AdjustStatScenePerformanceAction perfAction = new AdjustStatScenePerformanceAction();
+                perfAction.BlocksStory = ReadExpression<bool>(actionScript.BlocksStory, sceneTranslator);
+                perfAction.Stat = ReadExpression<Stat<LilithStats>>(actionScript.StatToAdjust, sceneTranslator);
+                perfAction.Adjustment = ReadExpression<float>(actionScript.Adjustment, sceneTranslator);
+                perfAction.Seconds = ReadExpression<float>(actionScript.OverSeconds, sceneTranslator);
+                performance.Que(perfAction);
             }
             else if (action is SpawnParticleEffectSceneAction)
             {
-                var spawn = (SpawnParticleEffectSceneAction)action;
-                SpawnParticleEffectScenePerformanceAction spawnPerformance = new SpawnParticleEffectScenePerformanceAction();
-                spawnPerformance.Actor = ReadExpression<GameObject>(spawn.Actor, sceneTranslator);
-                spawnPerformance.Target = ReadExpression<GameObject>(spawn.Target, sceneTranslator);
-                performance.Que(spawnPerformance);
+                var actionScript = (SpawnParticleEffectSceneAction)action;
+                SpawnParticleEffectScenePerformanceAction perfAction = new SpawnParticleEffectScenePerformanceAction();
+                perfAction.BlocksStory = ReadExpression<bool>(actionScript.BlocksStory, sceneTranslator);
+                perfAction.Duration = ReadExpression<float>(actionScript.Duration, sceneTranslator);
+                perfAction.Actor = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
+                perfAction.Target = ReadExpression<GameObject>(actionScript.Target, sceneTranslator);
+                performance.Que(perfAction);
             }
             else if (action is WaitSceneAction)
             {
-                var wait = (WaitSceneAction)action;
-                WaitScenePerformanceAction waitPerformance = new WaitScenePerformanceAction();
-                waitPerformance.Seconds = ReadExpression<float>(wait.Seconds, sceneTranslator);
-                performance.Que(waitPerformance);
+                var actionScript = (WaitSceneAction)action;
+                WaitScenePerformanceAction perfAction = new WaitScenePerformanceAction();
+                perfAction.BlocksStory = ReadExpression<bool>(actionScript.BlocksStory, sceneTranslator);
+                perfAction.Seconds = ReadExpression<float>(actionScript.Seconds, sceneTranslator);
+                performance.Que(perfAction);
             }
             else
             {

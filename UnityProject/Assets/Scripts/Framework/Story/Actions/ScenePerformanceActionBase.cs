@@ -3,22 +3,21 @@ using System.Collections;
 
 public abstract class ScenePerformanceActionBase
 {
-    private ScenePerformance _board;
+    // Completed
+    // Attatched w/No Update
+    // Needs Update
 
-    internal void Link(ScenePerformance board)
+    public bool BlocksStory;
+
+    public bool Started;
+    public bool Finished;
+
+    public virtual void Start() { Started = true; }
+
+    public virtual void Update() {}
+
+    public virtual void Finish()
     {
-        _board = board;
-    }
-
-    public void Update()
-    {
-        TellStory();
-    }
-
-    protected abstract void TellStory();
-
-    public virtual void RaiseComplete()
-    {
-        _board.PartCompleted();
+        Finished = true;
     }
 }

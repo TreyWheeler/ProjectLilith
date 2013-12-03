@@ -48,6 +48,11 @@ public class Ability
         performance.Perform();
     }
 
+    public void Interupt()
+    {
+        performance.Interupt();
+    }
+
     internal void Update()
     {
         if (performance != null)

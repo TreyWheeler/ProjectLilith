@@ -77,19 +77,24 @@ public class Character : MonoBehaviour
 
     void HealthChanged(Stat<LilithStats> healthStat, StatChangedArgs changedArgs)
     {
-        if (!IsAlive)
-        {
-            this.gameObject.animation.CrossFade("Death");
-            this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
-            var clip = Resources.Load("Sounds/m die 03") as AudioClip;
-            audio.PlayOneShot(clip);
-        }
-        else
-        {
+        if (IsAlive)
+        {// Taking Damage
             if (timeSinceLastHit > 2f)
             {
                 var clip = Resources.Load("sounds/moomph04") as AudioClip;
                 audio.PlayOneShot(clip);
+            }
+        }
+        else
+        {// Dead
+            this.gameObject.animation.CrossFade("Death");
+            this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+            var clip = Resources.Load("Sounds/m die 03") as AudioClip;
+            audio.PlayOneShot(clip);
+
+            if(_currentAction != null)
+            {
+                _currentAction.Ability.Interupt();
             }
         }
 
@@ -104,8 +109,16 @@ public class Character : MonoBehaviour
             return;
 
         if (AbilityQue.Count > 0 && _currentAction == null)
-        {
+        {            
             _currentAction = AbilityQue.Dequeue();
+
+            Character target = _currentAction.DestinationGameObject.GetComponent<Character>();
+            if(!target.IsAlive)
+            {
+                _currentAction = null;
+                return;
+            }
+
             _currentAction.Ability.AbilityCompleted += (ability) =>
             {
                 _currentAction = null;

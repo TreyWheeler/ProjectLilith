@@ -151,7 +151,7 @@ public abstract class Tween<T> : ITimedTask
         set
         {
             if(value < 0)
-                throw new IndexOutOfRangeException("Duration cannot be let than 0");
+                throw new IndexOutOfRangeException("Duration cannot be less than 0");
 
             _duration = value;
         }
