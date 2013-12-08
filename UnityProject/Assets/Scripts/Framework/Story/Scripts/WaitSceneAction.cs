@@ -7,6 +7,6 @@ public class WaitSceneAction : SceneActionBase
 
     public WaitSceneAction()
     {
-        this.BlocksStory = "True";
+        this.BlocksStory = true;
     }
 }

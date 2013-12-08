@@ -6,7 +6,7 @@ using System.Linq;
 
 public class Character : MonoBehaviour
 {
-    public Ability[] MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack), new Ability(LilithAbilities.TurtleBoom) };
+    public Ability[] MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack), new Ability(LilithAbilities.Blizzard), new Ability(LilithAbilities.Fireball) };
     public LilithStatList Stats = new LilithStatList();
     public Queue<IntendedAction> AbilityQue = new Queue<IntendedAction>();
     private IntendedAction _currentAction;

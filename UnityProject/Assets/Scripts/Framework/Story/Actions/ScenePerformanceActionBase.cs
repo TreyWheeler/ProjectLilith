@@ -6,6 +6,7 @@ public abstract class ScenePerformanceActionBase
     // Completed
     // Attatched w/No Update
     // Needs Update
+    public string Name;
 
     public bool BlocksStory;
 
@@ -14,10 +15,15 @@ public abstract class ScenePerformanceActionBase
 
     public virtual void Start() { Started = true; }
 
-    public virtual void Update() {}
+    public virtual void Update() { }
 
     public virtual void Finish()
     {
         Finished = true;
+    }
+
+    public virtual T GetPart<T>(string partName) where T : class
+    {
+        return default(T);
     }
 }
