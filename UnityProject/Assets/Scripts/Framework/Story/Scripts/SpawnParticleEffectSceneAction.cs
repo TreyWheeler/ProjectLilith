@@ -15,4 +15,5 @@ public class SpawnParticleEffectSceneAction : SceneActionBase
     public string ParticleSize;
     public string ParticleSpeed;
     public Vector3 RandomVelocity;
+    public Vector3 LocalPosition;
 }

@@ -22,22 +22,22 @@ public static class SceneDirector
             {
                 var actionScript = (RunAnimationSceneAction)scriptAction;
 
-                bool runOnce = ReadExpression<bool>(actionScript.RunOnce, sceneTranslator);
+                bool runOnce = ReadExpression<bool>(actionScript.RunOnce, sceneTranslator, performance);
 
                 if (runOnce)
                 {
                     RunAnimationOnceScenePerformanceAction perfAction = new RunAnimationOnceScenePerformanceAction();
                     perfAction.BlocksStory = actionScript.BlocksStory;
-                    perfAction.Actor = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
-                    perfAction.Animation = ReadExpression<string>(actionScript.Animation, sceneTranslator);
+                    perfAction.Actor = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator, performance);
+                    perfAction.Animation = ReadExpression<string>(actionScript.Animation, sceneTranslator, performance);
                     action = perfAction;
                 }
                 else
                 {
                     RunAnimationScenePerformanceAction perfAction = new RunAnimationScenePerformanceAction();
                     perfAction.BlocksStory = actionScript.BlocksStory;
-                    perfAction.Actor = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
-                    perfAction.Animation = ReadExpression<string>(actionScript.Animation, sceneTranslator);
+                    perfAction.Actor = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator, performance);
+                    perfAction.Animation = ReadExpression<string>(actionScript.Animation, sceneTranslator, performance);
                     action = perfAction;
                 }
             }
@@ -46,8 +46,8 @@ public static class SceneDirector
                 var actionScript = (PlaySoundSceneAction)scriptAction;
                 SoundEffectScenePerformanceAction perfAction = new SoundEffectScenePerformanceAction();
                 perfAction.BlocksStory = actionScript.BlocksStory;
-                perfAction.AudioFile = ReadExpression<AudioClip>(actionScript.Sound, sceneTranslator);
-                perfAction.AudioSourceActor = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
+                perfAction.AudioFile = ReadExpression<AudioClip>(actionScript.Sound, sceneTranslator, performance);
+                perfAction.AudioSourceActor = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator, performance);
                 action = perfAction;
             }
             else if (scriptAction is MoveSceneAction)
@@ -57,9 +57,9 @@ public static class SceneDirector
                     var actionScript = (MoveToLocationSceneAction)scriptAction;
                     MoveToLocationScenePerformanceAction perfAction = new MoveToLocationScenePerformanceAction();
                     perfAction.BlocksStory = actionScript.BlocksStory;
-                    perfAction.WhoToMove = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
-                    perfAction.Location = ReadExpression<Vector3>(actionScript.Location, sceneTranslator);
-                    perfAction.Speed = ReadExpression<float>(actionScript.Speed, sceneTranslator);
+                    perfAction.WhoToMove = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator, performance);
+                    perfAction.Location = ReadExpression<Vector3>(actionScript.Location, sceneTranslator, performance);
+                    perfAction.Speed = ReadExpression<float>(actionScript.Speed, sceneTranslator, performance);
                     action = perfAction;
                 }
                 else if (scriptAction is MoveToEntitySceneAction)
@@ -67,10 +67,10 @@ public static class SceneDirector
                     var actionScript = (MoveToEntitySceneAction)scriptAction;
                     MoveToGameObjectScenePerformanceAction perfAction = new MoveToGameObjectScenePerformanceAction();
                     perfAction.BlocksStory = actionScript.BlocksStory;
-                    perfAction.WhoToMove = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
-                    perfAction.Target = ReadExpression<GameObject>(actionScript.Entity, sceneTranslator);
-                    perfAction.Speed = ReadExpression<float>(actionScript.Speed, sceneTranslator);
-                    perfAction.HowClose = ReadExpression<float>(actionScript.HowClose, sceneTranslator);
+                    perfAction.WhoToMove = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator, performance);
+                    perfAction.Target = ReadExpression<GameObject>(actionScript.Entity, sceneTranslator, performance);
+                    perfAction.Speed = ReadExpression<float>(actionScript.Speed, sceneTranslator, performance);
+                    perfAction.HowClose = ReadExpression<float>(actionScript.HowClose, sceneTranslator, performance);
                     action = perfAction;
 
                 }
@@ -79,11 +79,11 @@ public static class SceneDirector
                     var actionScript = (MoveInRangeOfEntitySceneAction)scriptAction;
                     MoveInRangeOfGameObjectScenePerformanceAction perfAction = new MoveInRangeOfGameObjectScenePerformanceAction();
                     perfAction.BlocksStory = actionScript.BlocksStory;
-                    perfAction.WhoToMove = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
-                    perfAction.Target = ReadExpression<GameObject>(actionScript.Entity, sceneTranslator);
-                    perfAction.Speed = ReadExpression<float>(actionScript.Speed, sceneTranslator);
-                    perfAction.MinRange = ReadExpression<float>(actionScript.MinDistance, sceneTranslator);
-                    perfAction.MaxRange = ReadExpression<float>(actionScript.MaxDistance, sceneTranslator);
+                    perfAction.WhoToMove = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator, performance);
+                    perfAction.Target = ReadExpression<GameObject>(actionScript.Entity, sceneTranslator, performance);
+                    perfAction.Speed = ReadExpression<float>(actionScript.Speed, sceneTranslator, performance);
+                    perfAction.MinRange = ReadExpression<float>(actionScript.MinDistance, sceneTranslator, performance);
+                    perfAction.MaxRange = ReadExpression<float>(actionScript.MaxDistance, sceneTranslator, performance);
                     action = perfAction;
 
                 }
@@ -97,9 +97,9 @@ public static class SceneDirector
                 var actionScript = (AdjustStatSceneAction)scriptAction;
                 AdjustStatScenePerformanceAction perfAction = new AdjustStatScenePerformanceAction();
                 perfAction.BlocksStory = actionScript.BlocksStory;
-                perfAction.Stat = ReadExpression<Stat<LilithStats>>(actionScript.StatToAdjust, sceneTranslator);
-                perfAction.Adjustment = ReadExpression<float>(actionScript.Adjustment, sceneTranslator);
-                perfAction.Seconds = ReadExpression<float>(actionScript.OverSeconds, sceneTranslator);
+                perfAction.Stat = ReadExpression<Stat<LilithStats>>(actionScript.StatToAdjust, sceneTranslator, performance);
+                perfAction.Adjustment = ReadExpression<float>(actionScript.Adjustment, sceneTranslator, performance);
+                perfAction.Seconds = ReadExpression<float>(actionScript.OverSeconds, sceneTranslator, performance);
                 action = perfAction;
             }
             else if (scriptAction is SpawnParticleEffectSceneAction)
@@ -107,19 +107,20 @@ public static class SceneDirector
                 var actionScript = (SpawnParticleEffectSceneAction)scriptAction;
                 SpawnParticleEffectScenePerformanceAction perfAction = new SpawnParticleEffectScenePerformanceAction();
                 perfAction.BlocksStory = actionScript.BlocksStory;
-                perfAction.Duration = ReadExpression<float>(actionScript.Duration, sceneTranslator);
-                perfAction.Actor = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator);
-                perfAction.Target = ReadExpression<GameObject>(actionScript.Target, sceneTranslator);
-                perfAction.ParticlesPerSecond = ReadExpression<float>(actionScript.ParticlesPerSecond, sceneTranslator);
+                perfAction.Duration = ReadExpression<float>(actionScript.Duration, sceneTranslator, performance);
+                perfAction.Actor = ReadExpression<GameObject>(actionScript.Actor, sceneTranslator, performance);
+                perfAction.Target = ReadExpression<GameObject>(actionScript.Target, sceneTranslator, performance);
+                perfAction.ParticlesPerSecond = ReadExpression<float>(actionScript.ParticlesPerSecond, sceneTranslator, performance);
                 perfAction.Color1 = actionScript.Color1;
                 perfAction.Color2 = actionScript.Color2;
                 perfAction.Color3 = actionScript.Color3;
                 perfAction.Color4 = actionScript.Color4;
                 perfAction.Color5 = actionScript.Color5;
+                perfAction.LocalPosition = actionScript.LocalPosition;
                 perfAction.RandomVelocity = actionScript.RandomVelocity;
-                perfAction.ParticleLifeTime = ReadExpression<float>(actionScript.ParticleLifeTime, sceneTranslator);
-                perfAction.ParticleSize = ReadExpression<float>(actionScript.ParticleSize, sceneTranslator);
-                perfAction.ParticleSpeed = ReadExpression<float>(actionScript.ParticleSpeed, sceneTranslator);
+                perfAction.ParticleLifeTime = ReadExpression<float>(actionScript.ParticleLifeTime, sceneTranslator, performance);
+                perfAction.ParticleSize = ReadExpression<float>(actionScript.ParticleSize, sceneTranslator, performance);
+                perfAction.ParticleSpeed = ReadExpression<float>(actionScript.ParticleSpeed, sceneTranslator, performance);
                 action = perfAction;
             }
             else if (scriptAction is WaitSceneAction)
@@ -127,14 +128,22 @@ public static class SceneDirector
                 var actionScript = (WaitSceneAction)scriptAction;
                 WaitScenePerformanceAction perfAction = new WaitScenePerformanceAction();
                 perfAction.BlocksStory = actionScript.BlocksStory;
-                perfAction.Seconds = ReadExpression<float>(actionScript.Seconds, sceneTranslator);
+                perfAction.Seconds = ReadExpression<float>(actionScript.Seconds, sceneTranslator, performance);
                 action = perfAction;
+            }
+            else if (scriptAction is FinishPartSceneAction)
+            {
+                var actionScript = (FinishPartSceneAction)scriptAction;
+                var finishAction = new FinishPartScenePerformanceAction();
+                finishAction.DelayBeforeFinish = ReadExpression<float>(actionScript.DelayBeforeFinish, sceneTranslator, performance);
+                finishAction.PartToFinish = ReadExpression<ScenePerformanceActionBase>(actionScript.PartToFinish, sceneTranslator, performance);
+                action = finishAction;
             }
             else
             {
                 throw new NotImplementedException();
             }
-            
+
             action.Name = scriptAction.Name;
 
             performance.Que(action);
@@ -143,27 +152,32 @@ public static class SceneDirector
         return performance;
     }
 
-    private static T ReadExpression<T>(string expression, ISceneTranslator sceneTranslator)
+    private static T ReadExpression<T>(string expression, ISceneTranslator sceneTranslator, ScenePerformance performance)
     {
-        // 5                                    Value
-        // {Caster}                               Actor
-        // Caster[Character].MoveSpeed          Actor[Component].Property
+        // 5                                    
+        // {Caster}                               
+        // {Caster}<Character>.MoveSpeed          
+
+        if (expression == null)
+            return default(T);
 
         Type typeOfT = typeof(T);
+
+        // Contains Selector
         if (expression.Contains('{'))
         {// Is an expression
 
-            if (expression.EndsWith("}"))
-            {
-                string memberExpression = GetPropertyExpression(expression, 0);
+            //if (expression.EndsWith("}"))
+            //{
+            //    string memberExpression = GetPropertyExpression(expression, 0);
 
-                return GetActor(memberExpression, sceneTranslator).JustCastItDammit<T>();
-            }
+            //    return GetActor(memberExpression, sceneTranslator).JustCastItDammit<T>();
+            //}
 
             if (typeOfT == typeof(System.Single))
-                expression = EvaluatePrimitive(expression, sceneTranslator);
+                expression = EvaluatePrimitive(expression, sceneTranslator, performance);
             else
-                return (T)EvaluateObject(expression, sceneTranslator);
+                return (T)EvaluateObject(expression, sceneTranslator, performance);
         }
 
 
@@ -194,11 +208,11 @@ public static class SceneDirector
         }
     }
 
-    private static string EvaluatePrimitive(string expression, ISceneTranslator sceneTranslator)
+    private static string EvaluatePrimitive(string expression, ISceneTranslator sceneTranslator, ScenePerformance performance)
     {
         // 60 + ({Caster}<Character>.Stats[(23 + 3)].CurrentValue * 5)
 
-        expression = EvaluateExpressionsParens(expression, sceneTranslator);
+        expression = EvaluateExpressionsParens(expression, sceneTranslator, performance);
 
         // Translate Member Values
         for (int i = 0; i < expression.Length; i++)
@@ -207,7 +221,7 @@ public static class SceneDirector
             if (character == '{')
             {
                 string memberExpression = GetPropertyExpression(expression, i);
-                object value = GetExpressionValue(expression, sceneTranslator, memberExpression);
+                object value = GetExpressionValue(sceneTranslator, memberExpression, performance);
                 expression = expression.Replace(memberExpression, value.ToString());
             }
         }
@@ -216,7 +230,7 @@ public static class SceneDirector
         return new Expression(expression).Evaluate().ToString();
     }
 
-    private static string EvaluateExpressionsParens(string expression, ISceneTranslator sceneTranslator)
+    private static string EvaluateExpressionsParens(string expression, ISceneTranslator sceneTranslator, ScenePerformance performance)
     {
         // Evaluate Parens First
         for (int i = 0; i < expression.Length; i++)
@@ -226,31 +240,83 @@ public static class SceneDirector
             if (character == '(')
             {
                 string parenExpression = GetParenBody(expression, i);
-                string parenValue = EvaluatePrimitive(parenExpression, sceneTranslator);
+                string parenValue = EvaluatePrimitive(parenExpression, sceneTranslator, performance);
                 expression = expression.Replace(parenExpression, parenValue);
             }
         }
         return expression;
     }
 
-    private static object GetExpressionValue(string expression, ISceneTranslator sceneTranslator, string memberExpression)
+    private static object GetExpressionValue(ISceneTranslator sceneTranslator, string expression, ScenePerformance performance)
     {
-        GameObject gameObject = GetActor(memberExpression, sceneTranslator);
+        // TODO: We should probably change the expression to be
+        // {Actor<Component>} instead of
+        // {Actor}<Component> so that we can have the selector return everything prior to property chain
 
-        object componentObj = GetComponent(memberExpression, gameObject);
+        // TODO: We should probably change the component resolution to be
+        // {Actor}.GetComponent(Component)
+        // {Actor<Component>}
+        // So that we have method support and move more towards our syntax looking like C# and thus 2nd nature
 
-        int beginOfPropertyChain = memberExpression.IndexOf('>') + 2;
+        int expressionStart = 2;
+        int expressionEnd = expression.IndexOf('}') - 1;
 
-        string propertyChainExpression = memberExpression.Substring(beginOfPropertyChain);
+        if (expression[1] == '#')
+        {// Get by ID
 
-        return GetValueFromPropertyChain(propertyChainExpression, componentObj);
+
+            // {#Trey}                                 |   {#Trey}.Property
+            // 0123456                                 |   0123456789012345
+
+            // name = "{#Trey}".Substring(2, 5-2+1);   |   name = "{#Trey}.Property".Substring(2, 5-2+1);
+            // name = "{#Trey}".Substring(2, 4);       |   name = "{#Trey}.Property".Substring(2, 4);
+            // name = "Trey";                          |   name = "Trey";
+            String name = expression.Substring(expressionStart, expressionEnd - expressionStart + 1);
+
+            object obj = performance.GetBy(name);
+
+            // "{#Trey}".Length                        |   "{#Trey}.Property".Length
+            // 7 > 5 + 2                               |   16 > 5 + 2
+            // 7 > 7                                   |   16 > 7
+            if (expression.Length > expressionEnd + 2)
+            {// There is still more to parse
+                int indexOfPropertyChainStart = expressionEnd + 3;
+
+                String propertyChainExpression = expression.Substring(indexOfPropertyChainStart);
+
+                return GetValueFromPropertyChain(propertyChainExpression, obj);
+            }
+            else
+            {
+                return obj;
+            }
+        }
+        else
+        {
+            GameObject gameObject = GetActor(expression, sceneTranslator);
+
+            if (expression.Length > expressionEnd + 2)
+            {
+                object componentObj = GetComponent(expression, gameObject);
+
+                int beginOfPropertyChain = expression.IndexOf('>') + 2;
+
+                string propertyChainExpression = expression.Substring(beginOfPropertyChain);
+
+                return GetValueFromPropertyChain(propertyChainExpression, componentObj);
+            }
+            else
+            {
+                return gameObject;
+            }
+        }
     }
 
-    private static object EvaluateObject(string expression, ISceneTranslator sceneTranslator)
+    private static object EvaluateObject(string expression, ISceneTranslator sceneTranslator, ScenePerformance performance)
     {
         // {Caster}<Character>.Stats[(23 + 3)]
 
-        expression = EvaluateExpressionsParens(expression, sceneTranslator);
+        expression = EvaluateExpressionsParens(expression, sceneTranslator, performance);
 
         // Translate Member Values
         for (int i = 0; i < expression.Length; i++)
@@ -259,7 +325,7 @@ public static class SceneDirector
             if (character == '{')
             {
                 string memberExpression = GetPropertyExpression(expression, i);
-                return GetExpressionValue(expression, sceneTranslator, memberExpression);
+                return GetExpressionValue(sceneTranslator, memberExpression, performance);
             }
         }
         return null;

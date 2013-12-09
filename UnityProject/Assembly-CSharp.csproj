@@ -81,6 +81,7 @@
      <Compile Include="Assets\Scripts\Framework\Stats\StatList.cs" />
      <Compile Include="Assets\Scripts\Framework\Stats\StatusEffect.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\Actions\AdjustStatScenePerformanceAction.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\Actions\FinishPartScenePerformanceAction.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\Actions\MoveToScenePerformanceAction.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\Actions\RunAnimationScenePerformanceAction.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\Actions\ScenePerformanceActionBase.cs" />
@@ -89,6 +90,7 @@
      <Compile Include="Assets\Scripts\Framework\Story\Actions\WaitScenePerformanceAction.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\SceneActionList.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\Scripts\AdjustStatSceneAction.cs" />
+     <Compile Include="Assets\Scripts\Framework\Story\Scripts\FinishPartSceneAction.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\Scripts\MoveSceneAction.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\Scripts\PlaySoundSceneAction.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\Scripts\RunAnimationSceneAction.cs" />

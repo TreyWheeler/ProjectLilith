@@ -22,8 +22,4 @@ public abstract class ScenePerformanceActionBase
         Finished = true;
     }
 
-    public virtual T GetPart<T>(string partName) where T : class
-    {
-        return default(T);
-    }
 }

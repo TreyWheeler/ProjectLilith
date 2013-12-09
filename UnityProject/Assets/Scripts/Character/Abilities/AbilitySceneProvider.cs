@@ -81,14 +81,15 @@ public static class AbilitySceneProvider
                     emitter.Actor = "{Caster}";
                     emitter.Target = "{Target}";
                     emitter.Duration = "3";
-                    emitter.ParticlesPerSecond = "1500";
+                    emitter.ParticlesPerSecond = "3500";
+                    emitter.LocalPosition = Vector3.zero;
                     emitter.Color1 = Color.white;
                     emitter.Color2 = Color.white;
                     emitter.Color3 = Color.white;
                     emitter.Color4 = Color.white;
                     emitter.Color5 = Color.white;
                     emitter.ParticleLifeTime = ".5";
-                    emitter.ParticleSize = ".8";
+                    emitter.ParticleSize = ".4";
                     emitter.ParticleSpeed = "20";
                     emitter.RandomVelocity = new Vector3(10, 10, 10);
                     blizzard.Add(emitter);
@@ -124,12 +125,25 @@ public static class AbilitySceneProvider
 
                     SceneActionList fireball = new SceneActionList();
 
+                    RunAnimationSceneAction cast = new RunAnimationSceneAction();
+                    cast.RunOnce = "True";
+                    cast.Actor = "{Caster}";
+                    cast.Animation = "Attack02";
+                    fireball.Add(cast);
+
+
+                    var sound = new PlaySoundSceneAction();
+                    sound.Sound = "Sounds/fyrbal02";
+                    sound.Actor = "{Caster}";
+                    fireball.Add(sound);
+
+
                     emitter = new SpawnParticleEffectSceneAction();
-                    emitter.Name = "Fireball";
+                    emitter.BlocksStory = true;
                     emitter.Actor = "{Caster}";
-                    emitter.Target = "{Target}";
-                    emitter.Duration = "100";
-                    emitter.ParticlesPerSecond = "600";
+                    emitter.Duration = "1";
+                    emitter.ParticlesPerSecond = "60";
+                    emitter.LocalPosition = new Vector3(0, 1, 0);
                     emitter.Color1 = new Color(.5f, 0f, 1f, .2f);
                     emitter.Color2 = new Color(0, .5f, 1f, .5f);
                     emitter.Color3 = new Color(1f, .65f, 0f, 1f);
@@ -138,15 +152,66 @@ public static class AbilitySceneProvider
                     emitter.ParticleLifeTime = "1";
                     emitter.ParticleSize = ".5";
                     emitter.ParticleSpeed = "0";
+                    emitter.RandomVelocity = new Vector3(5, 0, 5);
                     fireball.Add(emitter);
 
-                    //movePart = new MoveToEntitySceneAction();
-                    //movePart.BlocksStory = true;
-                    //movePart.Actor = "{.Fireball}.Emitter";
-                    //movePart.Speed = "5";
-                    //movePart.HowClose = "0";
-                    //movePart.Entity = "{Target}";
-                    //fireball.Add(movePart);
+                    idleAnim = new RunAnimationSceneAction();
+                    idleAnim.Actor = "{Caster}";
+                    idleAnim.Animation = "Idle";
+                    fireball.Add(idleAnim);
+
+                    sound = new PlaySoundSceneAction();
+                    sound.Sound = "Sounds/fyrbal01";
+                    sound.Actor = "{Caster}";
+                    fireball.Add(sound);
+
+                    emitter = new SpawnParticleEffectSceneAction();
+                    emitter.Name = "Fireball";
+                    emitter.Actor = "{Caster}";
+                    emitter.Target = "{Target}";
+                    emitter.Duration = "100";
+                    emitter.ParticlesPerSecond = "6000";
+                    emitter.LocalPosition = new Vector3(0, 1, 0);
+                    emitter.Color1 = new Color(.5f, .4f, .7f, .2f);
+                    emitter.Color2 = new Color(.8f, .5f, .3f, .5f);
+                    emitter.Color3 = new Color(1f, .65f, 0f, 1f);
+                    emitter.Color4 = new Color(1f, .35f, 0f, .6f);
+                    emitter.Color5 = new Color(1f, 0f, 0f, .2f);
+                    emitter.RandomVelocity = new Vector3(3, 3, 3);
+                    emitter.ParticleLifeTime = ".65";
+                    emitter.ParticleSize = ".5";
+                    emitter.ParticleSpeed = "0";
+                    fireball.Add(emitter);
+
+                    movePart = new MoveToEntitySceneAction();
+                    movePart.BlocksStory = true;
+                    movePart.Actor = "{#Fireball}.Emitter";
+                    movePart.Speed = "10";
+                    movePart.HowClose = "0";
+                    movePart.Entity = "{Target}";
+                    fireball.Add(movePart);
+
+                    sound = new PlaySoundSceneAction();
+                    sound.Sound = "Sounds/exp01";
+                    sound.Actor = "{Target}";
+                    fireball.Add(sound);
+
+                    dmg = new AdjustStatSceneAction();
+                    dmg.Adjustment = "{Caster}<Character>.Stats[LilithStats.Strength].CurrentValue * -5";
+                    dmg.StatToAdjust = "{Target}<Character>.Stats[LilithStats.Health]";
+                    fireball.Add(dmg);
+
+                    dmg = new AdjustStatSceneAction();
+                    dmg.BlocksStory = true;
+                    dmg.Adjustment = "{Caster}<Character>.Stats[LilithStats.Strength].CurrentValue * -5";
+                    dmg.StatToAdjust = "{Target}<Character>.Stats[LilithStats.Health]";
+                    dmg.OverSeconds = "1";
+                    fireball.Add(dmg);
+
+                    FinishPartSceneAction finisher = new FinishPartSceneAction();
+                    finisher.PartToFinish = "{#Fireball}";
+                    finisher.DelayBeforeFinish = "1";
+                    fireball.Add(finisher);
 
                     loadedScenes.Add(ability, fireball);
 

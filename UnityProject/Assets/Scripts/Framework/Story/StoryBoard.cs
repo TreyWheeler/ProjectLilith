@@ -12,6 +12,17 @@ public class ScenePerformance
 
     bool wasCompleted = false;
 
+    public ScenePerformanceActionBase GetBy(string name)
+    {
+        foreach (var item in _que)
+        {
+            if (item.Name == name)
+                return item;
+        }
+
+        return null;
+    }
+
     public void Perform()
     {
         if (wasCompleted)
@@ -56,7 +67,7 @@ public class ScenePerformance
             for (int i = 0; i < _que.Count; i++)
             {
                 var item = _que[i];
-                
+
                 if (item.Started && !item.BlocksStory)
                     continue;
 

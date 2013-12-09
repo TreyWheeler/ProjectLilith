@@ -16,17 +16,25 @@ public class SpawnParticleEffectScenePerformanceAction : ScenePerformanceActionB
     public float ParticleSize;
     public float ParticleSpeed;
     public Vector3 RandomVelocity;
+    public Vector3 LocalPosition;
 
-    GameObject particleObj;
+    GameObject particleObj = new GameObject();
+
+    public GameObject Emitter
+    {
+        get
+        {
+            return particleObj;
+        }
+    }
 
     public override void Start()
     {
         base.Start();
 
-        particleObj = new GameObject();
         particleObj.name = Name != null ? Name : "Script Generated Particle Emitter";
         particleObj.transform.parent = Actor.transform;
-        particleObj.transform.localPosition = Vector3.zero;
+        particleObj.transform.localPosition = LocalPosition;
         particleObj.transform.localRotation = Quaternion.identity;
 
         var emitter = (ParticleEmitter)particleObj.AddComponent("EllipsoidParticleEmitter");
@@ -55,16 +63,6 @@ public class SpawnParticleEffectScenePerformanceAction : ScenePerformanceActionB
         });
     }
 
-    public override T GetPart<T>(string partName)
-    {
-        switch(partName)
-        {
-            case "Emitter":
-                return particleObj as T;
-        }
-
-        return base.GetPart<T>(partName);
-    }
 
     public override void Update()
     {
