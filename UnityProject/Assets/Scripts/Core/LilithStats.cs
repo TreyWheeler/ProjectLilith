@@ -6,7 +6,8 @@ public enum LilithStats
 {
     Health = 1,
     MoveSpeed = 2,
-    Strength = 3
+    Strength = 3,
+    Intelligence = 4
 }
 
 public static class LilithStatExtensions

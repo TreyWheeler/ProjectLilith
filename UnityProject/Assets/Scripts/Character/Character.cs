@@ -6,7 +6,7 @@ using System.Linq;
 
 public class Character : MonoBehaviour
 {
-    public Ability[] MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack), new Ability(LilithAbilities.Blizzard), new Ability(LilithAbilities.Fireball), new Ability(LilithAbilities.Heal) };
+    public Ability[] MyAbilities;// = new Ability[] { new Ability(LilithAbilities.Attack), new Ability(LilithAbilities.Blizzard), new Ability(LilithAbilities.Fireball), new Ability(LilithAbilities.Heal) };
     public LilithStatList Stats = new LilithStatList();
     public Queue<IntendedAction> AbilityQue = new Queue<IntendedAction>();
     private IntendedAction _currentAction;
@@ -30,25 +30,45 @@ public class Character : MonoBehaviour
 
     void Start()
     {
-        _radial = this.gameObject.EnsureComponent<AbilityRadial>();
 
-        _radial.Abilities = MyAbilities;
 
         Arch = Resources.Load("Images/CrescentArch") as Texture;
 
-        Stats.Add(LilithStats.Health, new Stat<LilithStats>(1000));
-        Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
-        Stats.Add(LilithStats.Strength, new Stat<LilithStats>(50));
+
+
+        switch (Class)
+        {
+            case CombatClass.Wizard:
+                Stats.Add(LilithStats.Health, new Stat<LilithStats>(1000));
+                Stats.Add(LilithStats.Intelligence, new Stat<LilithStats>(75));
+                Stats.Add(LilithStats.Strength, new Stat<LilithStats>(12));
+                Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
+                MyAbilities = new Ability[] { new Ability(LilithAbilities.Blizzard), new Ability(LilithAbilities.Fireball) };
+                break;
+            case CombatClass.Melee:
+                Stats.Add(LilithStats.Health, new Stat<LilithStats>(1000));
+                Stats.Add(LilithStats.Intelligence, new Stat<LilithStats>(14));
+                Stats.Add(LilithStats.Strength, new Stat<LilithStats>(50));
+                Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(34f));
+                MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack) };
+                this.gameObject.animation.CrossFade("DrawBlade");
+                var state = this.gameObject.animation.PlayQueued("Attack_standy", QueueMode.CompleteOthers);
+                state.wrapMode = WrapMode.Loop;
+                break;
+            case CombatClass.Support:
+                Stats.Add(LilithStats.Health, new Stat<LilithStats>(1000));
+                Stats.Add(LilithStats.Intelligence, new Stat<LilithStats>(100));
+                Stats.Add(LilithStats.Strength, new Stat<LilithStats>(6));
+                Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
+                MyAbilities = new Ability[] { new Ability(LilithAbilities.Heal) };
+                break;
+            default:
+                throw new NotImplementedException();
+        }
 
         Stats.GetHealth().Changed += HealthChanged;
-
-
-        if (Class == CombatClass.Melee)
-        {
-            this.gameObject.animation.CrossFade("DrawBlade");
-            var state = this.gameObject.animation.PlayQueued("Attack_standy", QueueMode.CompleteOthers);
-            state.wrapMode = WrapMode.Loop;
-        }
+        _radial = this.gameObject.EnsureComponent<AbilityRadial>();
+        _radial.Abilities = MyAbilities;
 
         foreach (var childElement in this.gameObject.GetChildren())
         {
@@ -92,7 +112,7 @@ public class Character : MonoBehaviour
             var clip = Resources.Load("Sounds/m die 03") as AudioClip;
             audio.PlayOneShot(clip);
 
-            if(_currentAction != null)
+            if (_currentAction != null)
             {
                 _currentAction.Ability.Interupt();
             }
@@ -109,11 +129,11 @@ public class Character : MonoBehaviour
             return;
 
         if (AbilityQue.Count > 0 && _currentAction == null)
-        {            
+        {
             _currentAction = AbilityQue.Dequeue();
 
             Character target = _currentAction.DestinationGameObject.GetComponent<Character>();
-            if(!target.IsAlive)
+            if (!target.IsAlive)
             {
                 _currentAction = null;
                 return;

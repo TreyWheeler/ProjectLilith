@@ -106,7 +106,7 @@ public static class AbilitySceneProvider
 
                     dmg = new AdjustStatSceneAction();
                     dmg.BlocksStory = true;
-                    dmg.Adjustment = "{Caster}<Character>.Stats[LilithStats.Strength].CurrentValue * -10";
+                    dmg.Adjustment = "({Caster}<Character>.Stats[LilithStats.Intelligence].CurrentValue - ({Target}<Character>.Stats[LilithStats.Intelligence].CurrentValue / 2)) * -10";
                     dmg.StatToAdjust = "{Target}<Character>.Stats[LilithStats.Health]";
                     dmg.OverSeconds = "2.8";
                     blizzard.Add(dmg);
@@ -122,7 +122,6 @@ public static class AbilitySceneProvider
                     break;
 
                 case LilithAbilities.Fireball:
-
                     SceneActionList fireball = new SceneActionList();
 
                     RunAnimationSceneAction cast = new RunAnimationSceneAction();
@@ -131,12 +130,10 @@ public static class AbilitySceneProvider
                     cast.Animation = "Attack02";
                     fireball.Add(cast);
 
-
                     var sound = new PlaySoundSceneAction();
                     sound.Sound = "Sounds/fyrbal02";
                     sound.Actor = "{Caster}";
                     fireball.Add(sound);
-
 
                     emitter = new SpawnParticleEffectSceneAction();
                     emitter.BlocksStory = true;
@@ -197,13 +194,13 @@ public static class AbilitySceneProvider
                     fireball.Add(sound);
 
                     dmg = new AdjustStatSceneAction();
-                    dmg.Adjustment = "{Caster}<Character>.Stats[LilithStats.Strength].CurrentValue * -5";
+                    dmg.Adjustment = "{Caster}<Character>.Stats[LilithStats.Intelligence].CurrentValue * -5";
                     dmg.StatToAdjust = "{Target}<Character>.Stats[LilithStats.Health]";
                     fireball.Add(dmg);
 
                     dmg = new AdjustStatSceneAction();
                     dmg.BlocksStory = true;
-                    dmg.Adjustment = "{Caster}<Character>.Stats[LilithStats.Strength].CurrentValue * -5";
+                    dmg.Adjustment = "{Caster}<Character>.Stats[LilithStats.Intelligence].CurrentValue * -5";
                     dmg.StatToAdjust = "{Target}<Character>.Stats[LilithStats.Health]";
                     dmg.OverSeconds = "1";
                     fireball.Add(dmg);
@@ -214,7 +211,6 @@ public static class AbilitySceneProvider
                     fireball.Add(finisher);
 
                     loadedScenes.Add(ability, fireball);
-
                     break;
 
                 case LilithAbilities.Heal:
@@ -226,12 +222,10 @@ public static class AbilitySceneProvider
                     cast.Animation = "Attack02";
                     heal.Add(cast);
 
-
                     sound = new PlaySoundSceneAction();
                     sound.Sound = "Sounds/birdseye";
                     sound.Actor = "{Caster}";
                     heal.Add(sound);
-
 
                     emitter = new SpawnParticleEffectSceneAction();
                     emitter.BlocksStory = true;
@@ -254,7 +248,6 @@ public static class AbilitySceneProvider
                     idleAnim.Actor = "{Caster}";
                     idleAnim.Animation = "Idle";
                     heal.Add(idleAnim);
-
                     
                     sound = new PlaySoundSceneAction();
                     sound.Sound = "Sounds/c light";
@@ -293,7 +286,7 @@ public static class AbilitySceneProvider
                     heal.Add(sound);
 
                     AdjustStatSceneAction health = new AdjustStatSceneAction();
-                    health.Adjustment = "{Caster}<Character>.Stats[LilithStats.Strength].CurrentValue * 10";
+                    health.Adjustment = "{Caster}<Character>.Stats[LilithStats.Intelligence].CurrentValue * 10";
                     health.StatToAdjust = "{Target}<Character>.Stats[LilithStats.Health]";
                     heal.Add(health);
                     
