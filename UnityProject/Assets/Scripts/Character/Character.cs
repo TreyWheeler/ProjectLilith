@@ -30,12 +30,7 @@ public class Character : MonoBehaviour
 
     void Start()
     {
-
-
         Arch = Resources.Load("Images/CrescentArch") as Texture;
-
-
-
         switch (Class)
         {
             case CombatClass.Wizard:
