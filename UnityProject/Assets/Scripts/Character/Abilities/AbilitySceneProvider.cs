@@ -217,6 +217,110 @@ public static class AbilitySceneProvider
 
                     break;
 
+                case LilithAbilities.Heal:
+                     SceneActionList heal = new SceneActionList();
+
+                    cast = new RunAnimationSceneAction();
+                    cast.RunOnce = "True";
+                    cast.Actor = "{Caster}";
+                    cast.Animation = "Attack02";
+                    heal.Add(cast);
+
+
+                    sound = new PlaySoundSceneAction();
+                    sound.Sound = "Sounds/birdseye";
+                    sound.Actor = "{Caster}";
+                    heal.Add(sound);
+
+
+                    emitter = new SpawnParticleEffectSceneAction();
+                    emitter.BlocksStory = true;
+                    emitter.Actor = "{Caster}";
+                    emitter.Duration = ".5";
+                    emitter.ParticlesPerSecond = "100";
+                    emitter.LocalPosition = new Vector3(0, 1, 0);
+                    emitter.Color1 = new Color(1f, .0f, .35f, .2f);
+                    emitter.Color2 = new Color(1f, 0f, .35f, .5f);
+                    emitter.Color3 = new Color(1f, 0f, 0f, 1f);
+                    emitter.Color4 = new Color(1f, 0f, .9f, .6f);
+                    emitter.Color5 = new Color(1f, 0f, .5f, .2f);
+                    emitter.ParticleLifeTime = "1";
+                    emitter.ParticleSize = ".5";
+                    emitter.ParticleSpeed = "0";
+                    emitter.RandomVelocity = new Vector3(3, 0, 3);
+                    heal.Add(emitter);
+
+                    idleAnim = new RunAnimationSceneAction();
+                    idleAnim.Actor = "{Caster}";
+                    idleAnim.Animation = "Idle";
+                    heal.Add(idleAnim);
+
+                    
+                    sound = new PlaySoundSceneAction();
+                    sound.Sound = "Sounds/c light";
+                    sound.Actor = "{Caster}";
+                    heal.Add(sound);
+
+                    emitter = new SpawnParticleEffectSceneAction();
+                    emitter.Name = "Heal";
+                    emitter.Actor = "{Caster}";
+                    emitter.Target = "{Target}";
+                    emitter.Duration = "100";
+                    emitter.ParticlesPerSecond = "6000";
+                    emitter.LocalPosition = new Vector3(0, 1, 0);
+                    emitter.Color1 = new Color(1f, 0f, .05f, .2f);
+                    emitter.Color2 = new Color(.5f, .2f, .2f, .5f);
+                    emitter.Color3 = new Color(.5f, 0, .01f, 1f);
+                    emitter.Color4 = new Color(.5f, .18f, .18f, .6f);
+                    emitter.Color5 = new Color(0f, 0f, 0f, .2f);
+                    emitter.RandomVelocity = new Vector3(1, 1, 1);
+                    emitter.ParticleLifeTime = ".65";
+                    emitter.ParticleSize = ".1";
+                    emitter.ParticleSpeed = "0";
+                    heal.Add(emitter);
+
+                    movePart = new MoveToEntitySceneAction();
+                    movePart.BlocksStory = true;
+                    movePart.Actor = "{#Heal}.Emitter";
+                    movePart.Speed = "15";
+                    movePart.HowClose = "0";
+                    movePart.Entity = "{Target}";
+                    heal.Add(movePart);
+
+                    sound = new PlaySoundSceneAction();
+                    sound.Sound = "Sounds/heal";
+                    sound.Actor = "{Target}";
+                    heal.Add(sound);
+
+                    AdjustStatSceneAction health = new AdjustStatSceneAction();
+                    health.Adjustment = "{Caster}<Character>.Stats[LilithStats.Strength].CurrentValue * 10";
+                    health.StatToAdjust = "{Target}<Character>.Stats[LilithStats.Health]";
+                    heal.Add(health);
+                    
+                    emitter = new SpawnParticleEffectSceneAction();
+                    emitter.BlocksStory = true;
+                    emitter.Actor = "{Target}";
+                    emitter.Duration = "1";
+                    emitter.ParticlesPerSecond = "250";
+                    emitter.LocalPosition = new Vector3(0, 1, 0);
+                    emitter.Color1 = new Color(1f, 0f, .05f, .2f);
+                    emitter.Color2 = new Color(.5f, .2f, .2f, .5f);
+                    emitter.Color3 = new Color(.5f, 0, .01f, .5f);
+                    emitter.Color4 = new Color(.5f, .18f, .18f, .6f);
+                    emitter.Color5 = new Color(0f, 0f, 0f, .2f);
+                    emitter.RandomVelocity = new Vector3(3, 10, 1);
+                    emitter.ParticleLifeTime = ".65";
+                    emitter.ParticleSize = "1";
+                    emitter.ParticleSpeed = ".2";
+                    heal.Add(emitter);
+
+                    finisher = new FinishPartSceneAction();
+                    finisher.PartToFinish = "{#Heal}";
+                    finisher.DelayBeforeFinish = "1";
+                    heal.Add(finisher);
+
+                    loadedScenes.Add(ability, heal);
+                    break;
                 default:
                     throw new NotSupportedException();
             }
@@ -230,5 +334,5 @@ public static class AbilitySceneProvider
 
 public enum LilithAbilities
 {
-    Attack, Blizzard, Fireball
+    Attack, Blizzard, Fireball, Heal
 }

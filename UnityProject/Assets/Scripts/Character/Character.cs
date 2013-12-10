@@ -6,7 +6,7 @@ using System.Linq;
 
 public class Character : MonoBehaviour
 {
-    public Ability[] MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack), new Ability(LilithAbilities.Blizzard), new Ability(LilithAbilities.Fireball) };
+    public Ability[] MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack), new Ability(LilithAbilities.Blizzard), new Ability(LilithAbilities.Fireball), new Ability(LilithAbilities.Heal) };
     public LilithStatList Stats = new LilithStatList();
     public Queue<IntendedAction> AbilityQue = new Queue<IntendedAction>();
     private IntendedAction _currentAction;
@@ -79,7 +79,7 @@ public class Character : MonoBehaviour
     {
         if (IsAlive)
         {// Taking Damage
-            if (timeSinceLastHit > 2f)
+            if (changedArgs.Difference < 0 && timeSinceLastHit > 2f)
             {
                 var clip = Resources.Load("sounds/moomph04") as AudioClip;
                 audio.PlayOneShot(clip);
