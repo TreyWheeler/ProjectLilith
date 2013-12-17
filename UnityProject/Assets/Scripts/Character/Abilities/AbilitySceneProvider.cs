@@ -27,7 +27,7 @@ public static class AbilitySceneProvider
                     CreateHeal();
                     break;
                 case LilithAbilities.ChannelEmpower:
-                    ModifyStrengthUp();
+                    CreateEmpower();
                     break;
                 default:
                     throw new NotSupportedException();
@@ -342,25 +342,25 @@ public static class AbilitySceneProvider
 
         loadedScenes.Add(LilithAbilities.Heal, heal);
     }
-    public static void ModifyStrengthUp()
+    public static void CreateEmpower()
     {
-        List<SceneActionBase> modifyStrength = new List<SceneActionBase>();
+        List<SceneActionBase> empower = new List<SceneActionBase>();
 
         var cast = new RunAnimationSceneAction();
         cast.RunOnce = "True";
         cast.Actor = CASTER;
         cast.Animation = "Buff";
-        modifyStrength.Add(cast);
+        empower.Add(cast);
 
         var idleAnim = new RunAnimationSceneAction();
         idleAnim.Actor = CASTER;
         idleAnim.Animation = "Idle";
-        modifyStrength.Add(idleAnim); 
+        empower.Add(idleAnim); 
 
         var sound = new PlaySoundSceneAction();
         sound.Sound = "Sounds/birdseye";
         sound.Actor = CASTER;
-        modifyStrength.Add(sound);
+        empower.Add(sound);
 
         var emitter = new SpawnParticleEffectSceneAction();
         emitter.BlocksStory = true;
@@ -377,11 +377,16 @@ public static class AbilitySceneProvider
         emitter.ParticleSize = ".5";
         emitter.ParticleSpeed = "0";
         emitter.RandomVelocity = new Vector3(3, 3, 3);
-        modifyStrength.Add(emitter);
+        empower.Add(emitter);
+
+        BuffSceneAction buff = new BuffSceneAction();
+        buff.Actor = CASTER;
+        buff.TargetCharacter = "{Target}<Character>";
+        empower.Add(buff);
 
         emitter = new SpawnParticleEffectSceneAction();
         emitter.Actor = TARGET;
-        emitter.Duration = "1000";
+        emitter.Duration = "20";
         emitter.ParticlesPerSecond = "800";
         emitter.LocalPosition = new Vector3(0, 1, 0);
         emitter.Color1 = new Color(.5f, .4f, .35f, .2f);
@@ -393,15 +398,15 @@ public static class AbilitySceneProvider
         emitter.ParticleSize = ".2";
         emitter.ParticleSpeed = ".5";
         emitter.RandomVelocity = new Vector3(2, 7, 0);
-        modifyStrength.Add(emitter);
+        buff.Actions.Add(emitter);
 
         var modify = new ModifyStatSceneAction();
         modify.StatToAdjust = "{Target}<Character>.Stats[LilithStats.Strength]";
         modify.Adjustment = "50";
-        modify.Duration = "100";
-        modifyStrength.Add(modify);
+        modify.Duration = "20";
+        buff.Actions.Add(modify);
 
-        loadedScenes.Add(LilithAbilities.ChannelEmpower, modifyStrength);
+        loadedScenes.Add(LilithAbilities.ChannelEmpower, empower);
     }
 }
 
