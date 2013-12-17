@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using System.Reflection;
 using System.Linq;
+using System.Collections.Generic;
 
 public class Ability
 {
@@ -18,7 +19,7 @@ public class Ability
 
     public ScenePerformance performance;
 
-    private SceneActionList _abilitySceneScript;
+    private List<SceneActionBase> _abilitySceneScript;
 
     public Ability(LilithAbilities id)
     {

@@ -12,11 +12,12 @@ public class Character : MonoBehaviour
     private IntendedAction _currentAction;
     private bool _isExecutingAction;
     private AbilityRadial _radial;
-    private Texture Arch;
     public Material Team2Mat;
     public CombatClass Class;
     public bool Team2;
     public float timeSinceLastHit;
+
+    private List<Buff> _buffs = new List<Buff>();
 
     public bool IsAlive
     {
@@ -26,11 +27,8 @@ public class Character : MonoBehaviour
         }
     }
 
-
-
     void Start()
     {
-        Arch = Resources.Load("Images/CrescentArch") as Texture;
         switch (Class)
         {
             case CombatClass.Wizard:
@@ -43,8 +41,8 @@ public class Character : MonoBehaviour
             case CombatClass.Melee:
                 Stats.Add(LilithStats.Health, new Stat<LilithStats>(1000));
                 Stats.Add(LilithStats.Intelligence, new Stat<LilithStats>(14));
-                Stats.Add(LilithStats.Strength, new Stat<LilithStats>(50));
-                Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(34f));
+                Stats.Add(LilithStats.Strength, new Stat<LilithStats>(0, 9001, 50));
+                Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
                 MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack) };
                 this.gameObject.animation.CrossFade("DrawBlade");
                 var state = this.gameObject.animation.PlayQueued("Attack_standy", QueueMode.CompleteOthers);
@@ -55,7 +53,7 @@ public class Character : MonoBehaviour
                 Stats.Add(LilithStats.Intelligence, new Stat<LilithStats>(100));
                 Stats.Add(LilithStats.Strength, new Stat<LilithStats>(6));
                 Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
-                MyAbilities = new Ability[] { new Ability(LilithAbilities.Heal) };
+                MyAbilities = new Ability[] { new Ability(LilithAbilities.Heal), new Ability(LilithAbilities.ChannelEmpower) };
                 break;
             default:
                 throw new NotImplementedException();
@@ -90,6 +88,13 @@ public class Character : MonoBehaviour
         this.gameObject.GetComponentInChildren<HealthArch>().Stat = Stats.GetHealth();
     }
 
+    public void ApplyBuff(ScenePerformance performance)
+    {
+        Buff buff = new Buff(performance);
+        _buffs.Add(buff);
+        buff.Start();
+    }
+
     void HealthChanged(Stat<LilithStats> healthStat, StatChangedArgs changedArgs)
     {
         if (IsAlive)
@@ -102,6 +107,12 @@ public class Character : MonoBehaviour
         }
         else
         {// Dead
+            while(_buffs.Count > 0)
+            {
+                _buffs[0].Finish();
+                _buffs.RemoveAt(0);
+            }
+
             this.gameObject.animation.CrossFade("Death");
             this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
             var clip = Resources.Load("Sounds/m die 03") as AudioClip;
@@ -140,9 +151,25 @@ public class Character : MonoBehaviour
             };
             _currentAction.Ability.UseAbility(this.gameObject, _currentAction.DestinationGameObject);
         }
+
         if (_currentAction != null)
         {
             _currentAction.Ability.Update();
+        }
+
+        for (int i = 0; i < _buffs.Count; i++)
+        {
+            var buff = _buffs[i];
+
+            // Before allows evaluate of finished buffs, that were finished from external influences (dispel)
+            if (buff.Finished)
+            {
+                _buffs.Remove(buff);
+                i--;
+                continue;
+            }
+
+            buff.Update();
         }
     }
 

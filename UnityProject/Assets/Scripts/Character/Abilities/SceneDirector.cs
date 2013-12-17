@@ -10,7 +10,7 @@ public static class SceneDirector
 {
     // Single Responsibility: Turns a Script into a Performance
 
-    public static ScenePerformance CreatePerformaneScript(SceneActionList scene, ISceneTranslator sceneTranslator)
+    public static ScenePerformance CreatePerformaneScript(List<SceneActionBase> scene, ISceneTranslator sceneTranslator)
     {
         ScenePerformance performance = new ScenePerformance();
 
@@ -139,6 +139,27 @@ public static class SceneDirector
                 finishAction.PartToFinish = ReadExpression<ScenePerformanceActionBase>(actionScript.PartToFinish, sceneTranslator, performance);
                 action = finishAction;
             }
+            else if (scriptAction is ModifyStatSceneAction)
+            {
+                var actionScript = (ModifyStatSceneAction)scriptAction;
+                var modifyAction = new ModifyStatScenePerformanceAction();
+                modifyAction.BlocksStory = actionScript.BlocksStory;
+                modifyAction.Stat = ReadExpression<Stat<LilithStats>>(actionScript.StatToAdjust, sceneTranslator, performance);
+                modifyAction.Adjustment = ReadExpression<float>(actionScript.Adjustment, sceneTranslator, performance);
+                modifyAction.Duration = ReadExpression<float>(actionScript.Duration, sceneTranslator, performance);
+                modifyAction.AppliesToMax = actionScript.AppliesToMax;
+                modifyAction.IsMultiplicative = actionScript.IsMultiplicative;
+                action = modifyAction;
+            }
+            else if (scriptAction is BuffSceneAction)
+            {
+                var actionScript = (BuffSceneAction)scriptAction;
+                var buffAction = new BuffScenePerformanceAction();
+                buffAction.BlocksStory = actionScript.BlocksStory;
+                buffAction.Performance = CreatePerformaneScript(actionScript.Actions, sceneTranslator);
+                buffAction.Target = ReadExpression<Character>(actionScript.TargetCharacter, sceneTranslator, performance);
+                action = buffAction;
+            }
             else
             {
                 throw new NotImplementedException();
@@ -163,6 +184,12 @@ public static class SceneDirector
 
         Type typeOfT = typeof(T);
 
+        if (typeOfT.IsSubclassOf(typeof(Component)))
+        {
+            GameObject gameObject = GetActor(expression, sceneTranslator);
+            return GetComponent(expression, gameObject).JustCastItDammit<T>();
+        }
+
         // Contains Selector
         if (expression.Contains('{'))
         {// Is an expression
@@ -174,7 +201,7 @@ public static class SceneDirector
             //    return GetActor(memberExpression, sceneTranslator).JustCastItDammit<T>();
             //}
 
-            if (typeOfT == typeof(System.Single))
+            if (typeOfT == typeof(System.Single)) // Single = Boxed Primitive
                 expression = EvaluatePrimitive(expression, sceneTranslator, performance);
             else
                 return (T)EvaluateObject(expression, sceneTranslator, performance);

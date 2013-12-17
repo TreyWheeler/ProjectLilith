@@ -27,7 +27,6 @@ public class SpawnParticleEffectScenePerformanceAction : ScenePerformanceActionB
             return particleObj;
         }
     }
-
     public override void Start()
     {
         base.Start();
@@ -46,6 +45,12 @@ public class SpawnParticleEffectScenePerformanceAction : ScenePerformanceActionB
         emitter.maxEmission = ParticlesPerSecond;
         emitter.localVelocity = new Vector3(0, 0, ParticleSpeed);
         emitter.rndVelocity = RandomVelocity;
+
+        for (int i = 0; i < 360; i++)
+        {
+            var position = new Vector3(1 * Mathf.Cos(Mathf.Deg2Rad * i), 0, 1 * Mathf.Sin(Mathf.Deg2Rad * i));
+            emitter.Emit(position + Actor.transform.position, Vector3.zero, .2f, 30, Color.red);
+        }
 
         var renderer = particleObj.AddComponent<ParticleRenderer>();
         renderer.castShadows = false;
@@ -68,6 +73,7 @@ public class SpawnParticleEffectScenePerformanceAction : ScenePerformanceActionB
     {
         if (Target != null)
             particleObj.LookAt(Target);
+
     }
 
     public override void Finish()

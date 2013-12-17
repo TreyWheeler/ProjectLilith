@@ -29,7 +29,6 @@ public class StatModifier<StatEnum>
 {
     public StatModifierType Type = StatModifierType.Additive;
     public StatModifierTarget Target = StatModifierTarget.Current;
-    public StatEnum TargetStat;
     public float Value;
 }
 
