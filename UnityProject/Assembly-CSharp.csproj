@@ -61,6 +61,7 @@
      <Compile Include="Assets\Scripts\Character\IntendedAction.cs" />
      <Compile Include="Assets\Scripts\Core\Ability.cs" />
      <Compile Include="Assets\Scripts\Core\LilithStats.cs" />
+     <Compile Include="Assets\Scripts\Framework\Camera\Tethered.cs" />
      <Compile Include="Assets\Scripts\Framework\Data\Column.cs" />
      <Compile Include="Assets\Scripts\Framework\Data\IRepository.cs" />
      <Compile Include="Assets\Scripts\Framework\Data\IRepositoryEntry.cs" />

@@ -12,14 +12,20 @@ public class AbilityRadial : MonoBehaviour
 
     GameObject radialMenu;
 
+    public Tethered cameraTether;
+
     void Start()
     {
+        cameraTether = GameObject.Find("CameraMount").GetComponent<Tethered>();
+
         if (!this.gameObject.GetComponent<Character>().Team2)
         {
             this.gameObject.AddOnClick(() =>
             {
                 if (!gameObject.GetComponent<Character>().IsAlive)
                     return;
+
+                cameraTether.Paused = true;
 
                 radialMenu = new GameObject();
                 radialMenu.name = "Radial Menu";
@@ -32,7 +38,7 @@ public class AbilityRadial : MonoBehaviour
                         radialOptions.Remove(child);
                     }
 
-                    Destroy(radialMenu, 3);
+                    TimedTaskManager.Instance.Add(3000, () => { Close(); });
                 });
 
                 for (float i = 0; i < Abilities.Length; i++)
@@ -73,8 +79,11 @@ public class AbilityRadial : MonoBehaviour
         }
     }
 
-
-
+    internal void Close()
+    {
+        cameraTether.Paused = false;
+        Destroy(radialMenu);
+    }
 
     void OnDestroy()
     {
@@ -87,8 +96,4 @@ public class AbilityRadial : MonoBehaviour
 
 
 
-    internal void Close()
-    {
-        Destroy(radialMenu);
-    }
 }
