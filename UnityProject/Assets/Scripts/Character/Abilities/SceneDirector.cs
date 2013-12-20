@@ -415,11 +415,11 @@ public static class SceneDirector
 
         object value;
         if (field == null)
-        {
+        {//Is it a property?
             value = type.GetProperty(member).GetValue(obj, null);
         }
         else
-        {//Is it a property?
+        {
             value = field.GetValue(obj);
         }
 

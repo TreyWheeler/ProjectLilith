@@ -29,6 +29,17 @@ public class Character : MonoBehaviour
 
     void Start()
     {
+        var vc = GameObject.Find("SceneScripts").GetComponent<VictoryCondition>();
+
+        if(Team2)
+        {
+            vc.Enemies.Add(this);
+        }
+        else
+        {
+            vc.Allies.Add(this);
+        }
+
         switch (Class)
         {
             case CombatClass.Wizard:
