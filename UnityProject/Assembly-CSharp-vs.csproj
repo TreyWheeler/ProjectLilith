@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Media\Characters\Blade_Warrior\scripts\characterButten.cs" />
      <Compile Include="Assets\Scenes\Battle\BattleScene.cs" />
+     <Compile Include="Assets\Scenes\Battle\CharacterTracker.cs" />
      <Compile Include="Assets\Scenes\Battle\VictoryCondition.cs" />
      <Compile Include="Assets\Scenes\PlayerSelection\GameContext.cs" />
      <Compile Include="Assets\Scenes\PlayerSelection\PlayerSelectionGUI.cs" />

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using IoC;
 
 public class Character : MonoBehaviour
 {
@@ -15,7 +16,9 @@ public class Character : MonoBehaviour
     public Material Team2Mat;
     public CombatClass Class;
     public bool Team2;
-    public float timeSinceLastHit;
+    public float TimeSinceLastHit;
+    [Inject]
+    public CharacterTracker Characters { get; set; }
 
     private List<Buff> _buffs = new List<Buff>();
 
@@ -27,8 +30,26 @@ public class Character : MonoBehaviour
         }
     }
 
+    public IEnumerable<Character> MyTeam
+    {
+        get
+        {
+            return Characters.GetTeamCharactersFor(this);
+        }
+    }
+
+    public IEnumerable<Character> Enemies
+    {
+        get
+        {
+            return Characters.GetEnemyCharactersFor(this);
+        }
+    }
+
     void Start()
     {
+        this.Inject();
+        this.Characters.AllCharacters.Add(this);//Well I am a character arent I?
         var vc = GameObject.Find("SceneScripts").GetComponent<VictoryCondition>();
 
         if(Team2)
@@ -64,7 +85,7 @@ public class Character : MonoBehaviour
                 Stats.Add(LilithStats.Intelligence, new Stat<LilithStats>(100));
                 Stats.Add(LilithStats.Strength, new Stat<LilithStats>(6));
                 Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
-                MyAbilities = new Ability[] { new Ability(LilithAbilities.Heal), new Ability(LilithAbilities.ChannelEmpower) };
+                MyAbilities = new Ability[] { new Ability(LilithAbilities.Heal), new Ability(LilithAbilities.ChannelEmpower), new Ability(LilithAbilities.HealGroup) };
                 break;
             default:
                 throw new NotImplementedException();
@@ -110,7 +131,7 @@ public class Character : MonoBehaviour
     {
         if (IsAlive)
         {// Taking Damage
-            if (changedArgs.Difference < 0 && timeSinceLastHit > 2f)
+            if (changedArgs.Difference < 0 && TimeSinceLastHit > 2f)
             {
                 var clip = Resources.Load("sounds/moomph04") as AudioClip;
                 audio.PlayOneShot(clip);
@@ -135,12 +156,12 @@ public class Character : MonoBehaviour
             }
         }
 
-        timeSinceLastHit = 0f;
+        TimeSinceLastHit = 0f;
     }
 
     void Update()
     {
-        timeSinceLastHit += Time.deltaTime;
+        TimeSinceLastHit += Time.deltaTime;
 
         if (!IsAlive)
             return;

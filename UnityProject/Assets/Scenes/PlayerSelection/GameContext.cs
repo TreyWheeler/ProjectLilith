@@ -22,7 +22,8 @@ public class ContainerContext : IContextRoot
     void SetupContainer()
     {
         container = new IoC.UnityContainer();
-		
+        container.Bind<CharacterTracker>().AsSingle();
+
         // ICharacterSkillRepository = SQLCharacterSkillRepository
 
         //container.Bind<ICharacterSkillRepository>().AsSingle<SQLCharacterSkillRepository>();

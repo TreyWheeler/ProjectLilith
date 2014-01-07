@@ -160,6 +160,17 @@ public static class SceneDirector
                 buffAction.Target = ReadExpression<Character>(actionScript.TargetCharacter, sceneTranslator, performance);
                 action = buffAction;
             }
+            else if(scriptAction is AdjustStatForManySceneAction)
+            {
+                var actionScript = (AdjustStatForManySceneAction)scriptAction;
+                AdjustStatForManyScenePerformanceAction perfAction = new AdjustStatForManyScenePerformanceAction();
+                perfAction.BlocksStory = actionScript.BlocksStory;
+                perfAction.Stat = actionScript.StatToAdjust;
+                perfAction.Adjustment = ReadExpression<float>(actionScript.Adjustment, sceneTranslator, performance);
+                perfAction.Seconds = ReadExpression<float>(actionScript.OverSeconds, sceneTranslator, performance);
+                perfAction.TeamToAdjust = ReadExpression<IEnumerable<Character>>(actionScript.TeamToAdjust, sceneTranslator, performance);
+                action = perfAction;
+            }
             else
             {
                 throw new NotImplementedException();
