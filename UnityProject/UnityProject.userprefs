@@ -1,15 +1,32 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Character\Character.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Framework\Data\SQLRepository.cs">
     <Files>
+      <File FileName="Assets\Scripts\Framework\Data\SQLRepository.cs" Line="4" Column="1" />
+      <File FileName="Assets\Scripts\Framework\Data\SQLRepository.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scenes\Splash\Splash.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Character\AbilityRadial.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Framework\Utility\Extensions.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Character\AbilitySphere.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Character\Character.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scenes\Battle\BattleScene.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True">
+          <Node name="Assembly-CSharp" expanded="True">
+            <Node name="Scenes" expanded="True">
+              <Node name="Battle" expanded="True" />
+            </Node>
+            <Node name="Scripts" expanded="True">
+              <Node name="Framework" expanded="True">
+                <Node name="Data" expanded="True">
+                  <Node name="SQLRepository.cs" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True" />
