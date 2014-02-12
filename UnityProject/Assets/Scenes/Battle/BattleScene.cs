@@ -1,17 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class BattleScene : MonoBehaviour {
+public class BattleScene : MonoBehaviour
+{
 
-	void Start () {
-        var clip = Resources.Load("sounds/onewingedangel") as AudioClip;
-        audio.loop = true;
-        audio.PlayOneShot(clip, .01f);
+    public List<Character> Allies = new List<Character>();
+    public List<Character> Enemies = new List<Character>();
+    public PositionButtons _positionButtons;
 
-        Screen.orientation = ScreenOrientation.Landscape;
-	}
-	
-	void Update () {
-	
-	}
+    // Use this for initialization
+    void Start()
+    {
+        if (_positionButtons != null)
+        {
+            List<ButtonDetails> details = new List<ButtonDetails>();
+            foreach (var ally in Allies)
+            {
+                ButtonDetails newDetail = new ButtonDetails();
+                newDetail.textureName = ally.textureName;
+                details.Add(newDetail);
+            }
+            _positionButtons.Add(details);
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 }

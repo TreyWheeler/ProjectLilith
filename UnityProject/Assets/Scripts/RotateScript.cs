@@ -25,6 +25,10 @@ public class RotateScript : MonoBehaviour
             Camera = Camera.main;
     }
 
+    public void BubbledOnPress()
+    {
+        this.OnPress();
+    }
     public void OnPress()
     {
         _centerPosition = Camera.WorldToScreenPoint(this.transform.position);
@@ -49,6 +53,10 @@ public class RotateScript : MonoBehaviour
         }
     }
 
+    public void BubbledOnDrag()
+    {
+        this.OnDrag();
+    }
     public void OnDrag()
     {
         if (_beginDrag)
@@ -102,7 +110,7 @@ public class RotateScript : MonoBehaviour
             return currentDragAngle < MinClampInDegrees || currentDragAngle > MaxClampInDegrees;
     }
 
-    private static float distanceToAngle(float angle1, float angle2)
+    public static float distanceToAngle(float angle1, float angle2)
     {
         float bigAngle = angle1 + 360;
         float littleAngle = angle2 + 360;

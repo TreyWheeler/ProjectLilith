@@ -240,6 +240,7 @@
      <Compile Include="Assets\Scripts\Framework\Utility\SceneParameters.cs" />
      <Compile Include="Assets\Scripts\Framework\Utility\TimedTaskManager.cs" />
      <Compile Include="Assets\Scripts\Framework\Utility\Tween.cs" />
+     <Compile Include="Assets\Scripts\PositionButtons.cs" />
      <Compile Include="Assets\Scripts\Repositories\ICharacterSkillRepository.cs" />
      <Compile Include="Assets\Scripts\Repositories\ICompletedLevelRepository.cs" />
      <Compile Include="Assets\Scripts\Repositories\IPlayerCharacterEXPRepository.cs" />

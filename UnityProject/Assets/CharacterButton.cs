@@ -4,7 +4,6 @@ using System.Collections;
 public class CharacterButton : MonoBehaviour {
 
     public Character character;
-    public RotateScript rotator;
 
 	// Use this for initialization
 	void Start () {
@@ -23,13 +22,11 @@ public class CharacterButton : MonoBehaviour {
 
     public void OnPress()
     {
-        if (rotator)
-            rotator.OnPress();
+        this.SendMessageUpwards("BubbledOnPress");
     }
 
     public void OnDrag()
     {
-        if (rotator)
-            rotator.OnDrag();
+        this.SendMessageUpwards("BubbledOnDrag");
     }
 }

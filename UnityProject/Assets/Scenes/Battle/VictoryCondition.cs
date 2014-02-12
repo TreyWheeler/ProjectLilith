@@ -4,17 +4,16 @@ using System.Collections.Generic;
 
 public class VictoryCondition : MonoBehaviour
 {
-    public List<Character> Allies = new List<Character>();
-    public List<Character> Enemies = new List<Character>();
-
     bool AnAllyIsAlive = true;
     bool AnEnemyIsAlive = true;
-
     bool triggered = false;
+
+    BattleScene currentScene;
 
     void Start()
     {
         gameObject.EnsureComponent<AudioSource>();
+        currentScene = gameObject.EnsureComponent<BattleScene>();
     }
 
     public bool Won
@@ -43,17 +42,17 @@ public class VictoryCondition : MonoBehaviour
     }
     void Update()
     {
-        if (Allies.Count > 0 && Enemies.Count > 0)
+        if (currentScene.Allies.Count > 0 && currentScene.Enemies.Count > 0)
         {
             AnAllyIsAlive = false;
             AnEnemyIsAlive = false;
 
-            foreach (var ally in Allies)
+            foreach (var ally in currentScene.Allies)
             {
                 AnAllyIsAlive = AnAllyIsAlive || ally.IsAlive;
             }
 
-            foreach (var enemy in Enemies)
+            foreach (var enemy in currentScene.Enemies)
             {
                 AnEnemyIsAlive = AnEnemyIsAlive || enemy.IsAlive;
             }
