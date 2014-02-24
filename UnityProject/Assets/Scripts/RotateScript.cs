@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class RotateScript : MonoBehaviour
 {
@@ -10,19 +11,45 @@ public class RotateScript : MonoBehaviour
     private float _startAngle;
     private Quaternion _startRotation;
     private bool _beginDrag = true;
+    private Dictionary<GameObject, bool> childrenAndEnabledState =  new Dictionary<GameObject, bool>();
 
     public Camera Camera;
     public bool Clamp;
     public bool ClampCrossesZero;
     public float MinClampInDegrees;
     public float MaxClampInDegrees;
-
+    public bool isRotating;
+    public event Action BeganRotation;
+    public event Action EndedRotation;
     void Start()
     {
         _startRotation = this.transform.rotation;
 
         if (Camera == null)
             Camera = Camera.main;
+        BeganRotation += () =>
+        {
+            _startAngle = GetEulerAngleFromCenter(_centerPosition, Input.mousePosition);
+            _startRotation = transform.rotation;
+            _endPosition = Vector2.zero;
+            _beginDrag = true;
+            isRotating = true;
+            
+            childrenAndEnabledState.Clear();
+            foreach (GameObject child in gameObject.GetChildren())
+            {
+                childrenAndEnabledState.Add(child, child.GetComponent<UIButton>().isEnabled);
+            }
+        };
+        EndedRotation += () => 
+        {
+            isRotating = false;
+            _endPosition = Input.mousePosition;
+            foreach (GameObject child in gameObject.GetChildren())
+            {
+                child.GetComponent<UIButton>().isEnabled = childrenAndEnabledState[child];
+            }
+        };
     }
 
     public void BubbledOnPress()
@@ -32,24 +59,16 @@ public class RotateScript : MonoBehaviour
     public void OnPress()
     {
         _centerPosition = Camera.WorldToScreenPoint(this.transform.position);
-
         if (Input.GetMouseButtonDown(0))
         {
-            _startAngle = GetEulerAngleFromCenter(_centerPosition, Input.mousePosition);
-            _startRotation = transform.rotation;
-            _endPosition = Vector2.zero;
-
-            _beginDrag = true;
+            if (BeganRotation != null)
+                BeganRotation();
         }
-
         if (Input.GetMouseButtonUp(0))
         {
-            _endPosition = Input.mousePosition;
-
-            foreach (GameObject child in gameObject.GetChildren())
-            {
-                child.GetComponent<UIButton>().isEnabled = true;
-            }
+            if (BeganRotation != null)
+                EndedRotation();
+           
         }
     }
 
@@ -65,7 +84,6 @@ public class RotateScript : MonoBehaviour
             {
                 child.GetComponent<UIButton>().isEnabled = false;
             }
-
             _beginDrag = false;
         }
 

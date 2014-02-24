@@ -47,21 +47,8 @@ public class Character : MonoBehaviour
         }
     }
 
-    void Start()
+    void Awake()
     {
-        this.Inject();
-        this.Characters.AllCharacters.Add(this);//Well I am a character arent I?
-        var vc = GameObject.Find("GameController").GetComponent<BattleScene>();
-
-        if(Team2)
-        {
-            vc.Enemies.Add(this);
-        }
-        else
-        {
-            vc.Allies.Add(this);
-        }
-
         switch (Class)
         {
             case CombatClass.Wizard:
@@ -96,6 +83,18 @@ public class Character : MonoBehaviour
         }
 
         Stats.GetHealth().Changed += HealthChanged;
+    }
+    void Start()
+    {
+        this.Inject();
+        this.Characters.AllCharacters.Add(this);//Well I am a character arent I?
+        var vc = GameObject.Find("GameController").GetComponent<BattleScene>();
+
+        if(Team2)
+        {
+            vc.Enemies.Add(this);
+        }        
+
         _radial = this.gameObject.EnsureComponent<AbilityRadial>();
         _radial.Abilities = MyAbilities;
 

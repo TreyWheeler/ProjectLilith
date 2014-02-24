@@ -46,7 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\CharacterButton.cs" />
+     <Compile Include="Assets\DaemonButton.cs" />
+     <Compile Include="Assets\EnemyIconsWheel.cs" />
      <Compile Include="Assets\Media\Characters\Blade_Warrior\scripts\characterButten.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Game\EquipItems.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Game\EquipRandomItem.cs" />
@@ -172,8 +173,11 @@
      <Compile Include="Assets\NGUI\Scripts\UI\UITexture.cs" />
      <Compile Include="Assets\NGUI\Scripts\UI\UITooltip.cs" />
      <Compile Include="Assets\NGUI\Scripts\UI\UIViewport.cs" />
+     <Compile Include="Assets\Scenes\Battle\AbilityIconsWheel.cs" />
      <Compile Include="Assets\Scenes\Battle\BattleScene.cs" />
+     <Compile Include="Assets\Scenes\Battle\CharacterIconsWheel.cs" />
      <Compile Include="Assets\Scenes\Battle\CharacterTracker.cs" />
+     <Compile Include="Assets\Scenes\Battle\UIController.cs" />
      <Compile Include="Assets\Scenes\Battle\VictoryCondition.cs" />
      <Compile Include="Assets\Scenes\PlayerSelection\GameContext.cs" />
      <Compile Include="Assets\Scenes\PlayerSelection\PlayerSelectionGUI.cs" />

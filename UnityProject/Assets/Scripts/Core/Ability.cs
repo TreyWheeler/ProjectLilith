@@ -9,6 +9,7 @@ public class Ability
 {
     LilithAbilities ID = LilithAbilities.Attack;
 
+    public string TextureName;
     public string DisplayName;
     public float minDistance = 1;
     public float maxDistance = 1;
@@ -24,6 +25,24 @@ public class Ability
     public Ability(LilithAbilities id)
     {
         _abilitySceneScript = AbilitySceneProvider.GetBy(id);
+        TextureName = Enum.GetName(typeof(LilithAbilities), id);
+        switch (id)
+        {
+            case LilithAbilities.Attack:
+                break;
+            case LilithAbilities.Blizzard:
+                break;
+            case LilithAbilities.Fireball:
+                break;
+            case LilithAbilities.Heal:
+                break;
+            case LilithAbilities.ChannelEmpower:
+                break;
+            case LilithAbilities.HealGroup:
+                break;
+            default:
+                break;
+        }
     }
 
     public float BetweenDistance

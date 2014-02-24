@@ -6,6 +6,10 @@ using System.Linq;
 
 public static class Extensions
 {
+    public static T EnsureComponent<T>(this MonoBehaviour monoBehavior) where T : Component
+    {
+        return monoBehavior.gameObject.EnsureComponent<T>();
+    }
     public static T EnsureComponent<T>(this GameObject gameObj) where T : Component
     {
         T component = gameObj.GetComponent<T>();

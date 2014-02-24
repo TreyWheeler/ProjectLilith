@@ -5,21 +5,29 @@ using System;
 
 public class PositionButtons : MonoBehaviour
 {
-    private List<GameObject> _buttonList = new List<GameObject>();
-    private RotateScript _positioningObject;
+    private List<DaemonButton> _buttonList = new List<DaemonButton>();
 
     public GameObject basePrefab;
     public float radius = 100;
     public float startAngle = 0;
     public float endAngle = 360;
-
-    // Use this for initialization
-    void Start()
-    {
-        _positioningObject = this.gameObject.GetComponent<RotateScript>();
-    }
-
     private void PositionButtonsOnObject()
+    {
+        if (_buttonList.Count == 1)
+            PositionOneButton(_buttonList[0]);
+        else
+            PositionMultipleButtons();
+    }
+    private void PositionOneButton(DaemonButton button)
+    {
+        float distance = (endAngle - startAngle) / 2;
+        float currentAngle = startAngle + distance;
+        button.transform.parent = this.gameObject.transform;
+        button.transform.localPosition = GetLocationFromAngle(currentAngle);
+        button.transform.Rotate(new Vector3(0, 0, 360 - currentAngle));
+        button.transform.localScale = new Vector3(1, 1, 1);
+    }
+    private void PositionMultipleButtons()
     {
         float distance = endAngle - startAngle;
         float distanceStep = distance / (_buttonList.Count - (distance == 360 ? 0 : 1));
@@ -43,13 +51,30 @@ public class PositionButtons : MonoBehaviour
 
     public void Add(List<ButtonDetails> buttonDetails)
     {
-        foreach (var detail in buttonDetails)
+        foreach (ButtonDetails detail in buttonDetails)
         {
             GameObject go = Instantiate(basePrefab) as GameObject;
-            go.EnsureComponent<UITexture>().mainTexture = Resources.Load<Texture2D>("Textures/" + detail.textureName);
-            _buttonList.Add(go);
+            DaemonButton button = go.EnsureComponent<DaemonButton>();
+            button.EnsureComponent<UITexture>().mainTexture = Resources.Load<Texture2D>("Textures/" + detail.textureName);
+            if (!detail.isEnabled)
+            {
+                go.EnsureComponent<UIButton>().isEnabled = false;
+                go.EnsureComponent<BoxCollider>().enabled = false;
+            }
+            button.click += detail.buttonClick;
+            _buttonList.Add(button);
         }
         PositionButtonsOnObject();
+    }
+
+    public void ClearAndAdd(List<ButtonDetails> buttonDetails)
+    {
+        foreach (DaemonButton button in _buttonList)
+        {
+            Destroy(button.gameObject);
+        }
+        _buttonList.Clear();
+        Add(buttonDetails);
     }
 }
 
@@ -57,4 +82,5 @@ public class ButtonDetails
 {
     public string textureName;
     public Action buttonClick;
+    public bool isEnabled = true;
 }
