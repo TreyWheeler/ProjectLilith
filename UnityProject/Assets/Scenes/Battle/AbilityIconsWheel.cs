@@ -5,9 +5,11 @@ using System;
 
 public class AbilityIconsWheel : MonoBehaviour
 {
-
     private PositionButtons _positionButtons;
     public event Action<Ability> OnAbilitySelection;
+
+    GameObject selectedCharacterPortrait;
+
     // Use this for initialization
     void Awake()
     {
@@ -34,5 +36,16 @@ public class AbilityIconsWheel : MonoBehaviour
             if (OnAbilitySelection != null)
                 OnAbilitySelection(ability);
         };
+    }
+    public void NoteSelected(Character value)
+    {
+        if (selectedCharacterPortrait == null)
+            selectedCharacterPortrait = new GameObject();
+
+        selectedCharacterPortrait.transform.parent = this.gameObject.transform;
+        selectedCharacterPortrait.transform.localPosition = Vector3.zero;
+        selectedCharacterPortrait.transform.localScale = Vector3.one;
+        DaemonButton button = selectedCharacterPortrait.EnsureComponent<DaemonButton>();
+        button.EnsureComponent<UITexture>().mainTexture = Resources.Load<Texture2D>("Textures/" + value.TextureName);
     }
 }

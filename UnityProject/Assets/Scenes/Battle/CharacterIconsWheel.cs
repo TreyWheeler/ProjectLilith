@@ -8,7 +8,9 @@ public class CharacterIconsWheel : MonoBehaviour
 
     private PositionButtons _positionButtons;
     public event Action<Character> OnCharacterSelection;
-    // Use this for initialization
+    
+    GameObject selectedCharacterPortrait;
+
     void Awake()
     {
         _positionButtons = this.EnsureComponent<PositionButtons>();
@@ -19,7 +21,7 @@ public class CharacterIconsWheel : MonoBehaviour
         foreach (Character character in characters)
         {
             ButtonDetails newDetail = new ButtonDetails();
-            newDetail.textureName = character.textureName;
+            newDetail.textureName = character.TextureName;
             newDetail.isEnabled = character.IsAlive;
             AddClick(character, newDetail);
             details.Add(newDetail);
@@ -34,5 +36,18 @@ public class CharacterIconsWheel : MonoBehaviour
             if (OnCharacterSelection != null && character.IsAlive)
                 OnCharacterSelection(character);
         };
+    }
+
+
+    public void NoteSelected(Ability value)
+    {
+        if (selectedCharacterPortrait == null)
+            selectedCharacterPortrait = new GameObject();
+
+        selectedCharacterPortrait.transform.parent = this.gameObject.transform;
+        selectedCharacterPortrait.transform.localPosition = Vector3.zero;
+        selectedCharacterPortrait.transform.localScale = Vector3.one;
+        DaemonButton button = selectedCharacterPortrait.EnsureComponent<DaemonButton>();
+        button.EnsureComponent<UITexture>().mainTexture = Resources.Load<Texture2D>("Textures/" + value.TextureName);
     }
 }

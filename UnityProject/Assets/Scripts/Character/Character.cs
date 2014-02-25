@@ -17,7 +17,7 @@ public class Character : MonoBehaviour
     public CombatClass Class;
     public bool Team2;
     public float TimeSinceLastHit;
-    public string textureName;
+    public string TextureName;
     [Inject]
     public CharacterTracker Characters { get; set; }
 
@@ -57,7 +57,10 @@ public class Character : MonoBehaviour
                 Stats.Add(LilithStats.Strength, new Stat<LilithStats>(12));
                 Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
                 MyAbilities = new Ability[] { new Ability(LilithAbilities.Blizzard), new Ability(LilithAbilities.Fireball) };
-                textureName = "mage";
+                if (Team2)
+                    TextureName = "enemy_mage";
+                else
+                    TextureName = "mage";
                 break;
             case CombatClass.Melee:
                 Stats.Add(LilithStats.Health, new Stat<LilithStats>(1000));
@@ -68,7 +71,10 @@ public class Character : MonoBehaviour
                 this.gameObject.animation.CrossFade("DrawBlade");
                 var state = this.gameObject.animation.PlayQueued("Attack_standy", QueueMode.CompleteOthers);
                 state.wrapMode = WrapMode.Loop;
-                textureName = "warrior";
+                if (Team2)
+                    TextureName = "enemy_warrior";
+                else
+                    TextureName = "warrior";
                 break;
             case CombatClass.Support:
                 Stats.Add(LilithStats.Health, new Stat<LilithStats>(1000));
@@ -76,7 +82,10 @@ public class Character : MonoBehaviour
                 Stats.Add(LilithStats.Strength, new Stat<LilithStats>(6));
                 Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
                 MyAbilities = new Ability[] { new Ability(LilithAbilities.Heal), new Ability(LilithAbilities.ChannelEmpower), new Ability(LilithAbilities.HealGroup) };
-                textureName = "support";
+                if (Team2)
+                    TextureName = "enemy_support";
+                else
+                    TextureName = "support";
                 break;
             default:
                 throw new NotImplementedException();
@@ -90,10 +99,10 @@ public class Character : MonoBehaviour
         this.Characters.AllCharacters.Add(this);//Well I am a character arent I?
         var vc = GameObject.Find("GameController").GetComponent<BattleScene>();
 
-        if(Team2)
+        if (Team2)
         {
             vc.Enemies.Add(this);
-        }        
+        }
 
         _radial = this.gameObject.EnsureComponent<AbilityRadial>();
         _radial.Abilities = MyAbilities;
@@ -142,7 +151,7 @@ public class Character : MonoBehaviour
         }
         else
         {// Dead
-            while(_buffs.Count > 0)
+            while (_buffs.Count > 0)
             {
                 _buffs[0].Finish();
                 _buffs.RemoveAt(0);

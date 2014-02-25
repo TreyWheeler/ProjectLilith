@@ -24,6 +24,7 @@ public class PositionButtons : MonoBehaviour
         float currentAngle = startAngle + distance;
         button.transform.parent = this.gameObject.transform;
         button.transform.localPosition = GetLocationFromAngle(currentAngle);
+        button.transform.localRotation = Quaternion.identity;
         button.transform.Rotate(new Vector3(0, 0, 360 - currentAngle));
         button.transform.localScale = new Vector3(1, 1, 1);
     }
@@ -36,6 +37,7 @@ public class PositionButtons : MonoBehaviour
         {
             item.transform.parent = this.gameObject.transform;
             item.transform.localPosition = GetLocationFromAngle(currentAngle);
+            item.transform.localRotation = Quaternion.identity;
             item.transform.Rotate(new Vector3(0, 0, 360 - currentAngle));
             item.transform.localScale = new Vector3(1, 1, 1);
             currentAngle += distanceStep;

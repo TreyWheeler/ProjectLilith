@@ -13,6 +13,7 @@ public class Ability
     public string DisplayName;
     public float minDistance = 1;
     public float maxDistance = 1;
+    public bool IsFriendly;
 
     public delegate void AbilityCompletedHandler(Ability ability);
 
@@ -35,10 +36,13 @@ public class Ability
             case LilithAbilities.Fireball:
                 break;
             case LilithAbilities.Heal:
+                IsFriendly = true;
                 break;
             case LilithAbilities.ChannelEmpower:
+                IsFriendly = true;
                 break;
             case LilithAbilities.HealGroup:
+                IsFriendly = true;
                 break;
             default:
                 break;
@@ -81,7 +85,7 @@ public class Ability
 
     public class AbilitySceenTranslator : ISceneTranslator
     {
-        GameObject _actor; 
+        GameObject _actor;
         GameObject _target;
 
         public AbilitySceenTranslator(GameObject actor, GameObject target)
@@ -92,7 +96,7 @@ public class Ability
 
         public GameObject GetActor(string actor)
         {
-            switch(actor.ToLower())
+            switch (actor.ToLower())
             {
                 case "caster":
                     return _actor;

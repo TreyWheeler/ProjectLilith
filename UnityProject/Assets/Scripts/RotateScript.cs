@@ -11,7 +11,7 @@ public class RotateScript : MonoBehaviour
     private float _startAngle;
     private Quaternion _startRotation;
     private bool _beginDrag = true;
-    private Dictionary<GameObject, bool> childrenAndEnabledState =  new Dictionary<GameObject, bool>();
+    private Dictionary<GameObject, bool> childrenAndEnabledState = new Dictionary<GameObject, bool>();
 
     public Camera Camera;
     public bool Clamp;
@@ -29,27 +29,36 @@ public class RotateScript : MonoBehaviour
             Camera = Camera.main;
         BeganRotation += () =>
         {
-            _startAngle = GetEulerAngleFromCenter(_centerPosition, Input.mousePosition);
-            _startRotation = transform.rotation;
-            _endPosition = Vector2.zero;
-            _beginDrag = true;
-            isRotating = true;
-            
+            StartDrag();
+
             childrenAndEnabledState.Clear();
             foreach (GameObject child in gameObject.GetChildren())
             {
-                childrenAndEnabledState.Add(child, child.GetComponent<UIButton>().isEnabled);
+                var button = child.GetComponent<UIButton>();
+                if (button != null)
+                    childrenAndEnabledState.Add(child, button.isEnabled);
             }
         };
-        EndedRotation += () => 
+        EndedRotation += () =>
         {
             isRotating = false;
             _endPosition = Input.mousePosition;
             foreach (GameObject child in gameObject.GetChildren())
             {
-                child.GetComponent<UIButton>().isEnabled = childrenAndEnabledState[child];
+                var button = child.GetComponent<UIButton>();
+                if (button != null)
+                    button.isEnabled = childrenAndEnabledState[child];
             }
         };
+    }
+
+    private void StartDrag()
+    {
+        _startAngle = GetEulerAngleFromCenter(_centerPosition, Input.mousePosition);
+        _startRotation = transform.rotation;
+        _endPosition = Vector2.zero;
+        _beginDrag = true;
+        isRotating = true;
     }
 
     public void BubbledOnPress()
@@ -68,7 +77,7 @@ public class RotateScript : MonoBehaviour
         {
             if (BeganRotation != null)
                 EndedRotation();
-           
+
         }
     }
 
@@ -82,7 +91,9 @@ public class RotateScript : MonoBehaviour
         {
             foreach (GameObject child in gameObject.GetChildren())
             {
-                child.GetComponent<UIButton>().isEnabled = false;
+                var button = child.GetComponent<UIButton>();
+                if (button != null)
+                    button.isEnabled = false;
             }
             _beginDrag = false;
         }
@@ -104,6 +115,8 @@ public class RotateScript : MonoBehaviour
                 rotationAngle = MinClampInDegrees;
             else
                 rotationAngle = MaxClampInDegrees;
+
+            StartDrag();
         }
 
         transform.eulerAngles = new Vector3(0, 0, rotationAngle);

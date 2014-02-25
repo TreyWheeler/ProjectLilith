@@ -8,7 +8,7 @@ public class UIController : MonoBehaviour
     public BattleScene BattleScene;
     public CharacterIconsWheel PlayerIconsWheel;
     public AbilityIconsWheel AbilityIconsWheel;
-    public CharacterIconsWheel EnemyIconsWheel;
+    public CharacterIconsWheel TargetIconWheel;
     public GameObject IconSlider;
 
     private Ability selectedAbility;
@@ -20,9 +20,9 @@ public class UIController : MonoBehaviour
         PlayerIconsWheel.ClearAndAdd(BattleScene.Allies);
         PlayerIconsWheel.OnCharacterSelection += PlayerIconsWheel_OnCharacterSelection;
         AbilityIconsWheel.OnAbilitySelection += AbilityIconsWheel_OnAbilitySelection;
-        EnemyIconsWheel.OnCharacterSelection += EnemyIconsWheel_OnCharacterSelection;
+        TargetIconWheel.OnCharacterSelection += EnemyIconsWheel_OnCharacterSelection;
         AbilityIconsWheel.gameObject.SetActive(false);
-        EnemyIconsWheel.gameObject.SetActive(false);
+        TargetIconWheel.gameObject.SetActive(false);
     }
 
 
@@ -31,21 +31,27 @@ public class UIController : MonoBehaviour
         selectedPlayerCharacter = character;
         AbilityIconsWheel.ClearAndAdd(character.MyAbilities);
         AbilityIconsWheel.gameObject.SetActive(true);
-        EnemyIconsWheel.gameObject.SetActive(false);
+        TargetIconWheel.gameObject.SetActive(false);
+
+        AbilityIconsWheel.NoteSelected(character);
     }
 
     void AbilityIconsWheel_OnAbilitySelection(Ability ability)
     {
         selectedAbility = ability;
         AbilityIconsWheel.gameObject.SetActive(false);
-        EnemyIconsWheel.gameObject.SetActive(true);
-        EnemyIconsWheel.ClearAndAdd(BattleScene.Enemies);
+        TargetIconWheel.gameObject.SetActive(true);
+        if (ability.IsFriendly)
+            TargetIconWheel.ClearAndAdd(BattleScene.Allies);
+        else
+            TargetIconWheel.ClearAndAdd(BattleScene.Enemies);
+        TargetIconWheel.NoteSelected(ability);
     }
 
     void EnemyIconsWheel_OnCharacterSelection(Character obj)
     {
         selectedPlayerCharacter.QueueAbility(new IntendedAction(selectedAbility, obj.gameObject));
-        EnemyIconsWheel.gameObject.SetActive(false);
+        TargetIconWheel.gameObject.SetActive(false);
         AbilityIconsWheel.gameObject.SetActive(true);
     }
     // Update is called once per frame
