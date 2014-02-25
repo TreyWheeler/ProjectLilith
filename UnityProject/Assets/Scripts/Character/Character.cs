@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using IoC;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, IEnergy
 {
     public Ability[] MyAbilities;// = new Ability[] { new Ability(LilithAbilities.Attack), new Ability(LilithAbilities.Blizzard), new Ability(LilithAbilities.Fireball), new Ability(LilithAbilities.Heal) };
     public LilithStatList Stats = new LilithStatList();
@@ -56,6 +56,8 @@ public class Character : MonoBehaviour
                 Stats.Add(LilithStats.Intelligence, new Stat<LilithStats>(75));
                 Stats.Add(LilithStats.Strength, new Stat<LilithStats>(12));
                 Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
+                Stats.Add(LilithStats.Energy, new Stat<LilithStats>(0, 5, 2));
+                Stats.Add(LilithStats.EnergyPerSecond, new Stat<LilithStats>(0, 5, 0.35f));
                 MyAbilities = new Ability[] { new Ability(LilithAbilities.Blizzard), new Ability(LilithAbilities.Fireball) };
                 if (Team2)
                     TextureName = "enemy_mage";
@@ -67,6 +69,8 @@ public class Character : MonoBehaviour
                 Stats.Add(LilithStats.Intelligence, new Stat<LilithStats>(14));
                 Stats.Add(LilithStats.Strength, new Stat<LilithStats>(0, 9001, 50));
                 Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
+                Stats.Add(LilithStats.Energy, new Stat<LilithStats>(0, 5, 0));
+                Stats.Add(LilithStats.EnergyPerSecond, new Stat<LilithStats>(0, 5, 0.25f));
                 MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack) };
                 this.gameObject.animation.CrossFade("DrawBlade");
                 var state = this.gameObject.animation.PlayQueued("Attack_standy", QueueMode.CompleteOthers);
@@ -81,6 +85,8 @@ public class Character : MonoBehaviour
                 Stats.Add(LilithStats.Intelligence, new Stat<LilithStats>(100));
                 Stats.Add(LilithStats.Strength, new Stat<LilithStats>(6));
                 Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
+                Stats.Add(LilithStats.Energy, new Stat<LilithStats>(0, 5, 0));
+                Stats.Add(LilithStats.EnergyPerSecond, new Stat<LilithStats>(0, 5, 0.3f));
                 MyAbilities = new Ability[] { new Ability(LilithAbilities.Heal), new Ability(LilithAbilities.ChannelEmpower), new Ability(LilithAbilities.HealGroup) };
                 if (Team2)
                     TextureName = "enemy_support";
@@ -215,6 +221,8 @@ public class Character : MonoBehaviour
 
             buff.Update();
         }
+
+        this.Stats[LilithStats.Energy].CurrentValue += this.Stats[LilithStats.EnergyPerSecond].CurrentValue * Time.deltaTime;
     }
 
 
@@ -223,6 +231,15 @@ public class Character : MonoBehaviour
     {
         this.AbilityQue.Enqueue(intendedAction);
         _radial.Close();
+    }
+
+    public int GetCurrentEnergy()
+    {
+        return (int)Mathf.Floor(this.Stats[LilithStats.Energy].CurrentValue);
+    }
+    public int GetMaxEnergy()
+    {
+        return (int)Mathf.Floor(this.Stats[LilithStats.Energy].MaxValue);
     }
 }
 

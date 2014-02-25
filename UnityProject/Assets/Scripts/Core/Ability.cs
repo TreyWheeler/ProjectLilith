@@ -5,15 +5,14 @@ using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
 
-public class Ability
+public class Ability : IEnergy
 {
-    LilithAbilities ID = LilithAbilities.Attack;
-
     public string TextureName;
     public string DisplayName;
     public float minDistance = 1;
     public float maxDistance = 1;
     public bool IsFriendly;
+    public int cost = 3;
 
     public delegate void AbilityCompletedHandler(Ability ability);
 
@@ -30,18 +29,24 @@ public class Ability
         switch (id)
         {
             case LilithAbilities.Attack:
+                this.cost = 2;
                 break;
             case LilithAbilities.Blizzard:
+                this.cost = 1;
                 break;
             case LilithAbilities.Fireball:
+                this.cost = 4;
                 break;
             case LilithAbilities.Heal:
+                this.cost = 3;
                 IsFriendly = true;
                 break;
             case LilithAbilities.ChannelEmpower:
+                this.cost = 3;
                 IsFriendly = true;
                 break;
             case LilithAbilities.HealGroup:
+                this.cost = 5;
                 IsFriendly = true;
                 break;
             default:
@@ -106,5 +111,15 @@ public class Ability
                     throw new NotSupportedException("Unknown Actor: " + actor);
             }
         }
+    }
+
+    public int GetCurrentEnergy()
+    {
+        return this.cost;
+    }
+
+    public int GetMaxEnergy()
+    {
+        return this.cost;
     }
 }

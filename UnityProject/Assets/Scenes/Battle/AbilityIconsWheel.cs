@@ -6,7 +6,10 @@ using System;
 public class AbilityIconsWheel : MonoBehaviour
 {
     private PositionButtons _positionButtons;
+    private Character selectedCharacter;
     public event Action<Ability> OnAbilitySelection;
+    public Dictionary<Ability, GameObject> abilityDictionary = new Dictionary<Ability, GameObject>();
+
 
     GameObject selectedCharacterPortrait;
 
@@ -16,29 +19,51 @@ public class AbilityIconsWheel : MonoBehaviour
         _positionButtons = this.EnsureComponent<PositionButtons>();
     }
 
-    public void ClearAndAdd(IEnumerable<Ability> abilities)
+    void Update()
     {
-        List<ButtonDetails> details = new List<ButtonDetails>();
-        foreach (Ability ability in abilities)
+        foreach (var item in abilityDictionary)
         {
-            ButtonDetails newDetail = new ButtonDetails();
-            newDetail.textureName = ability.TextureName;
-            AddClick(ability, newDetail);
-            details.Add(newDetail);
+            UIButton buttonUI = item.Value.EnsureComponent<UIButton>();
+            BoxCollider buttonBoxCollider = item.Value.EnsureComponent<BoxCollider>();
+            if (item.Key.cost > selectedCharacter.GetCurrentEnergy())
+            {
+                buttonUI.isEnabled = false;
+                buttonBoxCollider.enabled = false;
+            }
+            else
+            {
+                buttonUI.isEnabled = true;
+                buttonBoxCollider.enabled = true;
+            }
         }
-        _positionButtons.ClearAndAdd(details);
     }
 
-    private void AddClick(Ability ability, ButtonDetails newDetail)
+    public void ClearAndAdd(IEnumerable<Ability> abilities)
     {
-        newDetail.buttonClick += () =>
+        abilityDictionary.Clear();
+        _positionButtons.Clear();
+        foreach (Ability ability in abilities)
+        {
+            AddAbilityButton(ability);
+        }
+        _positionButtons.Layout();
+    }
+
+    private void AddAbilityButton(Ability ability)
+    {
+        GameObject button = _positionButtons.Add(ability.TextureName, true, () =>
         {
             if (OnAbilitySelection != null)
                 OnAbilitySelection(ability);
-        };
+        });
+        abilityDictionary.Add(ability, button);
+        EnergyIconWheel energyWheel = button.EnsureComponent<EnergyIconWheel>();
+        energyWheel.energy = ability;
+        energyWheel.constant = true;
     }
-    public void NoteSelected(Character value)
+    public void NoteSelected(Character character)
     {
+        selectedCharacter = character;
         if (selectedCharacterPortrait == null)
             selectedCharacterPortrait = new GameObject();
 
@@ -46,6 +71,7 @@ public class AbilityIconsWheel : MonoBehaviour
         selectedCharacterPortrait.transform.localPosition = Vector3.zero;
         selectedCharacterPortrait.transform.localScale = Vector3.one;
         DaemonButton button = selectedCharacterPortrait.EnsureComponent<DaemonButton>();
-        button.EnsureComponent<UITexture>().mainTexture = Resources.Load<Texture2D>("Textures/" + value.TextureName);
+        button.EnsureComponent<UITexture>().mainTexture = Resources.Load<Texture2D>("Textures/" + character.TextureName);
     }
+
 }

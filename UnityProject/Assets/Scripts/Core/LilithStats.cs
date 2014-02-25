@@ -7,7 +7,9 @@ public enum LilithStats
     Health = 1,
     MoveSpeed = 2,
     Strength = 3,
-    Intelligence = 4
+    Intelligence = 4,
+    Energy = 5,
+    EnergyPerSecond = 6
 }
 
 public static class LilithStatExtensions

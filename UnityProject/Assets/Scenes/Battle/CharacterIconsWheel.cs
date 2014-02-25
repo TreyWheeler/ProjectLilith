@@ -8,7 +8,7 @@ public class CharacterIconsWheel : MonoBehaviour
 
     private PositionButtons _positionButtons;
     public event Action<Character> OnCharacterSelection;
-    
+    public bool ShowEnergy;
     GameObject selectedCharacterPortrait;
 
     void Awake()
@@ -17,25 +17,26 @@ public class CharacterIconsWheel : MonoBehaviour
     }
     public void ClearAndAdd(IEnumerable<Character> characters)
     {
-        List<ButtonDetails> details = new List<ButtonDetails>();
+        _positionButtons.Clear();
         foreach (Character character in characters)
         {
-            ButtonDetails newDetail = new ButtonDetails();
-            newDetail.textureName = character.TextureName;
-            newDetail.isEnabled = character.IsAlive;
-            AddClick(character, newDetail);
-            details.Add(newDetail);
+            AddCharacterButton(character);
         }
-        _positionButtons.ClearAndAdd(details);
+        _positionButtons.Layout();
     }
 
-    private void AddClick(Character character, ButtonDetails newDetail)
+    private void AddCharacterButton(Character character)
     {
-        newDetail.buttonClick += () =>
+        GameObject button = _positionButtons.Add(character.TextureName, character.IsAlive, () =>
         {
             if (OnCharacterSelection != null && character.IsAlive)
                 OnCharacterSelection(character);
-        };
+        });
+        if (ShowEnergy)
+        {
+            EnergyIconWheel energyWheel = button.EnsureComponent<EnergyIconWheel>();
+            energyWheel.energy = character;
+        }
     }
 
 

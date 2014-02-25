@@ -177,6 +177,7 @@
      <Compile Include="Assets\Scenes\Battle\BattleScene.cs" />
      <Compile Include="Assets\Scenes\Battle\CharacterIconsWheel.cs" />
      <Compile Include="Assets\Scenes\Battle\CharacterTracker.cs" />
+     <Compile Include="Assets\Scenes\Battle\EnergyIconWheel.cs" />
      <Compile Include="Assets\Scenes\Battle\UIController.cs" />
      <Compile Include="Assets\Scenes\Battle\VictoryCondition.cs" />
      <Compile Include="Assets\Scenes\PlayerSelection\GameContext.cs" />
@@ -244,6 +245,7 @@
      <Compile Include="Assets\Scripts\Framework\Utility\SceneParameters.cs" />
      <Compile Include="Assets\Scripts\Framework\Utility\TimedTaskManager.cs" />
      <Compile Include="Assets\Scripts\Framework\Utility\Tween.cs" />
+     <Compile Include="Assets\Scripts\IEnergy.cs" />
      <Compile Include="Assets\Scripts\PositionButtons.cs" />
      <Compile Include="Assets\Scripts\Repositories\ICharacterSkillRepository.cs" />
      <Compile Include="Assets\Scripts\Repositories\ICompletedLevelRepository.cs" />
