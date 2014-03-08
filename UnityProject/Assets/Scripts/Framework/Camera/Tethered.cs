@@ -3,16 +3,17 @@ using System.Collections;
 
 public class Tethered : MonoBehaviour
 {
-    public float radius = 7;
-    public float height = 10;
+    public float radius = 7f;
+    public float tetherHeight = 12f;
     public float secondsPerRevolution = 17f;
 
-    public Camera camera;
+    public GameObject tetheredItem;
 
     private float progress = 0f;
 
     public bool Paused = false;
     public bool Loaded = false;
+    
 
     void Start()
     {
@@ -33,8 +34,8 @@ public class Tethered : MonoBehaviour
 
             float angle = progress * 360f;
 
-            camera.transform.position = new Vector3(transform.position.x + radius * Mathf.Cos(Mathf.Deg2Rad * angle), height, transform.position.z + radius * Mathf.Sin(Mathf.Deg2Rad * angle));
-            camera.gameObject.LookAt(this.gameObject);
+            tetheredItem.transform.position = new Vector3(transform.position.x + radius * Mathf.Cos(Mathf.Deg2Rad * angle), tetherHeight, transform.position.z + radius * Mathf.Sin(Mathf.Deg2Rad * angle));
+            tetheredItem.gameObject.LookAt(this.gameObject);
         }
     }
 
@@ -45,7 +46,7 @@ public class Tethered : MonoBehaviour
 
         for (int i = 0; i < 361; i++)
         {
-            var position = new Vector3(transform.position.x + radius * Mathf.Cos(Mathf.Deg2Rad * i), height, transform.position.z + radius * Mathf.Sin(Mathf.Deg2Rad * i));
+            var position = new Vector3(transform.position.x + radius * Mathf.Cos(Mathf.Deg2Rad * i), tetherHeight, transform.position.z + radius * Mathf.Sin(Mathf.Deg2Rad * i));
 
             if (lastposition != Vector3.zero)
                 Gizmos.DrawLine(lastposition, position);
@@ -54,11 +55,11 @@ public class Tethered : MonoBehaviour
         }
 
         if (!Loaded)
-        {            
-            camera.transform.position = lastposition;
-            camera.gameObject.LookAt(this.gameObject);
+        {
+            tetheredItem.transform.position = lastposition;
+            tetheredItem.gameObject.LookAt(this.gameObject);
         }
     }
 
-    
+
 }

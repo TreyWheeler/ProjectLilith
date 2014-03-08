@@ -98,18 +98,25 @@ public class Character : MonoBehaviour, IEnergy
         }
 
         Stats.GetHealth().Changed += HealthChanged;
+
+        var battleScene = GameObject.Find("GameController").GetComponent<BattleScene>();
+        if (Team2)
+        {
+            battleScene.Enemies.Add(this);
+            this.EnsureComponent<AICharacterController>();
+        }
+        else
+        {
+            Debug.Log(this.name);
+            battleScene.Allies.Add(this);
+        }
     }
+
     void Start()
     {
         this.Inject();
         this.Characters.AllCharacters.Add(this);//Well I am a character arent I?
-        var vc = GameObject.Find("GameController").GetComponent<BattleScene>();
 
-        if (Team2)
-        {
-            vc.Enemies.Add(this);
-            this.EnsureComponent<AICharacterController>();
-        }
 
         foreach (var childElement in this.gameObject.GetChildren())
         {

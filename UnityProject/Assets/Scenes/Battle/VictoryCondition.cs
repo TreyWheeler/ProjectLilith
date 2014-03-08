@@ -26,7 +26,7 @@ public class VictoryCondition : MonoBehaviour
     {
         gameObject.EnsureComponent<AudioSource>();
         currentScene = gameObject.EnsureComponent<BattleScene>();
-
+        currentScene.victoryCondition = this;
         winTexture = Resources.Load("Textures/Victory") as Texture2D;
         loseTexture = Resources.Load("Textures/Loss") as Texture2D;
         tieTexture = Resources.Load("Textures/Tie") as Texture2D;
@@ -34,9 +34,17 @@ public class VictoryCondition : MonoBehaviour
         matchEndAudioSource = this.gameObject.AddComponent<AudioSource>();
         matchInProgressAudioSource = this.gameObject.AddComponent<AudioSource>();
 
-        matchInProgressAudioSource.clip = battleSong;        
+        matchInProgressAudioSource.clip = battleSong;
 
-        this.FadeVolume(matchInProgressAudioSource, 3.6f);
+        this.FadeVolume(matchInProgressAudioSource, 3.6f, 0, .85f);
+    }
+
+    public bool IsMatchOver
+    {
+        get
+        {
+            return Won || Lost || Tied;
+        }
     }
 
     public bool Won
@@ -101,14 +109,13 @@ public class VictoryCondition : MonoBehaviour
                 matchEndAudioSource.clip = tieSong;
                 this.CrossFadeVolume(matchInProgressAudioSource, matchEndAudioSource, 1.6f);
                 triggered = true;
-
             }
         }
     }
 
     void OnGUI()
     {
-        if (Won || Lost || Tied)
+        if (IsMatchOver)
         {
             if (GUI.Button(new Rect(Screen.width / 4, Screen.height / 2, Screen.width / 2, Screen.height / 4), "Rematch"))
             {

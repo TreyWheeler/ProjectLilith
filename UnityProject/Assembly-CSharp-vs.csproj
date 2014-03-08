@@ -175,6 +175,7 @@
      <Compile Include="Assets\NGUI\Scripts\UI\UIViewport.cs" />
      <Compile Include="Assets\Scenes\Battle\AbilityIconsWheel.cs" />
      <Compile Include="Assets\Scenes\Battle\BattleScene.cs" />
+     <Compile Include="Assets\Scenes\Battle\CameraController.cs" />
      <Compile Include="Assets\Scenes\Battle\CharacterIconsWheel.cs" />
      <Compile Include="Assets\Scenes\Battle\CharacterTracker.cs" />
      <Compile Include="Assets\Scenes\Battle\EnergyIconWheel.cs" />
@@ -193,6 +194,7 @@
      <Compile Include="Assets\Scripts\Character\IntendedAction.cs" />
      <Compile Include="Assets\Scripts\Core\Ability.cs" />
      <Compile Include="Assets\Scripts\Core\LilithStats.cs" />
+     <Compile Include="Assets\Scripts\DockedCamera.cs" />
      <Compile Include="Assets\Scripts\Framework\Camera\Tethered.cs" />
      <Compile Include="Assets\Scripts\Framework\Data\Column.cs" />
      <Compile Include="Assets\Scripts\Framework\Data\IRepository.cs" />

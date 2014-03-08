@@ -4,21 +4,26 @@ using System.Linq;
 
 public class UIController : MonoBehaviour
 {
-
     public BattleScene BattleScene;
     public CharacterIconsWheel PlayerIconsWheel;
     public AbilityIconsWheel AbilityIconsWheel;
     public CharacterIconsWheel TargetIconWheel;
-    public GameObject IconSlider;
+    public UITexture PopupBlocker;
+    public TweenAlpha FadeIn;
 
     private Ability selectedAbility;
     private Character selectedPlayerCharacter;
+
+    void Awake()
+    {
+        FadeIn.gameObject.SetActive(true);
+    }
 
     // Use this for initialization
     void Start()
     {
         PlayerIconsWheel.ShowEnergy = true;
-        PlayerIconsWheel.ClearAndAdd(BattleScene.Allies);
+        PlayerIconsWheel.ClearAndAdd(BattleScene.Allies.OrderBy(c => c.name));
         PlayerIconsWheel.OnCharacterSelection += PlayerIconsWheel_OnCharacterSelection;
         AbilityIconsWheel.OnAbilitySelection += AbilityIconsWheel_OnAbilitySelection;
         TargetIconWheel.OnCharacterSelection += TargetIconsWheel_OnCharacterSelection;
@@ -35,16 +40,21 @@ public class UIController : MonoBehaviour
             selectedPlayerCharacter = null;
             selectedAbility = null;
         }
+        if (BattleScene.IsMatchOver)
+        {
+            PopupBlocker.alpha = .5f;
+            PopupBlocker.gameObject.SetActive(true);            
+        }
     }
 
 
     void PlayerIconsWheel_OnCharacterSelection(Character character)
     {
         selectedPlayerCharacter = character;
+        AbilityIconsWheel.NoteSelected(character);
         AbilityIconsWheel.ClearAndAdd(character.MyAbilities);
         AbilityIconsWheel.gameObject.SetActive(true);
         TargetIconWheel.gameObject.SetActive(false);
-        AbilityIconsWheel.NoteSelected(character);
     }
 
     void AbilityIconsWheel_OnAbilitySelection(Ability ability)
@@ -69,4 +79,5 @@ public class UIController : MonoBehaviour
         TargetIconWheel.gameObject.SetActive(false);
         AbilityIconsWheel.gameObject.SetActive(false);
     }
+
 }

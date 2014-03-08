@@ -98,4 +98,28 @@ public static class Extensions
             yield return null;// Wait one frame
         }
     }
+
+    public static void StartSlerpCoroutine(this MonoBehaviour script, GameObject item, GameObject fromObject, GameObject toObject, float duration)
+    {
+        script.StartCoroutine(StartSlerp(item, fromObject, toObject, duration));
+    }
+
+    private static IEnumerator StartSlerp(GameObject item, GameObject fromObject, GameObject toObject, float duration)
+    {
+        float timeElapsed = 0;
+        float progressPercent = 0;
+        while (progressPercent < 1)
+        {
+            progressPercent = Mathf.Clamp01(timeElapsed / duration);
+            item.Slerp(fromObject, toObject, progressPercent);
+            yield return null;// Wait one frame
+            timeElapsed += Time.deltaTime;
+        }
+    }
+
+    public static void Slerp(this GameObject item, GameObject fromObject, GameObject toObject, float progress)
+    {
+        item.transform.rotation = Quaternion.Slerp(fromObject.transform.rotation, toObject.transform.rotation, progress);
+        item.transform.position = Vector3.Slerp(fromObject.transform.position, toObject.transform.position, progress);
+    }
 }

@@ -66,13 +66,18 @@ public class PositionButtons : MonoBehaviour
         if (onClick != null)
         {
             DaemonButton button = go.EnsureComponent<DaemonButton>();
-            UIButton buttonUI = go.EnsureComponent<UIButton>();
+            UIButton buttonUI = go.EnsureComponent<UIButton>();          
             BoxCollider buttonBoxCollider = go.EnsureComponent<BoxCollider>();
+            if (isEnabled != null)
+            {
+                go.EnsureComponent<IsEnabled>().Predicate = isEnabled;
+                bool enabled = isEnabled();
+                buttonUI.isEnabled = enabled;
+                buttonBoxCollider.enabled = enabled;
+            }
             buttonBoxCollider.isTrigger = true;
             buttonTexture.ResizeCollider();
 
-            if (isEnabled != null)
-                go.EnsureComponent<IsEnabled>().Predicate = isEnabled;
 
             button.click += onClick;
         }
