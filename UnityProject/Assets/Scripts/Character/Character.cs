@@ -107,7 +107,6 @@ public class Character : MonoBehaviour, IEnergy
         }
         else
         {
-            Debug.Log(this.name);
             battleScene.Allies.Add(this);
         }
     }
