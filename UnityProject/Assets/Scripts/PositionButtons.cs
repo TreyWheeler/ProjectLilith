@@ -12,6 +12,8 @@ public class PositionButtons : MonoBehaviour
     public float startAngle = 0;
     public float endAngle = 360;
 
+    public float FixedStep = 0;
+
     public void Layout()
     {
         if (_gameObjects.Count == 1)
@@ -31,8 +33,12 @@ public class PositionButtons : MonoBehaviour
     }
     private void PositionMultipleButtons()
     {
-        float distance = RotateScript.distanceToAngle(startAngle, endAngle);// -startAngle;
-        float distanceStep = distance / (_gameObjects.Count - (distance == 360 ? 0 : 1));
+        float distanceStep = FixedStep;
+        if (distanceStep == 0)
+        {
+            float distance = RotateScript.distanceToAngle(startAngle, endAngle);
+            distanceStep = distance / (_gameObjects.Count - (distance == 360 ? 0 : 1));
+        }
         float currentAngle = startAngle;
         foreach (var item in _gameObjects)
         {
@@ -52,7 +58,7 @@ public class PositionButtons : MonoBehaviour
         return new Vector3(sphereX, sphereY, 0);
     }
 
-    public GameObject Add(string textureName, bool isEnabled, Action onClick = null)
+    public GameObject Add(string textureName, Func<bool> isEnabled = null, Action onClick = null)
     {
         GameObject go = new GameObject();
         UITexture buttonTexture = go.EnsureComponent<UITexture>();
@@ -65,18 +71,15 @@ public class PositionButtons : MonoBehaviour
             buttonBoxCollider.isTrigger = true;
             buttonTexture.ResizeCollider();
 
-            if (!isEnabled)
-            {
-                buttonUI.isEnabled = false;
-                buttonBoxCollider.enabled = false;
-            }
+            if (isEnabled != null)
+                go.EnsureComponent<IsEnabled>().Predicate = isEnabled;
 
             button.click += onClick;
         }
-        
+
         buttonTexture.mainTexture = Resources.Load<Texture2D>("Textures/" + textureName);
-        buttonTexture.autoResizeBoxCollider = true;        
-        buttonTexture.depth = 1;        
+        buttonTexture.autoResizeBoxCollider = true;
+        buttonTexture.depth = 1;
         _gameObjects.Add(go);
         return go;
     }

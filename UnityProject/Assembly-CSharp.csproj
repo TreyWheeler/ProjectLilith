@@ -183,6 +183,7 @@
      <Compile Include="Assets\Scenes\PlayerSelection\GameContext.cs" />
      <Compile Include="Assets\Scenes\PlayerSelection\PlayerSelectionGUI.cs" />
      <Compile Include="Assets\Scenes\Splash\Splash.cs" />
+     <Compile Include="Assets\Scripts\Character\AICharacterController.cs" />
      <Compile Include="Assets\Scripts\Character\Abilities\AbilitySceneProvider.cs" />
      <Compile Include="Assets\Scripts\Character\Abilities\SceneDirector.cs" />
      <Compile Include="Assets\Scripts\Character\AbilityRadial.cs" />
@@ -236,6 +237,7 @@
      <Compile Include="Assets\Scripts\Framework\Story\Scripts\WaitSceneAction.cs" />
      <Compile Include="Assets\Scripts\Framework\Story\StoryBoard.cs" />
      <Compile Include="Assets\Scripts\Framework\UI\HealthArch.cs" />
+     <Compile Include="Assets\Scripts\Framework\UI\IsEnabled.cs" />
      <Compile Include="Assets\Scripts\Framework\UI\LookAtCamera.cs" />
      <Compile Include="Assets\Scripts\Framework\UI\NGUI\IconWheel.cs" />
      <Compile Include="Assets\Scripts\Framework\Utility\ClickTracker.cs" />

@@ -54,9 +54,11 @@ public class Tethered : MonoBehaviour
         }
 
         if (!Loaded)
-        {
+        {            
             camera.transform.position = lastposition;
             camera.gameObject.LookAt(this.gameObject);
         }
     }
+
+    
 }

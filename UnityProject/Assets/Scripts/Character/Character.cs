@@ -12,12 +12,12 @@ public class Character : MonoBehaviour, IEnergy
     public Queue<IntendedAction> AbilityQue = new Queue<IntendedAction>();
     private IntendedAction _currentAction;
     private bool _isExecutingAction;
-    private AbilityRadial _radial;
     public Material Team2Mat;
     public CombatClass Class;
     public bool Team2;
     public float TimeSinceLastHit;
     public string TextureName;
+
     [Inject]
     public CharacterTracker Characters { get; set; }
 
@@ -56,8 +56,8 @@ public class Character : MonoBehaviour, IEnergy
                 Stats.Add(LilithStats.Intelligence, new Stat<LilithStats>(75));
                 Stats.Add(LilithStats.Strength, new Stat<LilithStats>(12));
                 Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
-                Stats.Add(LilithStats.Energy, new Stat<LilithStats>(0, 5, 2));
-                Stats.Add(LilithStats.EnergyPerSecond, new Stat<LilithStats>(0, 5, 0.35f));
+                Stats.Add(LilithStats.Energy, new Stat<LilithStats>(0, 5, 0));
+                Stats.Add(LilithStats.EnergyPerSecond, new Stat<LilithStats>(0, 5, 0.18f));
                 MyAbilities = new Ability[] { new Ability(LilithAbilities.Blizzard), new Ability(LilithAbilities.Fireball) };
                 if (Team2)
                     TextureName = "enemy_mage";
@@ -70,7 +70,7 @@ public class Character : MonoBehaviour, IEnergy
                 Stats.Add(LilithStats.Strength, new Stat<LilithStats>(0, 9001, 50));
                 Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
                 Stats.Add(LilithStats.Energy, new Stat<LilithStats>(0, 5, 0));
-                Stats.Add(LilithStats.EnergyPerSecond, new Stat<LilithStats>(0, 5, 0.25f));
+                Stats.Add(LilithStats.EnergyPerSecond, new Stat<LilithStats>(0, 5, 0.12f));
                 MyAbilities = new Ability[] { new Ability(LilithAbilities.Attack) };
                 this.gameObject.animation.CrossFade("DrawBlade");
                 var state = this.gameObject.animation.PlayQueued("Attack_standy", QueueMode.CompleteOthers);
@@ -86,8 +86,8 @@ public class Character : MonoBehaviour, IEnergy
                 Stats.Add(LilithStats.Strength, new Stat<LilithStats>(6));
                 Stats.Add(LilithStats.MoveSpeed, new Stat<LilithStats>(3.3f));
                 Stats.Add(LilithStats.Energy, new Stat<LilithStats>(0, 5, 0));
-                Stats.Add(LilithStats.EnergyPerSecond, new Stat<LilithStats>(0, 5, 0.3f));
-                MyAbilities = new Ability[] { new Ability(LilithAbilities.Heal), new Ability(LilithAbilities.ChannelEmpower), new Ability(LilithAbilities.HealGroup) };
+                Stats.Add(LilithStats.EnergyPerSecond, new Stat<LilithStats>(0, 5, 0.15f));
+                MyAbilities = new Ability[] { new Ability(LilithAbilities.Heal), new Ability(LilithAbilities.ChannelEmpower) };//, new Ability(LilithAbilities.HealGroup) };
                 if (Team2)
                     TextureName = "enemy_support";
                 else
@@ -108,10 +108,8 @@ public class Character : MonoBehaviour, IEnergy
         if (Team2)
         {
             vc.Enemies.Add(this);
+            this.EnsureComponent<AICharacterController>();
         }
-
-        _radial = this.gameObject.EnsureComponent<AbilityRadial>();
-        _radial.Abilities = MyAbilities;
 
         foreach (var childElement in this.gameObject.GetChildren())
         {
@@ -225,12 +223,18 @@ public class Character : MonoBehaviour, IEnergy
         this.Stats[LilithStats.Energy].CurrentValue += this.Stats[LilithStats.EnergyPerSecond].CurrentValue * Time.deltaTime;
     }
 
-
+    public void UseAbility(Ability ability, Character target)
+    {
+        if (Stats[LilithStats.Energy].CurrentValue >= ability.cost)
+        {
+            Stats[LilithStats.Energy].CurrentValue -= ability.cost;
+            QueueAbility(new IntendedAction(ability, target.gameObject));
+        }
+    }
 
     internal void QueueAbility(IntendedAction intendedAction)
     {
         this.AbilityQue.Enqueue(intendedAction);
-        _radial.Close();
     }
 
     public int GetCurrentEnergy()

@@ -21,21 +21,21 @@ public class AbilityIconsWheel : MonoBehaviour
 
     void Update()
     {
-        foreach (var item in abilityDictionary)
-        {
-            UIButton buttonUI = item.Value.EnsureComponent<UIButton>();
-            BoxCollider buttonBoxCollider = item.Value.EnsureComponent<BoxCollider>();
-            if (item.Key.cost > selectedCharacter.GetCurrentEnergy())
-            {
-                buttonUI.isEnabled = false;
-                buttonBoxCollider.enabled = false;
-            }
-            else
-            {
-                buttonUI.isEnabled = true;
-                buttonBoxCollider.enabled = true;
-            }
-        }
+        //foreach (var item in abilityDictionary)
+        //{
+        //    UIButton buttonUI = item.Value.GetComponent<UIButton>();
+        //    BoxCollider buttonBoxCollider = item.Value.GetComponent<BoxCollider>();
+        //    if (item.Key.cost > selectedCharacter.GetCurrentEnergy())
+        //    {
+        //        buttonUI.isEnabled = false;
+        //        buttonBoxCollider.enabled = false;
+        //    }
+        //    else
+        //    {
+        //        buttonUI.isEnabled = true;
+        //        buttonBoxCollider.enabled = true;
+        //    }
+        //}
     }
 
     public void ClearAndAdd(IEnumerable<Ability> abilities)
@@ -51,7 +51,7 @@ public class AbilityIconsWheel : MonoBehaviour
 
     private void AddAbilityButton(Ability ability)
     {
-        GameObject button = _positionButtons.Add(ability.TextureName, true, () =>
+        GameObject button = _positionButtons.Add(ability.TextureName, () => selectedCharacter.GetEnergy().CurrentValue >= ability.cost, () =>
         {
             if (OnAbilitySelection != null)
                 OnAbilitySelection(ability);

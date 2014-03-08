@@ -27,7 +27,7 @@ public class CharacterIconsWheel : MonoBehaviour
 
     private void AddCharacterButton(Character character)
     {
-        GameObject button = _positionButtons.Add(character.TextureName, character.IsAlive, () =>
+        GameObject button = _positionButtons.Add(character.TextureName, () => character.IsAlive, () =>
         {
             if (OnCharacterSelection != null && character.IsAlive)
                 OnCharacterSelection(character);

@@ -60,7 +60,7 @@ public static class Extensions
         {
             T implementation = components[i] as T;
             if (implementation != null)
-                return implementation;        
+                return implementation;
         }
         return null;
     }
@@ -68,5 +68,34 @@ public static class Extensions
     public static void LookAt(this GameObject actor, GameObject target)
     {
         actor.transform.LookAt(target.transform);
+    }
+
+    public static void CrossFadeVolume(this MonoBehaviour monobehavior, AudioSource fadeOutAudio, AudioSource fadeInAudio, float duration)
+    {
+        monobehavior.StartCoroutine(FadeVolume(fadeOutAudio, 1.6f, 1, 0));
+        monobehavior.StartCoroutine(FadeVolume(fadeInAudio, 1.6f, 0, 1));
+    }
+
+    public static void FadeVolume(this MonoBehaviour monobehavior, AudioSource audio, float duration, float initialVolume = 0f, float targetVolume = 1f)
+    {
+        monobehavior.StartCoroutine(FadeVolume(audio, duration, initialVolume, targetVolume));
+    }
+
+    private static IEnumerator FadeVolume(AudioSource audio, float duration, float initialVolume = 0f, float targetVolume = 1f)
+    {
+        audio.volume = initialVolume;
+        if (!audio.isPlaying)
+            audio.Play();
+        float volumeDifference = targetVolume - initialVolume;
+        float timeElapsed = 0;
+        yield return null;
+        float progressPercent = 0;
+        while (progressPercent < 1)
+        {
+            timeElapsed += Time.deltaTime;
+            progressPercent = Mathf.Clamp01(timeElapsed / duration);
+            audio.volume = initialVolume + progressPercent * volumeDifference;
+            yield return null;// Wait one frame
+        }
     }
 }

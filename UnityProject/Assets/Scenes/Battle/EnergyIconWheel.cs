@@ -14,6 +14,7 @@ public class EnergyIconWheel : MonoBehaviour
     void Awake()
     {
         _positionButtons = this.EnsureComponent<PositionButtons>();
+        _positionButtons.FixedStep = 20;
         _positionButtons.startAngle = 315;
         _positionButtons.endAngle = 45;
         _positionButtons.radius = (this.EnsureComponent<UITexture>().width / 2) + (dimensions2D / 2);
@@ -24,7 +25,7 @@ public class EnergyIconWheel : MonoBehaviour
         _positionButtons.Clear();
         for (int i = 0; i < maxEnergy; i++)
         {
-            GameObject go = _positionButtons.Add(_iconName, true);
+            GameObject go = _positionButtons.Add(_iconName);
             UITexture texture = go.EnsureComponent<UITexture>();
             texture.width = dimensions2D;
             texture.height = dimensions2D;

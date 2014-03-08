@@ -26,6 +26,17 @@ public class UIController : MonoBehaviour
         TargetIconWheel.gameObject.SetActive(false);
     }
 
+    void Update()
+    {
+        if (selectedPlayerCharacter != null && !selectedPlayerCharacter.IsAlive)
+        {
+            AbilityIconsWheel.gameObject.SetActive(false);
+            TargetIconWheel.gameObject.SetActive(false);
+            selectedPlayerCharacter = null;
+            selectedAbility = null;
+        }
+    }
+
 
     void PlayerIconsWheel_OnCharacterSelection(Character character)
     {

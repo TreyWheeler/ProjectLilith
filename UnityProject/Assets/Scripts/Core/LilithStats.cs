@@ -18,6 +18,21 @@ public static class LilithStatExtensions
     {
         return stats[LilithStats.Health];
     }
+
+    public static Stat<LilithStats> GetHealth(this Character character)
+    {
+        return character.Stats[LilithStats.Health];
+    }
+
+    public static Stat<LilithStats> GetEnergy(this IDictionary<LilithStats, Stat<LilithStats>> stats)
+    {
+        return stats[LilithStats.Energy];
+    }
+
+    public static Stat<LilithStats> GetEnergy(this Character character)
+    {
+        return character.Stats[LilithStats.Energy];
+    }
 }
 
 public class LilithStatList : StatList<LilithStats> { }

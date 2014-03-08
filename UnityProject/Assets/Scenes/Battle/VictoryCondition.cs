@@ -10,10 +10,33 @@ public class VictoryCondition : MonoBehaviour
 
     BattleScene currentScene;
 
+    Texture2D winTexture;
+    Texture2D loseTexture;
+    Texture2D tieTexture;
+
+    private AudioSource matchEndAudioSource;
+    public AudioClip winSong;
+    public AudioClip loseSong;
+    public AudioClip tieSong;
+
+    private AudioSource matchInProgressAudioSource;
+    public AudioClip battleSong;
+
     void Start()
     {
         gameObject.EnsureComponent<AudioSource>();
         currentScene = gameObject.EnsureComponent<BattleScene>();
+
+        winTexture = Resources.Load("Textures/Victory") as Texture2D;
+        loseTexture = Resources.Load("Textures/Loss") as Texture2D;
+        tieTexture = Resources.Load("Textures/Tie") as Texture2D;
+
+        matchEndAudioSource = this.gameObject.AddComponent<AudioSource>();
+        matchInProgressAudioSource = this.gameObject.AddComponent<AudioSource>();
+
+        matchInProgressAudioSource.clip = battleSong;        
+
+        this.FadeVolume(matchInProgressAudioSource, 3.6f);
     }
 
     public bool Won
@@ -23,7 +46,6 @@ public class VictoryCondition : MonoBehaviour
             return AnAllyIsAlive && !AnEnemyIsAlive;
         }
     }
-
 
     public bool Lost
     {
@@ -40,6 +62,7 @@ public class VictoryCondition : MonoBehaviour
             return !AnAllyIsAlive && !AnEnemyIsAlive;
         }
     }
+
     void Update()
     {
         if (currentScene.Allies.Count > 0 && currentScene.Enemies.Count > 0)
@@ -58,50 +81,59 @@ public class VictoryCondition : MonoBehaviour
             }
         }
 
-        if (Won)
+        if (!triggered)
         {
-            if (!triggered)
+            if (Won)
             {
-                var clip = Resources.Load("sounds/ff7") as AudioClip;
-                audio.PlayOneShot(clip);
+                matchEndAudioSource.clip = winSong;
+                this.CrossFadeVolume(matchInProgressAudioSource, matchEndAudioSource, 1.6f);
                 triggered = true;
             }
-        }
-        else if (Lost)
-        {
-            if (!triggered)
+            else if (Lost)
             {
-                var clip = Resources.Load("sounds/gameover") as AudioClip;
-                audio.PlayOneShot(clip);
+                matchEndAudioSource.clip = loseSong;
+                this.CrossFadeVolume(matchInProgressAudioSource, matchEndAudioSource, 1.6f);
                 triggered = true;
+
             }
-        }
-        else if(Tied)
-        {
-            if (!triggered)
+            else if (Tied)
             {
-                var clip = Resources.Load("sounds/TetrisRemix") as AudioClip;
-                audio.PlayOneShot(clip);
+                matchEndAudioSource.clip = tieSong;
+                this.CrossFadeVolume(matchInProgressAudioSource, matchEndAudioSource, 1.6f);
                 triggered = true;
+
             }
         }
     }
 
     void OnGUI()
     {
+        if (Won || Lost || Tied)
+        {
+            if (GUI.Button(new Rect(Screen.width / 4, Screen.height / 2, Screen.width / 2, Screen.height / 4), "Rematch"))
+            {
+                Application.LoadLevel(0);
+            }
+        }
+
         if (Won)
         {
-            GUI.Label(new Rect(5, 5, 200, 200), "Win!");
+            GUI.DrawTexture(new Rect(Screen.width / 2 - winTexture.width / 2, Screen.height / 2 - winTexture.height, winTexture.width, winTexture.height), winTexture);
         }
-        else if (Lost)
+        if (Lost)
         {
-            GUI.Label(new Rect(5, 5, 200, 200), "Lose!");
+            GUI.DrawTexture(new Rect(Screen.width / 2 - loseTexture.width / 2, Screen.height / 2 - loseTexture.height, loseTexture.width, loseTexture.height), loseTexture);
         }
-        else if (Tied)
+        if (Tied)
         {
-            GUI.Label(new Rect(5, 5, 200, 200), "Tie!");
+            GUI.DrawTexture(new Rect(Screen.width / 2 - tieTexture.width / 2, Screen.height / 2 - tieTexture.height, tieTexture.width, tieTexture.height), tieTexture);
         }
+
+
     }
+
+
+
 
 
 }
