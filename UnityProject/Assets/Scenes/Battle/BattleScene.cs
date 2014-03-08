@@ -8,12 +8,11 @@ public class BattleScene : MonoBehaviour
     public List<Character> Allies = new List<Character>();
     public List<Character> Enemies = new List<Character>();
     public VictoryCondition victoryCondition;
-    private bool _isMatchOver;
     public bool IsMatchOver
     {
         get
         {
-            return _isMatchOver;
+            return victoryCondition.IsMatchOver;
         }
     }
     // Use this for initialization
@@ -24,7 +23,12 @@ public class BattleScene : MonoBehaviour
 
     void Update()
     {
-        if (victoryCondition != null && victoryCondition.IsMatchOver)
-            _isMatchOver = true;
+        if (IsMatchOver)
+        {
+            foreach (Character character in Allies)
+            {
+                character.Stats[LilithStats.EnergyPerSecond].CurrentValue = 0;
+            }
+        }
     }
 }
