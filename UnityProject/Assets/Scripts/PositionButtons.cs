@@ -14,23 +14,13 @@ public class PositionButtons : MonoBehaviour
 
     public float FixedStep = 0;
 
+    private static Color disabledColor = new Color(.15f, .15f, .15f, 1f);
+
     public void Layout()
     {
-        if (_gameObjects.Count == 1)
-            PositionOneButton(_gameObjects[0]);
-        else
-            PositionMultipleButtons();
+        PositionMultipleButtons();
     }
-    private void PositionOneButton(GameObject go)
-    {
-        float distance = RotateScript.distanceToAngle(startAngle, endAngle) / 2;// (endAngle - startAngle) / 2;
-        float currentAngle = startAngle + distance;
-        go.transform.parent = this.gameObject.transform;
-        go.transform.localPosition = GetLocationFromAngle(currentAngle);
-        go.transform.localRotation = Quaternion.identity;
-        go.transform.Rotate(new Vector3(0, 0, 360 - currentAngle));
-        go.transform.localScale = new Vector3(1, 1, 1);
-    }
+
     private void PositionMultipleButtons()
     {
         float distanceStep = FixedStep;
@@ -44,8 +34,9 @@ public class PositionButtons : MonoBehaviour
         {
             item.transform.parent = this.gameObject.transform;
             item.transform.localPosition = GetLocationFromAngle(currentAngle);
-            item.transform.localRotation = Quaternion.identity;
-            item.transform.Rotate(new Vector3(0, 0, 360 - currentAngle));
+            item.transform.rotation = Quaternion.identity;
+            //item.transform.localRotation = Quaternion.identity;
+            //item.transform.Rotate(new Vector3(0, 0, 360 - currentAngle));            
             item.transform.localScale = new Vector3(1, 1, 1);
             currentAngle += distanceStep;
         }
@@ -66,25 +57,25 @@ public class PositionButtons : MonoBehaviour
         if (onClick != null)
         {
             DaemonButton button = go.EnsureComponent<DaemonButton>();
-            UIButton buttonUI = go.EnsureComponent<UIButton>();          
+            UIButton buttonUI = go.EnsureComponent<UIButton>();
+            buttonUI.disabledColor = disabledColor;
             BoxCollider buttonBoxCollider = go.EnsureComponent<BoxCollider>();
             if (isEnabled != null)
             {
                 go.EnsureComponent<IsEnabled>().Predicate = isEnabled;
                 bool enabled = isEnabled();
                 buttonUI.isEnabled = enabled;
-                buttonBoxCollider.enabled = enabled;
+                //buttonBoxCollider.enabled = enabled;
             }
             buttonBoxCollider.isTrigger = true;
             buttonTexture.ResizeCollider();
-
 
             button.click += onClick;
         }
 
         buttonTexture.mainTexture = Resources.Load<Texture2D>("Textures/" + textureName);
         buttonTexture.autoResizeBoxCollider = true;
-        buttonTexture.depth = 1;
+        buttonTexture.depth = 10;
         _gameObjects.Add(go);
         return go;
     }
@@ -96,6 +87,14 @@ public class PositionButtons : MonoBehaviour
             Destroy(go);
         }
         _gameObjects.Clear();
+    }
+
+    public void Update()
+    {
+        foreach (var item in _gameObjects)
+        {
+            item.transform.rotation = Quaternion.identity;
+        }
     }
 }
 

@@ -6,7 +6,7 @@ public class EnergyIconWheel : MonoBehaviour
 {
     private PositionButtons _positionButtons;
     private string _iconName = "notch";
-    private int dimensions2D = 30;
+    private int dimensions2D = 20;
     public List<GameObject> icons = new List<GameObject>();
     public IEnergy energy;
     public bool constant;
@@ -15,9 +15,9 @@ public class EnergyIconWheel : MonoBehaviour
     {
         _positionButtons = this.EnsureComponent<PositionButtons>();
         _positionButtons.FixedStep = 20;
-        _positionButtons.startAngle = 315;
-        _positionButtons.endAngle = 45;
-        _positionButtons.radius = (this.EnsureComponent<UITexture>().width / 2) + (dimensions2D / 2);
+        _positionButtons.startAngle = 0;
+        _positionButtons.endAngle = 90;
+        _positionButtons.radius = (this.EnsureComponent<UITexture>().width / 2) + (dimensions2D / 2) + 15;
     }
     void Start()
     {
@@ -26,6 +26,7 @@ public class EnergyIconWheel : MonoBehaviour
         for (int i = 0; i < maxEnergy; i++)
         {
             GameObject go = _positionButtons.Add(_iconName);
+            go.name = "Energy Tick";
             UITexture texture = go.EnsureComponent<UITexture>();
             texture.width = dimensions2D;
             texture.height = dimensions2D;

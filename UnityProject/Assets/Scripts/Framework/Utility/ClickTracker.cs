@@ -34,49 +34,56 @@ public class ClickTracker : MonoBehaviour
 
     private void CheckForClick()
     {
-        if (_hashCodeOfObjectBeingClicked == null && Input.GetMouseButtonDown(0))
+        foreach (Camera camera in Camera.allCameras)
         {
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit))
+            if (_hashCodeOfObjectBeingClicked == null && Input.GetMouseButtonDown(0))
             {
-                GameObject hitObject = hit.transform.gameObject;
-                _hashCodeOfObjectBeingClicked = hitObject.GetHashCode();
+                var ray = camera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    GameObject hitObject = hit.transform.gameObject;
+                    _hashCodeOfObjectBeingClicked = hitObject.GetHashCode();
+
+                    break;
+                }
+                else
+                {
+                    // If nothing at all was clicked (Skybox), then go ahead and raise all outside clicks
+                    FireAllOutsideClickHandlers();
+
+                    _hashCodeOfObjectBeingClicked = null;
+                }
             }
-            else
-            {               
-                // If nothing at all was clicked (Skybox), then go ahead and raise all outside clicks
-                FireAllOutsideClickHandlers();
+            else if (_hashCodeOfObjectBeingClicked != null && Input.GetMouseButtonUp(0))
+            {
+
+                var ray = camera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    GameObject hitObject = hit.transform.gameObject;
+
+
+                    if (hitObject.GetHashCode() == _hashCodeOfObjectBeingClicked)
+                    {
+                        EvalutateOnOutsideClick(hitObject);
+
+                        int hashCode = hitObject.GetHashCode();
+
+                        if (_onClickHandlers.ContainsKey(hashCode))
+                        {
+                            _onClickHandlers[hashCode].Execute();
+                        }
+                    }
+
+                    break;
+                }
 
                 _hashCodeOfObjectBeingClicked = null;
             }
-        }
-        else if (_hashCodeOfObjectBeingClicked != null && Input.GetMouseButtonUp(0))
-        {
-
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                GameObject hitObject = hit.transform.gameObject;
-
-
-                if (hitObject.GetHashCode() == _hashCodeOfObjectBeingClicked)
-                {
-                    EvalutateOnOutsideClick(hitObject);
-
-                    int hashCode = hitObject.GetHashCode();
-
-                    if (_onClickHandlers.ContainsKey(hashCode))
-                    {
-                        _onClickHandlers[hashCode].Execute();
-                    }
-                }
-            }
-
-            _hashCodeOfObjectBeingClicked = null;
         }
     }
 
@@ -151,7 +158,7 @@ public class ClickTracker : MonoBehaviour
         {
             get
             {
-				GameObject typedTarget = _gameObjReference.Target as GameObject;
+                GameObject typedTarget = _gameObjReference.Target as GameObject;
                 return typedTarget == null;
             }
         }

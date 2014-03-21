@@ -28,15 +28,15 @@ public class UIController : MonoBehaviour
         AbilityIconsWheel.OnAbilitySelection += AbilityIconsWheel_OnAbilitySelection;
         TargetIconWheel.OnCharacterSelection += TargetIconsWheel_OnCharacterSelection;
         AbilityIconsWheel.gameObject.SetActive(false);
-        TargetIconWheel.gameObject.SetActive(false);
+        TargetIconWheel.gameObject.SetActive(false);        
     }
 
     void Update()
     {
         if (selectedPlayerCharacter != null && !selectedPlayerCharacter.IsAlive)
         {
-            AbilityIconsWheel.gameObject.SetActive(false);
-            TargetIconWheel.gameObject.SetActive(false);
+            AbilityIconsWheel.Hide();
+            TargetIconWheel.Hide();
             selectedPlayerCharacter = null;
             selectedAbility = null;
         }
@@ -47,23 +47,24 @@ public class UIController : MonoBehaviour
         }
     }
 
-
+    // Player Selected
     void PlayerIconsWheel_OnCharacterSelection(Character character)
     {
         selectedPlayerCharacter = character;
         AbilityIconsWheel.NoteSelected(character);
         AbilityIconsWheel.ClearAndAdd(character.MyAbilities);
-        AbilityIconsWheel.gameObject.SetActive(true);
-        TargetIconWheel.gameObject.SetActive(false);
+        AbilityIconsWheel.Show();
+        TargetIconWheel.Hide();
     }
 
+    // Ability Selected
     void AbilityIconsWheel_OnAbilitySelection(Ability ability)
     {
         if (selectedPlayerCharacter.GetCurrentEnergy() >= ability.cost)
         {
             selectedAbility = ability;
-            AbilityIconsWheel.gameObject.SetActive(false);
-            TargetIconWheel.gameObject.SetActive(true);
+            TargetIconWheel.Show();
+            AbilityIconsWheel.Hide();
             if (ability.IsFriendly)
                 TargetIconWheel.ClearAndAdd(BattleScene.Allies);
             else
@@ -72,12 +73,12 @@ public class UIController : MonoBehaviour
         }
     }
 
+    // Target Selected
     void TargetIconsWheel_OnCharacterSelection(Character obj)
     {
         selectedPlayerCharacter.Stats[LilithStats.Energy].CurrentValue -= selectedAbility.cost;
         selectedPlayerCharacter.QueueAbility(new IntendedAction(selectedAbility, obj.gameObject));
-        TargetIconWheel.gameObject.SetActive(false);
-        AbilityIconsWheel.gameObject.SetActive(false);
+        TargetIconWheel.Hide();
     }
 
 }

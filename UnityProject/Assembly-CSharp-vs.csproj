@@ -145,6 +145,7 @@
      <Compile Include="Assets\NGUI\Scripts\Tweening\TweenColor.cs" />
      <Compile Include="Assets\NGUI\Scripts\Tweening\TweenFOV.cs" />
      <Compile Include="Assets\NGUI\Scripts\Tweening\TweenHeight.cs" />
+     <Compile Include="Assets\NGUI\Scripts\Tweening\TweenOffset.cs" />
      <Compile Include="Assets\NGUI\Scripts\Tweening\TweenOrthoSize.cs" />
      <Compile Include="Assets\NGUI\Scripts\Tweening\TweenPosition.cs" />
      <Compile Include="Assets\NGUI\Scripts\Tweening\TweenRotation.cs" />
@@ -178,6 +179,7 @@
      <Compile Include="Assets\Scenes\Battle\CameraController.cs" />
      <Compile Include="Assets\Scenes\Battle\CharacterIconsWheel.cs" />
      <Compile Include="Assets\Scenes\Battle\CharacterTracker.cs" />
+     <Compile Include="Assets\Scenes\Battle\EnergyIconOutline.cs" />
      <Compile Include="Assets\Scenes\Battle\EnergyIconWheel.cs" />
      <Compile Include="Assets\Scenes\Battle\UIController.cs" />
      <Compile Include="Assets\Scenes\Battle\VictoryCondition.cs" />

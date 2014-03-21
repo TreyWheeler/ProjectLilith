@@ -16,8 +16,10 @@ public class TweenAlpha : UITweener
 	public float from = 1f;
 	public float to = 1f;
 #else
-	[Range(0f, 1f)] public float from = 1f;
-	[Range(0f, 1f)] public float to = 1f;
+	[Range(0f, 1f)] 
+    public float from = 1f;
+	[Range(0f, 1f)] 
+    public float to = 1f;
 #endif
 
 	UIRect mRect;
@@ -54,7 +56,7 @@ public class TweenAlpha : UITweener
 	/// Start the tweening operation.
 	/// </summary>
 
-	static public TweenAlpha Begin (GameObject go, float duration, float alpha)
+	public static TweenAlpha Begin (GameObject go, float duration, float alpha)
 	{
 		TweenAlpha comp = UITweener.Begin<TweenAlpha>(go, duration);
 		comp.from = comp.value;

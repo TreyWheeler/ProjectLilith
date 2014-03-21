@@ -23,7 +23,7 @@ public class IsEnabled : MonoBehaviour
         {
             bool isEnabled = Predicate();
             buttonUI.isEnabled = isEnabled;
-            buttonBoxCollider.enabled = isEnabled;
+            //buttonBoxCollider.enabled = isEnabled;
         }
     }
 }
